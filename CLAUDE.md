@@ -1,0 +1,114 @@
+# CLAUDE.md — build conventions for this repository
+
+This file is read by any Claude Code session working in this repo (cloud or local). It
+carries the working agreement so no chat has to re-establish it.
+
+## What this is
+
+A proof of concept for a **verifiable regulatory knowledge layer**: a layer between a
+standards body's guidance and its AI systems that makes answers reliable and verifiable,
+not merely retrievable. Submission for a technical challenge; the author will present it
+for 10 minutes and then be drilled by a senior technical stakeholder.
+
+**Thesis.** Truth lives in a deterministic, versioned, relationship-aware layer. The LLM
+is used only for language — understanding the question and composing the answer — and
+nothing reaches the user without a deterministic check against the layer. "The guidance
+doesn't cover this" is a first-class answer.
+
+**The line that matters.** A clause can remain word-for-word identical while the correct
+answer changes, because a definition, exception, or ruling elsewhere has changed.
+
+## Posture
+
+- **Build mode.** Write real, runnable code with tests. The strategic-advisor persona from
+  the surrounding project is suspended inside this repo except for `docs/03-decisions.md`.
+- **The author is not a developer.** The rule is: *nothing ships that cannot be explained
+  in two sentences.* Prefer the obvious implementation. No clever abstractions, no
+  metaprogramming, no framework magic. Small files named for concepts.
+- **The spec is `docs/00-corpus-spec.md`.** If code and spec disagree, stop and fix the
+  spec first, then the code.
+- **The gold set is the spec for behaviour.** `tests/eval/gold.yaml` defines what correct
+  means. Change it deliberately, in its own commit, with a reason.
+
+## Deliverable mapping (from the brief)
+
+| Brief | Where it lives |
+|---|---|
+| 01 Architecture + 0→1 | `docs/01-architecture.md` (+ `docs/diagrams/`) |
+| 02 Concrete demonstration | `src/`, `data/`, `tests/`, `demo/` — runnable via `docker compose up` |
+| 03 Design choices and rationale | `docs/03-decisions.md` (ADR-style; non-obvious decisions first) |
+
+## Stack (locked)
+
+- Python 3.12 · FastAPI · Pydantic v2 · SQLAlchemy Core (no ORM) · psycopg 3
+- PostgreSQL 16 + pgvector, via Docker Compose; recursive CTEs for closure
+- pytest as the test and eval harness
+- LLMs: Anthropic `claude-opus-5-5` composes, `claude-sonnet-5-5` judges and parses
+  intake; configurable by env. OpenAI `text-embedding-3-small` for embeddings.
+- All LLM calls go through one client module with **record/replay**: tests run from
+  fixtures by default; `--live` hits the APIs; `--record` refreshes fixtures.
+- UI: one static page (`demo/`), system font stack, no framework, no build step.
+
+## Layout
+
+```
+CLAUDE.md
+README.md
+compose.yaml  Dockerfile  .env.example  pyproject.toml
+docs/        00-corpus-spec.md  01-architecture.md  03-decisions.md  diagrams/
+data/
+  sources/   prose documents (what the body publishes; what naive RAG chunks)
+  graph/     structured seed: nodes.yaml  edges.yaml  jurisdictions.yaml  issued_answers.yaml
+src/vgl/
+  contracts.py   Pydantic models: QueryFrame, Claim, EvidencePacket, Outcome, Answer
+  db.py          connection + schema
+  seed.py        load data/graph into Postgres; create Release 1
+  intake.py      question → QueryFrame (LLM, structured; never infers date/jurisdiction)
+  search.py      hybrid entry-point retrieval
+  closure.py     deterministic as-of, per-jurisdiction traversal → EvidencePacket
+  compose.py     EvidencePacket → structured claims (LLM)
+  verify.py      rules V1–V6 + judge → Outcome
+  releases.py    proposals, impact preview, publish, release pinning
+  naive.py       the baseline: chunk → embed → top-k → answer
+  llm.py         single client with record/replay
+  api.py         FastAPI app; serves demo/
+tests/
+  unit/          closure, verify, releases — deterministic, exact expectations
+  eval/          gold.yaml, test_gold.py, test_intake.py, test_baseline.py, report.py
+  fixtures/      recorded LLM responses
+demo/            index.html  app.js  styles.css
+```
+
+## Rules
+
+1. **No real regulation.** Every clause, body, jurisdiction, and client is fictional.
+   Never paste text from a real standard. Never make a claim about a real standard.
+2. **Never commit secrets.** `.env` is gitignored; `gitleaks` runs as a pre-commit hook.
+3. **Determinism first.** `closure.py` and `verify.py` import nothing from `llm.py`.
+4. **Provenance on every edge.** No edge without `asserted_by`, `basis`, `release_id`.
+5. **Every module starts with a plain-English docstring** that explains what it does and
+   why it exists, in words the author can repeat under questioning.
+6. **Commits are part of Deliverable 03.** Small, meaningful commits with messages that
+   state the decision, not the diff.
+
+## Commands
+
+```
+docker compose up --build          # Postgres + API + UI at http://localhost:8000
+docker compose run --rm app pytest # unit + eval (replay mode)
+docker compose run --rm app pytest --live --repeat 5   # evals against real APIs
+docker compose run --rm app python -m vgl.seed         # reseed to Release 1
+```
+
+## Status
+
+- [x] Spec drafted (`docs/00-corpus-spec.md`)
+- [ ] Spec signed off
+- [ ] Schema + seed + Release 1
+- [ ] Closure + unit tests
+- [ ] Contracts + intake + compose + verify
+- [ ] Gold set + baseline + eval report
+- [ ] Releases: proposals, impact preview, publish
+- [ ] Demo UI
+- [ ] docs 01 and 03, diagram
+- [ ] Drill prep
