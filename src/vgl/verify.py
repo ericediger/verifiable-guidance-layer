@@ -157,7 +157,7 @@ def verify(frame: QueryFrame, packet: EvidencePacket, composition: Composition,
             if not verdict.get("faithful", True):
                 disagreements.append({"claim": c.text, "reason": verdict.get("reason", "")})
                 flags.append(Flag(kind="judge_disagreement",
-                                  message=f"Independent check questions: \"{c.text}\" — {verdict.get('reason', '')}"))
+                                  message=f"A second model questions this claim — \"{c.text}\" — because: {verdict.get('reason', '')}"))
         judge_report = {"checked": len(kept), "disagreements": disagreements}
 
     verification = Verification(checks=checks, stale_citations=stale, ungrounded_claims=ungrounded_idx,

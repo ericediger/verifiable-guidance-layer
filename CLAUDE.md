@@ -115,10 +115,10 @@ docker compose run --rm app python -m vgl.seed         # reseed to Release 1 (or
 - [x] Contracts + intake + compose + verify
 - [x] Gold set + baseline + eval report
 - [x] Releases: proposals, impact preview, publish
-- [ ] Demo UI
+- [x] Demo UI
 - [x] docs 01 and 03, diagram
 - [ ] Verified on the presenter's Mac with Docker
-- [ ] Drill prep (kept outside the repo)
+- [x] Drill prep (kept outside the repo)
 
 ## Things that bit once
 

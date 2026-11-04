@@ -51,6 +51,8 @@ writes [`docs/eval-report.md`](docs/eval-report.md). The gold set is
 
 ## What the demo shows
 
+![The demo: a jurisdiction-specific answer with its flags](docs/diagrams/ui-ask.png)
+
 1. **The traps.** Three questions naive RAG gets wrong in ways that matter — a superseded
    clause, a provision whose meaning moved because a *definition* changed, a carve-out the
    system knows it does not hold — answered with citations to the versions in force, or
