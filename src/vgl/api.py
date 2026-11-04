@@ -243,8 +243,13 @@ def health() -> dict[str, Any]:
 # ── the demo page ────────────────────────────────────────────────────────────────
 
 @app.get("/", include_in_schema=False)
-def index() -> FileResponse:
-    return FileResponse(settings.demo_dir / "index.html")
+def index():
+    page = settings.demo_dir / "index.html"
+    if page.exists():
+        return FileResponse(page)
+    from fastapi.responses import HTMLResponse
+    return HTMLResponse("<p style='font:16px -apple-system,sans-serif;padding:2rem'>Verifiable Guidance Layer is running. "
+                        "The demo UI is not built yet — see <a href='/docs'>/docs</a> and <a href='/api/health'>/api/health</a>.</p>")
 
 
 if settings.demo_dir.exists():
