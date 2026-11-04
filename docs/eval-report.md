@@ -1,6 +1,6 @@
 # Eval report
 
-Generated 2026-11-04T12:53 · mode **replay** · 13 layer runs over 13 gold cases · 13 baseline runs
+Generated 2026-11-04T13:13 · mode **replay** · 13 layer runs over 13 gold cases · 13 baseline runs
 
 This file is written by `pytest tests/eval`. It is the evidence for the thesis, produced by the
 test suite rather than by hand. See `data/gold.yaml` for what each case requires.

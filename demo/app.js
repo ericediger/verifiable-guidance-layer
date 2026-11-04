@@ -181,6 +181,12 @@
     return form;
   }
 
+
+  function scrollTo(node) {
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    requestAnimationFrame(() => node.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }));
+  }
+
   const STAGES = ["Understanding the question", "Locating it in the Standards", "Resolving what was in force", "Composing", "Verifying every claim"];
   function progress() {
     const stage = el("div", { class: "progress-stage" }, STAGES[0]);
@@ -201,9 +207,10 @@
     if (state.last) result.replaceChildren(answerView(state.last));
 
     function handle(r) {
-      if (r.pending) { result.replaceChildren(progress()); return; }
+      if (r.pending) { result.replaceChildren(progress()); scrollTo(result); return; }
       if (r.error) { result.replaceChildren(el("div", { class: "error" }, `The layer could not answer: ${r.error}`)); return; }
       result.replaceChildren(answerView(r));
+      scrollTo(result);
     }
   }
 
