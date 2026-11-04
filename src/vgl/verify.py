@@ -186,8 +186,9 @@ def verify(frame: QueryFrame, packet: EvidencePacket, composition: Composition,
              "practitioner_note": 7}
     flags.sort(key=lambda f: order[f.kind])
 
-    return Answer(outcome=outcome, summary=summary, claims=kept, flags=flags, frame=frame, packet=packet,
-                  verification=verification, release_id=packet.release_id, composer_model=composer_model)
+    return Answer(outcome=outcome, summary=summary, conclusion=composition.conclusion, claims=kept, flags=flags,
+                  frame=frame, packet=packet, verification=verification, release_id=packet.release_id,
+                  composer_model=composer_model)
 
 
 def clarify(frame: QueryFrame, missing: list[str], release_id: int) -> Answer:

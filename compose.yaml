@@ -1,0 +1,38 @@
+# docker compose up --build   →   http://localhost:8000
+#
+# Two services: Postgres 16 with pgvector, and the application (API + demo UI).
+# The application seeds Release 1 on first start. API keys come from .env.
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: vgl
+      POSTGRES_PASSWORD: vgl
+      POSTGRES_DB: vgl
+    ports:
+      - "5433:5432"            # host access for psql; the app uses the internal network
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vgl -d vgl"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  app:
+    build: .
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://vgl:vgl@db:5432/vgl
+      VGL_LLM_MODE: ${VGL_LLM_MODE:-live}
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./tests/fixtures:/app/tests/fixtures   # recordings persist outside the container
+
+volumes:
+  pgdata:

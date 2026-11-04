@@ -28,12 +28,31 @@ def pytest_addoption(parser: pytest.Parser) -> None:
 
 def pytest_configure(config: pytest.Config) -> None:
     # Must happen before any `vgl` import, because settings are read at import time.
+    _use_test_database()
     if config.getoption("--record"):
         os.environ["VGL_LLM_MODE"] = "record"
     elif config.getoption("--live"):
         os.environ["VGL_LLM_MODE"] = "live"
     else:
         os.environ["VGL_LLM_MODE"] = "replay"
+
+
+def _use_test_database() -> None:
+    """Point the suite at <database>_test so a test run never resets the demo database."""
+    import psycopg
+
+    base = os.environ.get("DATABASE_URL", "postgresql://vgl:vgl@localhost:5432/vgl")
+    if base.endswith("_test"):
+        return
+    test_url = base + "_test"
+    dbname = test_url.rsplit("/", 1)[1]
+    admin = psycopg.connect(base, autocommit=True)
+    try:
+        if not admin.execute("SELECT 1 FROM pg_database WHERE datname = %s", (dbname,)).fetchone():
+            admin.execute(f'CREATE DATABASE "{dbname}"')
+    finally:
+        admin.close()
+    os.environ["DATABASE_URL"] = test_url
 
 
 @pytest.fixture(scope="session")

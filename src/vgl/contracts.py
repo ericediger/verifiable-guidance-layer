@@ -201,6 +201,7 @@ class Verification(BaseModel):
 class Answer(BaseModel):
     outcome: Outcome
     summary: str
+    conclusion: Literal["yes", "no", "depends", "not_covered"] | None = None
     claims: list[Claim]
     flags: list[Flag]
     clarifications: list[str] = Field(default_factory=list)
