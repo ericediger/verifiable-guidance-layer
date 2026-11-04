@@ -1,0 +1,10 @@
+# gitleaks configuration: default rules, plus an allowlist for the recorded model
+# fixtures (prose occasionally resembles a token pattern) and the example env file.
+[extend]
+useDefault = true
+
+[allowlist]
+paths = [
+  '''tests/fixtures/.*''',
+  '''\.env\.example$''',
+]
