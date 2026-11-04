@@ -39,11 +39,11 @@
     "max_tokens": 800
   },
   "response": {
-    "answer": "Not immediately. Under 3.A.7 portfolios below a documented minimum must not be included, but the guidance says you assess against the minimum at the beginning of each measurement period, so a portfolio above the minimum at the start of the period stays in the composite for that whole period. Whether it must be excluded from the next period depends on how the Board treats temporary breaches caused solely by a significant cash flow. That treatment is set out in Q&A QA-2025-031, which is not among the passages, so check it, along with your documented composite policy, before deciding.",
+    "answer": "Not immediately. Under 3.A.7 portfolios below a documented composite minimum must not be included, but GS-2025-02 says the test is applied at the beginning of each measurement period, and a portfolio above the minimum at that point stays in the composite for the whole period. So last month's withdrawal does not require removal mid-period. If the portfolio is still below the minimum at the start of the next measurement period, it would generally have to be excluded. However, because the shortfall comes from a significant cash flow, the Board's specific treatment of such temporary breaches is set out in Q&A QA-2025-031, which is not among these passages, so you should check it before deciding.",
     "conclusion": "depends",
     "cited": [
-      0,
       1,
+      0,
       3
     ]
   }

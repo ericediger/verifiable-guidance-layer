@@ -62,7 +62,9 @@ def ask(
         return _store(conn, answer, store)
 
     # 3. Deterministic closure.
-    packet = closure.resolve(conn, entries, frame.jurisdiction, frame.as_of, r)
+    asks_for_obligation = frame.question_type in ("requirement", "permissibility", "timing")
+    packet = closure.resolve(conn, entries, frame.jurisdiction, frame.as_of, r,
+                             include_provisions_using_definitions=asks_for_obligation)
     if not packet.nodes:
         answer = verify.no_coverage(frame, packet, r)
         return _store(conn, answer, store)

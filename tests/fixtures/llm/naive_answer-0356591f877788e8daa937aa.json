@@ -39,7 +39,7 @@
     "max_tokens": 800
   },
   "response": {
-    "answer": "None of the provided passages address staking rewards or digital assets, so their treatment in composite returns cannot be determined from these materials. The passages cover only the definition of a composite, the inclusion of non-fee-paying portfolios, and the timing for adding new portfolios to composites. Consult other sections of the GSB Standards or any guidance on digital assets or return calculation methodology for this question.",
+    "answer": "None of the provided passages address staking rewards or digital assets, so the standards excerpted here do not say how such rewards should be treated in composite returns. The passages cover only the definition of a composite (1.D.1), the inclusion of non-fee-paying portfolios and the related disclosure (3.A.2), and the timing for adding new portfolios to composites (3.A.6 in the 2025 edition, 3.A.4 in the 2021 edition). For guidance on staking income, you would need to consult other sections of the standards or separate guidance on return calculation and income recognition.",
     "conclusion": "not_covered",
     "cited": []
   }

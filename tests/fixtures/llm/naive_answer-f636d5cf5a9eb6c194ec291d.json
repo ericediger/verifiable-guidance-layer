@@ -39,7 +39,7 @@
     "max_tokens": 800
   },
   "response": {
-    "answer": "Yes. Non-fee-paying discretionary portfolios may be included in a composite; this permission is unchanged between the 2021 and 2025 editions. If you include them, you must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end. Inclusion is optional, unlike actual, fee-paying, discretionary portfolios, which must be included in at least one composite. Note that under the 2021 definition, a portfolio subject to your fee schedule counts as fee-paying even if the fee is reduced or waived, so confirm the classification before treating a portfolio as non-fee-paying.",
+    "answer": "Yes. Under 3.A.2, non-fee-paying discretionary portfolios may be included in a composite; this is unchanged between the 2021 and 2025 editions. If you include them, you must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end. Inclusion is optional, unlike fee-paying discretionary portfolios, which must be included in at least one composite (3.A.1). Also note that a portfolio whose fee is reduced or waived may still count as fee-paying if it is subject to the firm's fee schedule (2021 definition 1.D.5), so confirm the classification before treating a portfolio as non-fee-paying.",
     "conclusion": "yes",
     "cited": [
       0,

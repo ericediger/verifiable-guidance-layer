@@ -39,7 +39,7 @@
     "max_tokens": 800
   },
   "response": {
-    "answer": "No, it is not a strict requirement. In both the 2021 and 2025 editions, 3.B.1 states that firms \"should not\" apply changes to a composite minimum retroactively, which makes it a recommendation rather than a mandatory provision. GS-2025-02 describes the expected practice: a changed minimum applies prospectively from the beginning of the next measurement period, and it refers to 3.B.1 as a recommendation. Following this practice is strongly advised, but the standards do not mandate it.",
+    "answer": "No, it is not a strict requirement. Under both the 2021 and 2025 editions, provision 3.B.1 says firms \"should not\" apply changes to a composite minimum retroactively, and GS-2025-02 explicitly calls 3.B.1 a recommendation. Avoiding retroactive changes is therefore recommended best practice rather than a mandatory provision. The guidance expects any change to a composite minimum to apply prospectively from the beginning of the next measurement period, so following that approach is strongly advisable.",
     "conclusion": "no",
     "cited": [
       0,

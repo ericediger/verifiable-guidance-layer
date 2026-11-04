@@ -81,12 +81,12 @@
     "question_type": "requirement",
     "case_facts": [],
     "unresolved": [
-      "portfolio: 'this portfolio' (not identified, no details given)"
+      "\"this portfolio\" is not identified or described"
     ],
     "missing_required": [
       "whether the portfolio is discretionary",
       "whether the portfolio is fee-paying",
-      "the portfolio's investment mandate, strategy or objective (to match it to a composite)"
+      "whether the portfolio's strategy matches an existing composite definition"
     ]
   }
 }

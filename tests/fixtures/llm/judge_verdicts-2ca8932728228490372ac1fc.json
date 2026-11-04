@@ -1,0 +1,76 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-5-5",
+    "system": "You check whether short claims are faithful to the source texts they cite.\n\nThe claims form one answer and are read together: a condition or exception stated in another claim does not need to be repeated, and a claim that summarises part of a text is faithful if that part is accurate. Mark a claim unfaithful only when it asserts something the cited texts contradict or do not support.\n\nFor each claim, answer: does the claim follow from the cited texts alone, without adding, narrowing, or changing anything they say? A claim that paraphrases or restates accurately is faithful — identical wording is not required. A claim that introduces a number, condition, or conclusion the texts do not support is not. Each cited text is labelled with its reference (e.g. \"3.A.6\") and title; a claim may use that label. Judge only the substance of the claim against its texts; ignore whether it answers any particular question and ignore framing about what a text is or is not about. Give a one-sentence reason.",
+    "user": "Claim 0: Under 3.A.1, only actual, fee-paying, discretionary portfolios must be included in at least one composite.\n  Cited texts:\n    [prov:composite-inclusion-all-discretionary@E2025] 3.A.1 Inclusion of all fee-paying discretionary portfolios: All actual, fee-paying, discretionary portfolios must be included in at least one composite.\n\nClaim 1: Under 1.D.6, related-party portfolios whose investment management fees are waived in full are not fee-paying, so 3.A.1 would not require their inclusion.\n  Cited texts:\n    [def:fee-paying-portfolio@E2025-A1] 1.D.6 Fee-paying portfolio: A fee-paying portfolio is one that is subject to the firm's investment management fee schedule, whether or not the fee is paid directly from the portfolio and whether or not the fee is reduced in part. Portfolios of related parties for which all investment management fees are waived in full are not fee-paying portfolios.\n\nClaim 2: The evidence does not say whether employees are related parties. If they are not, a portfolio still subject to the fee schedule is fee-paying under 1.D.6.\n  Cited texts:\n    [def:fee-paying-portfolio@E2025-A1] 1.D.6 Fee-paying portfolio: A fee-paying portfolio is one that is subject to the firm's investment management fee schedule, whether or not the fee is paid directly from the portfolio and whether or not the fee is reduced in part. Portfolios of related parties for which all investment management fees are waived in full are not fee-paying portfolios.\n\nClaim 3: Inclusion is mandatory only if the accounts are discretionary. Under 1.D.5, that means the firm has sufficient authority to implement its strategy, and the firm must document the determination.\n  Cited texts:\n    [def:discretionary-portfolio@E2025] 1.D.5 Discretionary portfolio: A portfolio is discretionary when the firm has sufficient authority to implement its intended investment strategy. Client-imposed restrictions render a portfolio non-discretionary only where they materially impede implementation of the strategy. Firms must document the basis for each such determination.\n    [prov:composite-inclusion-all-discretionary@E2025] 3.A.1 Inclusion of all fee-paying discretionary portfolios: All actual, fee-paying, discretionary portfolios must be included in at least one composite.\n\nClaim 4: Under 3.A.2, non-fee-paying discretionary portfolios may be included in a composite.\n  Cited texts:\n    [prov:non-fee-paying-inclusion@E2025] 3.A.2 Inclusion of non-fee-paying portfolios: Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.\n\nClaim 5: If they are included, 3.A.2 requires the firm to disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.\n  Cited texts:\n    [prov:non-fee-paying-inclusion@E2025] 3.A.2 Inclusion of non-fee-paying portfolios: Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.",
+    "schema_name": "judge_verdicts",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "verdicts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "index": {
+                "type": "integer"
+              },
+              "faithful": {
+                "type": "boolean"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "index",
+              "faithful",
+              "reason"
+            ]
+          }
+        }
+      },
+      "required": [
+        "verdicts"
+      ]
+    },
+    "max_tokens": 1200
+  },
+  "response": {
+    "verdicts": [
+      {
+        "index": 0,
+        "faithful": false,
+        "reason": "3.A.1 says all actual, fee-paying, discretionary portfolios must be included, but it does not say that only such portfolios must be included; the word 'only' adds a restriction the text does not support."
+      },
+      {
+        "index": 1,
+        "faithful": true,
+        "reason": "1.D.6 states that related-party portfolios with all fees waived in full are not fee-paying, and 3.A.1 applies only to fee-paying portfolios."
+      },
+      {
+        "index": 2,
+        "faithful": true,
+        "reason": "The text does not mention employees, and 1.D.6 defines a fee-paying portfolio as one subject to the fee schedule, so the conditional statement follows."
+      },
+      {
+        "index": 3,
+        "faithful": true,
+        "reason": "3.A.1 requires inclusion of discretionary portfolios, and 1.D.5 defines discretionary as sufficient authority to implement the strategy and requires documenting the basis for each determination."
+      },
+      {
+        "index": 4,
+        "faithful": true,
+        "reason": "3.A.2 says non-fee-paying discretionary portfolios may be included in a composite."
+      },
+      {
+        "index": 5,
+        "faithful": true,
+        "reason": "3.A.2 says that where non-fee-paying portfolios are included, the firm must disclose their percentage of composite assets at each annual period end."
+      }
+    ]
+  }
+}

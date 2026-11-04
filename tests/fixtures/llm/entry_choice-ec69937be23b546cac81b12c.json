@@ -1,0 +1,37 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-5-5",
+    "system": "You are given a compliance question and a shortlist of items from a table of contents of investment performance standards (provisions, definitions, interpretive guidance, rulings). Choose the one to three items the question PRIMARILY turns on — the ones a compliance officer would open first.\n\nRules:\n- Pick from the shortlist only, by concept_id. Pick nothing if no item plausibly addresses the question.\n- Prefer the provision that states the rule. When the question asks whether something MUST or MAY be done — included, disclosed, removed — choose the provision that imposes that requirement or grants that permission, even if the question's wording matches another item more closely. Add a definition only alongside such a provision, when the answer hinges on what a term means (e.g. whether an account is \"discretionary\" or \"fee-paying\") — never instead of it.\n- Pick interpretive guidance or a ruling only when the question is specifically about the subject in its title. Do not pick it because it mentions a word in the question.\n- Fewer is better. One item is the usual answer; three is the maximum.",
+    "user": "Question: Can we include non-fee-paying portfolios in a composite?\nTopics: non-fee-paying portfolios composite inclusion, fee-paying portfolio definition\n\nShortlist:\n- prov:non-fee-paying-inclusion — Inclusion of non-fee-paying portfolios (provision)\n- gs:GS-2025-02 — Guidance Statement GS-2025-02 — Composite Minimums (guidance)\n- prov:composite-inclusion-all-discretionary — Inclusion of all fee-paying discretionary portfolios (provision)\n- prov:composite-inclusion-timing — Timing of new portfolio inclusion (provision)\n- prov:composite-definition-documented — Composite definition documented in writing (provision)\n- def:fee-paying-portfolio — Fee-paying portfolio (definition)\n- prov:composite-minimum — Composite minimum asset level (provision)",
+    "schema_name": "entry_choice",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "entry_concepts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "concept_ids from the shortlist that the question primarily turns on; empty if none does"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "entry_concepts",
+        "reason"
+      ]
+    },
+    "max_tokens": 300
+  },
+  "response": {
+    "entry_concepts": [
+      "prov:non-fee-paying-inclusion",
+      "def:fee-paying-portfolio"
+    ],
+    "reason": "The question asks whether non-fee-paying portfolios may be included in a composite, which is governed directly by the provision on inclusion of non-fee-paying portfolios. The definition of a fee-paying portfolio is added because the answer depends on what counts as fee-paying versus non-fee-paying."
+  }
+}

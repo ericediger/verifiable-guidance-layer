@@ -75,10 +75,16 @@
   "response": {
     "topics": [
       "composite description availability on request",
-      "prospective client requirements"
+      "composite description",
+      "prospective client request"
     ],
     "question_type": "requirement",
-    "case_facts": [],
+    "case_facts": [
+      {
+        "fact": "request source",
+        "value": "prospect asks for composite description"
+      }
+    ],
     "unresolved": [],
     "missing_required": []
   }

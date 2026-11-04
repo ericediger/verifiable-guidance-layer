@@ -39,7 +39,7 @@
     "max_tokens": 800
   },
   "response": {
-    "answer": "No. Under Amendment 2025-A1, definition 1.D.6 now provides that related-party portfolios (principals, employees, affiliates) whose investment management fees are waived in full are not fee-paying portfolios, so the mandatory inclusion requirement in 3.A.1, which applies only to fee-paying discretionary portfolios, no longer captures them. Such accounts may still be included voluntarily under 3.A.2 as non-fee-paying discretionary portfolios, in which case the firm must disclose the percentage of composite assets they represent as of each annual period end. Note that this applies only where fees are waived in full; partially reduced fees still leave the portfolio fee-paying and subject to 3.A.1.",
+    "answer": "No, provided the employee accounts are related-party portfolios with all investment management fees waived in full. Amendment 2025-A1 revises definition 1.D.6 so these portfolios are no longer fee-paying, which means the mandatory inclusion rule in 3.A.1 (all actual, fee-paying, discretionary portfolios) does not apply to them. Under the unamended Edition 2025 definition they had to be included. Under 3.A.2 the firm may still choose to include them as non-fee-paying discretionary portfolios, but it must then disclose the percentage of composite assets they represent at each annual period end. Accounts whose fees are only partly reduced remain fee-paying and must still be included.",
     "conclusion": "no",
     "cited": [
       0,

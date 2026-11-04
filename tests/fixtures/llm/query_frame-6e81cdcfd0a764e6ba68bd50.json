@@ -74,7 +74,7 @@
   },
   "response": {
     "topics": [
-      "non-fee-paying portfolio composite inclusion",
+      "non-fee-paying portfolios composite inclusion",
       "fee-paying portfolio definition"
     ],
     "question_type": "permissibility",

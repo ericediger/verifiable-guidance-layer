@@ -1,0 +1,76 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-5-5",
+    "system": "You check whether short claims are faithful to the source texts they cite.\n\nThe claims form one answer and are read together: a condition or exception stated in another claim does not need to be repeated, and a claim that summarises part of a text is faithful if that part is accurate. Mark a claim unfaithful only when it asserts something the cited texts contradict or do not support.\n\nFor each claim, answer: does the claim follow from the cited texts alone, without adding, narrowing, or changing anything they say? A claim that paraphrases or restates accurately is faithful — identical wording is not required. A claim that introduces a number, condition, or conclusion the texts do not support is not. Each cited text is labelled with its reference (e.g. \"3.A.6\") and title; a claim may use that label. Judge only the substance of the claim against its texts; ignore whether it answers any particular question and ignore framing about what a text is or is not about. Give a one-sentence reason.",
+    "user": "Claim 0: If the tobacco restriction does not materially impede the strategy, the portfolio remains discretionary and, if actual and fee-paying, must be included in at least one composite under 3.A.1.\n  Cited texts:\n    [def:discretionary-portfolio@E2025] 1.D.5 Discretionary portfolio: A portfolio is discretionary when the firm has sufficient authority to implement its intended investment strategy. Client-imposed restrictions render a portfolio non-discretionary only where they materially impede implementation of the strategy. Firms must document the basis for each such determination.\n    [prov:composite-inclusion-all-discretionary@E2025] 3.A.1 Inclusion of all fee-paying discretionary portfolios: All actual, fee-paying, discretionary portfolios must be included in at least one composite.\n\nClaim 1: Under 1.D.5, client-imposed restrictions render a portfolio non-discretionary only where they materially impede implementation of the strategy.\n  Cited texts:\n    [def:discretionary-portfolio@E2025] 1.D.5 Discretionary portfolio: A portfolio is discretionary when the firm has sufficient authority to implement its intended investment strategy. Client-imposed restrictions render a portfolio non-discretionary only where they materially impede implementation of the strategy. Firms must document the basis for each such determination.\n\nClaim 2: The firm must document the basis for its determination of whether the restriction materially impedes the strategy.\n  Cited texts:\n    [def:discretionary-portfolio@E2025] 1.D.5 Discretionary portfolio: A portfolio is discretionary when the firm has sufficient authority to implement its intended investment strategy. Client-imposed restrictions render a portfolio non-discretionary only where they materially impede implementation of the strategy. Firms must document the basis for each such determination.\n\nClaim 3: The portfolio counts as fee-paying under 1.D.6 if subject to the firm's fee schedule, even if the fee is reduced, waived, or not paid from the portfolio.\n  Cited texts:\n    [def:fee-paying-portfolio@E2025] 1.D.6 Fee-paying portfolio: A fee-paying portfolio is one that is subject to the firm's investment management fee schedule, whether or not the fee is paid directly from the portfolio and whether or not the fee is reduced or waived in whole or in part.\n\nClaim 4: If the portfolio is non-fee-paying, inclusion is optional under 3.A.2; if included, the firm must disclose the non-fee-paying percentage of composite assets at each annual period end.\n  Cited texts:\n    [prov:non-fee-paying-inclusion@E2025] 3.A.2 Inclusion of non-fee-paying portfolios: Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.\n\nClaim 5: If the restriction does materially impede the strategy, the portfolio is non-discretionary and 3.A.1 does not require composite inclusion.\n  Cited texts:\n    [def:discretionary-portfolio@E2025] 1.D.5 Discretionary portfolio: A portfolio is discretionary when the firm has sufficient authority to implement its intended investment strategy. Client-imposed restrictions render a portfolio non-discretionary only where they materially impede implementation of the strategy. Firms must document the basis for each such determination.\n    [prov:composite-inclusion-all-discretionary@E2025] 3.A.1 Inclusion of all fee-paying discretionary portfolios: All actual, fee-paying, discretionary portfolios must be included in at least one composite.",
+    "schema_name": "judge_verdicts",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "verdicts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "index": {
+                "type": "integer"
+              },
+              "faithful": {
+                "type": "boolean"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "index",
+              "faithful",
+              "reason"
+            ]
+          }
+        }
+      },
+      "required": [
+        "verdicts"
+      ]
+    },
+    "max_tokens": 1200
+  },
+  "response": {
+    "verdicts": [
+      {
+        "index": 0,
+        "faithful": true,
+        "reason": "1.D.5 says a restriction makes a portfolio non-discretionary only where it materially impedes the strategy, and 3.A.1 requires inclusion of actual, fee-paying, discretionary portfolios in at least one composite."
+      },
+      {
+        "index": 1,
+        "faithful": true,
+        "reason": "This restates the second sentence of 1.D.5 accurately."
+      },
+      {
+        "index": 2,
+        "faithful": true,
+        "reason": "1.D.5 requires firms to document the basis for each determination about whether a restriction renders a portfolio non-discretionary, which is the materiality assessment."
+      },
+      {
+        "index": 3,
+        "faithful": true,
+        "reason": "1.D.6 defines fee-paying as being subject to the fee schedule, whether or not the fee is paid from the portfolio and whether or not it is reduced or waived."
+      },
+      {
+        "index": 4,
+        "faithful": true,
+        "reason": "3.A.2 says non-fee-paying discretionary portfolios may be included and, if so, the firm must disclose their percentage of composite assets at each annual period end."
+      },
+      {
+        "index": 5,
+        "faithful": true,
+        "reason": "A restriction that materially impedes the strategy means the firm lacks sufficient authority, so the portfolio is non-discretionary, and 3.A.1 only requires inclusion of discretionary portfolios."
+      }
+    ]
+  }
+}

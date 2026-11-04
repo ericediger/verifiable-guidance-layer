@@ -125,7 +125,7 @@ CHOOSE_SYSTEM = """You are given a compliance question and a shortlist of items 
 
 Rules:
 - Pick from the shortlist only, by concept_id. Pick nothing if no item plausibly addresses the question.
-- Prefer the provision that states the rule. Add a definition only when the question hinges on what a term means (e.g. whether an account is "discretionary").
+- Prefer the provision that states the rule. When the question asks whether something MUST or MAY be done — included, disclosed, removed — choose the provision that imposes that requirement or grants that permission, even if the question's wording matches another item more closely. Add a definition only alongside such a provision, when the answer hinges on what a term means (e.g. whether an account is "discretionary" or "fee-paying") — never instead of it.
 - Pick interpretive guidance or a ruling only when the question is specifically about the subject in its title. Do not pick it because it mentions a word in the question.
 - Fewer is better. One item is the usual answer; three is the maximum."""
 

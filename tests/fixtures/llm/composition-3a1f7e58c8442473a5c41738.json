@@ -1,0 +1,124 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-opus-5-5",
+    "system": "You draft answers for compliance professionals strictly from the evidence provided.\n\nRules — these are absolute:\n1. Use only the EVIDENCE IN FORCE. Every claim must cite one or more of its version IDs, copied exactly (the text in square brackets). Never cite anything else and never invent an ID.\n2. No outside knowledge. If the evidence does not address the question, set conclusion to \"not_covered\" and say so in one claim citing the closest evidence.\n3. The jurisdiction and as-of date are fixed. Answer for that place and that date only. Do not apply or speculate about material described as upcoming or not yet in force.\n4. Material marked NOT HELD is a known reference the system does not have the text of. Do not guess its contents. If it is relevant to the question, say in a caveat that it exists and has not been reviewed.\n5. Material marked PRACTITIONER NOTE is context only. It cannot be cited and must not be presented as a requirement.\n6. Where an exception or carve-out is in the evidence and could apply to the facts given, state the condition under which it applies as a \"condition\" claim.\n7. Write the first claim as the conclusion (kind \"conclusion\"). Keep every claim short and atomic — one point, one citation set, under 40 words. At most seven claims in total; prefer fewer. Use the display reference (e.g. 3.A.6) in the prose and the version ID in cites.\n8. Distinguish \"must\" (requirement) from \"should\" (recommendation) exactly as the evidence does.",
+    "user": "Question: A client withdrew 40% last month and the portfolio is now below our composite minimum. Must we remove it?\nJurisdiction: JN\nAs of: 2025-06-01\nFacts stated: withdrawal: 40% of assets; portfolio below composite minimum: yes\nUnresolved in the question: withdrawal date: 'last month' (no anchor date given); composite minimum: amount not specified\n\nEVIDENCE IN FORCE (citable):\n- [prov:composite-minimum@E2025] 3.A.7 — provision, authoritative, obligation: must; GSB Standards, Edition 2025; in force from 2025-01-01\n    If a firm sets a minimum asset level for portfolios to be included in a composite, the firm must not include portfolios below that minimum. Any such minimum must be documented and applied consistently.\n- [gs:GS-2025-02@v1] GS-2025-02 — interpretive guidance, interpretive, obligation: n/a; Guidance Statement GS-2025-02 — Composite Minimums; in force from 2025-03-01\n    Provision 3.A.7 requires that portfolios below a documented composite minimum not be included in the composite. Firms should assess each portfolio against the minimum at the beginning of each measurement period, using the valuation methodology documented in the composite policy. A portfolio that is above the minimum at the beginning of a measurement period is included for that period in its entirety. Where the firm changes a composite minimum, the change applies prospectively from the beginning of the next measurement period (see also recommendation 3.B.1). Where a portfolio falls below the minimum solely as a result of a significant cash flow, the Board has addressed the treatment of such temporary breaches in Q&A QA-2025-031.\n- [def:composite@E2025] 1.D.1 — definition, authoritative, obligation: definition; GSB Standards, Edition 2025; in force from 2025-01-01\n    A composite is an aggregation of one or more portfolios managed according to a similar investment mandate, objective, or strategy.\n- [def:measurement-period@E2025] 1.D.10 — definition, authoritative, obligation: definition; GSB Standards, Edition 2025; in force from 2025-01-01\n    The calendar month, unless the firm's documented policy for a composite specifies a shorter period.\n- [def:significant-cash-flow@E2025] 1.D.11 — definition, authoritative, obligation: definition; GSB Standards, Edition 2025; in force from 2025-01-01\n    A significant cash flow is a client-directed external cash flow of a size, defined in the firm's documented policy for the composite, that would temporarily prevent the firm from implementing the composite strategy.\n- [def:external-cash-flow@E2025] 1.D.9 — definition, authoritative, obligation: definition; GSB Standards, Edition 2025; in force from 2025-01-01\n    Capital, in cash or investments, that enters or exits a portfolio at the direction of the client.\n\nREFERENCED BUT NOT HELD (do not guess contents):\n- Q&A QA-2025-031 — Temporary breach of a composite minimum following a significant cash flow — referenced by gs:GS-2025-02; no text held in this release",
+    "schema_name": "composition",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "One sentence answering the question directly."
+        },
+        "conclusion": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "no",
+            "depends",
+            "not_covered"
+          ]
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "cites": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "conclusion",
+                  "requirement",
+                  "condition",
+                  "caveat"
+                ]
+              }
+            },
+            "required": [
+              "text",
+              "cites",
+              "kind"
+            ]
+          }
+        }
+      },
+      "required": [
+        "summary",
+        "conclusion",
+        "claims"
+      ]
+    },
+    "max_tokens": 3000
+  },
+  "response": {
+    "summary": "Generally yes, from the start of the next measurement period at which the portfolio is below the documented minimum, but it stays in for any period it began above the minimum, and a 40% withdrawal may engage significant-cash-flow treatment in Q&A QA-2025-031, which has not been reviewed.",
+    "conclusion": "depends",
+    "claims": [
+      {
+        "text": "Under 3.A.7, a portfolio below the documented composite minimum must not be included, but timing and significant-cash-flow treatment determine when removal applies.",
+        "cites": [
+          "prov:composite-minimum@E2025",
+          "gs:GS-2025-02@v1"
+        ],
+        "kind": "conclusion"
+      },
+      {
+        "text": "The minimum must be documented and applied consistently.",
+        "cites": [
+          "prov:composite-minimum@E2025"
+        ],
+        "kind": "requirement"
+      },
+      {
+        "text": "Firms should assess each portfolio against the minimum at the beginning of each measurement period, using the documented valuation methodology.",
+        "cites": [
+          "gs:GS-2025-02@v1"
+        ],
+        "kind": "requirement"
+      },
+      {
+        "text": "If the portfolio was above the minimum at the start of the measurement period in which the withdrawal occurred, it remains included for that entire period.",
+        "cites": [
+          "gs:GS-2025-02@v1"
+        ],
+        "kind": "condition"
+      },
+      {
+        "text": "The measurement period is the calendar month unless the composite policy specifies a shorter one, so the withdrawal date determines which period is affected.",
+        "cites": [
+          "def:measurement-period@E2025"
+        ],
+        "kind": "condition"
+      },
+      {
+        "text": "If the client-directed 40% withdrawal meets the size defined in the firm's composite policy, it is a significant cash flow and special temporary-breach treatment may apply.",
+        "cites": [
+          "def:significant-cash-flow@E2025",
+          "def:external-cash-flow@E2025",
+          "gs:GS-2025-02@v1"
+        ],
+        "kind": "condition"
+      },
+      {
+        "text": "Q&A QA-2025-031 addresses temporary breaches after significant cash flows; its text is not held and has not been reviewed.",
+        "cites": [
+          "gs:GS-2025-02@v1"
+        ],
+        "kind": "caveat"
+      }
+    ]
+  }
+}

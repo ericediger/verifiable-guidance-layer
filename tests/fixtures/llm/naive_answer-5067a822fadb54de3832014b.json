@@ -39,7 +39,7 @@
     "max_tokens": 800
   },
   "response": {
-    "answer": "Probably yes, provided the portfolio is actual and fee-paying. Under the 2025 Edition, every actual, fee-paying, discretionary portfolio must be included in at least one composite. A client-imposed restriction makes a portfolio non-discretionary only where it materially impedes implementation of the strategy. A tobacco exclusion that leaves the portfolio otherwise following the strategy would ordinarily not meet that threshold. Whether it does is a judgement the firm must make and document for this portfolio. If it is not a material impediment, the portfolio stays discretionary and must go into a composite.",
+    "answer": "Probably yes. A client restriction makes a portfolio non-discretionary only if it materially impedes the firm's ability to implement its intended strategy [5]. If excluding tobacco stocks does not materially impede the strategy, the portfolio stays discretionary, and if it is fee-paying it must be included in at least one composite [1]. Whether the restriction is material depends on the strategy (for example, it is minor for a broad equity mandate but could matter for a consumer-staples or sector-focused one), and you must document the basis for your determination either way [5].",
     "conclusion": "depends",
     "cited": [
       1,

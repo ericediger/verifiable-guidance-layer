@@ -170,6 +170,8 @@ class LLM:
             messages=[{"role": "user", "content": request["user"]}],
             output_config={"format": {"type": "json_schema", "schema": request["schema"]}},
         )
+        if resp.stop_reason == "max_tokens":
+            raise RuntimeError(f"{request['schema_name']}: response truncated at max_tokens={request['max_tokens']}")
         text = "".join(getattr(b, "text", "") for b in resp.content if getattr(b, "type", None) == "text")
         if not text:
             raise RuntimeError(f"model returned no text (stop_reason={resp.stop_reason})")

@@ -39,11 +39,11 @@
     "max_tokens": 800
   },
   "response": {
-    "answer": "Yes. Under 3.A.3, firms must make a description of any composite available to any prospective client on request, and this requirement is identical in both the 2021 and 2025 editions. Relatedly, 3.A.4 (2025) requires firms to document each composite's definition in writing, including inclusion and exclusion criteria, which supports your ability to fulfil such requests.",
+    "answer": "Yes. Under 3.A.3, firms must make a description of any composite available to any prospective client who requests it. This requirement is identical in the 2021 and 2025 editions, so the answer does not depend on which edition applies. Relatedly, the 2025 edition (3.A.4) requires each composite definition, including its inclusion and exclusion criteria, to be documented in writing, which supports your ability to meet such requests.",
     "conclusion": "yes",
     "cited": [
-      1,
       0,
+      1,
       2
     ]
   }

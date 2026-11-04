@@ -1,0 +1,81 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-5-5",
+    "system": "You check whether short claims are faithful to the source texts they cite.\n\nThe claims form one answer and are read together: a condition or exception stated in another claim does not need to be repeated, and a claim that summarises part of a text is faithful if that part is accurate. Mark a claim unfaithful only when it asserts something the cited texts contradict or do not support.\n\nFor each claim, answer: does the claim follow from the cited texts alone, without adding, narrowing, or changing anything they say? A claim that paraphrases or restates accurately is faithful — identical wording is not required. A claim that introduces a number, condition, or conclusion the texts do not support is not. Each cited text is labelled with its reference (e.g. \"3.A.6\") and title; a claim may use that label. Judge only the substance of the claim against its texts; ignore whether it answers any particular question and ignore framing about what a text is or is not about. Give a one-sentence reason.",
+    "user": "Claim 0: Removal is not automatically required; it depends on whether the 40% withdrawal qualifies as a significant cash flow under your documented composite policy.\n  Cited texts:\n    [ruling:QA-2025-031@v1] QA-2025-031 Q&A QA-2025-031 — Temporary breach of a composite minimum following a significant cash flow: Question: Must a portfolio be removed from a composite when it falls below the composite minimum solely because of a significant cash flow? Answer: No. Where the breach results solely from a significant cash flow, as defined in the firm's documented policy for the composite, the portfolio may remain in the composite for up to three full measurement periods following the cash flow, provided that the firm's documented composite policy provides for this treatment and the determination is documented at the time it is made. If the portfolio remains below the minimum at the end of that period, it must be removed. This treatment is available only where the cause of the breach is a significant cash flow. A portfolio that falls below the minimum through market movement or through a series of cash flows that do not individually meet the firm's significant cash flow threshold must be removed in accordance with 3.A.7.\n    [prov:composite-minimum@E2025] 3.A.7 Composite minimum asset level: If a firm sets a minimum asset level for portfolios to be included in a composite, the firm must not include portfolios below that minimum. Any such minimum must be documented and applied consistently.\n\nClaim 1: Under 3.A.7, if a firm sets a composite minimum, it must not include portfolios below that minimum, and the minimum must be documented and applied consistently.\n  Cited texts:\n    [prov:composite-minimum@E2025] 3.A.7 Composite minimum asset level: If a firm sets a minimum asset level for portfolios to be included in a composite, the firm must not include portfolios below that minimum. Any such minimum must be documented and applied consistently.\n\nClaim 2: The portfolio may remain for up to three full measurement periods after the cash flow if the breach results solely from a significant cash flow as defined in your documented policy.\n  Cited texts:\n    [ruling:QA-2025-031@v1] QA-2025-031 Q&A QA-2025-031 — Temporary breach of a composite minimum following a significant cash flow: Question: Must a portfolio be removed from a composite when it falls below the composite minimum solely because of a significant cash flow? Answer: No. Where the breach results solely from a significant cash flow, as defined in the firm's documented policy for the composite, the portfolio may remain in the composite for up to three full measurement periods following the cash flow, provided that the firm's documented composite policy provides for this treatment and the determination is documented at the time it is made. If the portfolio remains below the minimum at the end of that period, it must be removed. This treatment is available only where the cause of the breach is a significant cash flow. A portfolio that falls below the minimum through market movement or through a series of cash flows that do not individually meet the firm's significant cash flow threshold must be removed in accordance with 3.A.7.\n\nClaim 3: This treatment requires that your documented composite policy provides for it and that the determination is documented at the time it is made.\n  Cited texts:\n    [ruling:QA-2025-031@v1] QA-2025-031 Q&A QA-2025-031 — Temporary breach of a composite minimum following a significant cash flow: Question: Must a portfolio be removed from a composite when it falls below the composite minimum solely because of a significant cash flow? Answer: No. Where the breach results solely from a significant cash flow, as defined in the firm's documented policy for the composite, the portfolio may remain in the composite for up to three full measurement periods following the cash flow, provided that the firm's documented composite policy provides for this treatment and the determination is documented at the time it is made. If the portfolio remains below the minimum at the end of that period, it must be removed. This treatment is available only where the cause of the breach is a significant cash flow. A portfolio that falls below the minimum through market movement or through a series of cash flows that do not individually meet the firm's significant cash flow threshold must be removed in accordance with 3.A.7.\n\nClaim 4: If the breach stems from market movement, or from cash flows that individually miss your significant cash flow threshold, the portfolio must be removed under 3.A.7.\n  Cited texts:\n    [ruling:QA-2025-031@v1] QA-2025-031 Q&A QA-2025-031 — Temporary breach of a composite minimum following a significant cash flow: Question: Must a portfolio be removed from a composite when it falls below the composite minimum solely because of a significant cash flow? Answer: No. Where the breach results solely from a significant cash flow, as defined in the firm's documented policy for the composite, the portfolio may remain in the composite for up to three full measurement periods following the cash flow, provided that the firm's documented composite policy provides for this treatment and the determination is documented at the time it is made. If the portfolio remains below the minimum at the end of that period, it must be removed. This treatment is available only where the cause of the breach is a significant cash flow. A portfolio that falls below the minimum through market movement or through a series of cash flows that do not individually meet the firm's significant cash flow threshold must be removed in accordance with 3.A.7.\n\nClaim 5: If the portfolio is still below the minimum at the end of the grace period, it must be removed. A measurement period is a calendar month unless your policy specifies shorter.\n  Cited texts:\n    [ruling:QA-2025-031@v1] QA-2025-031 Q&A QA-2025-031 — Temporary breach of a composite minimum following a significant cash flow: Question: Must a portfolio be removed from a composite when it falls below the composite minimum solely because of a significant cash flow? Answer: No. Where the breach results solely from a significant cash flow, as defined in the firm's documented policy for the composite, the portfolio may remain in the composite for up to three full measurement periods following the cash flow, provided that the firm's documented composite policy provides for this treatment and the determination is documented at the time it is made. If the portfolio remains below the minimum at the end of that period, it must be removed. This treatment is available only where the cause of the breach is a significant cash flow. A portfolio that falls below the minimum through market movement or through a series of cash flows that do not individually meet the firm's significant cash flow threshold must be removed in accordance with 3.A.7.\n    [def:measurement-period@E2025] 1.D.10 Measurement period: The calendar month, unless the firm's documented policy for a composite specifies a shorter period.\n\nClaim 6: The withdrawal date is unspecified, so when the grace period ends cannot be confirmed. A portfolio above the minimum at a period's start is included for that entire period.\n  Cited texts:\n    [gs:GS-2025-02@v1] GS-2025-02 Guidance Statement GS-2025-02 — Composite Minimums: Provision 3.A.7 requires that portfolios below a documented composite minimum not be included in the composite. Firms should assess each portfolio against the minimum at the beginning of each measurement period, using the valuation methodology documented in the composite policy. A portfolio that is above the minimum at the beginning of a measurement period is included for that period in its entirety. Where the firm changes a composite minimum, the change applies prospectively from the beginning of the next measurement period (see also recommendation 3.B.1). Where a portfolio falls below the minimum solely as a result of a significant cash flow, the Board has addressed the treatment of such temporary breaches in Q&A QA-2025-031.\n    [ruling:QA-2025-031@v1] QA-2025-031 Q&A QA-2025-031 — Temporary breach of a composite minimum following a significant cash flow: Question: Must a portfolio be removed from a composite when it falls below the composite minimum solely because of a significant cash flow? Answer: No. Where the breach results solely from a significant cash flow, as defined in the firm's documented policy for the composite, the portfolio may remain in the composite for up to three full measurement periods following the cash flow, provided that the firm's documented composite policy provides for this treatment and the determination is documented at the time it is made. If the portfolio remains below the minimum at the end of that period, it must be removed. This treatment is available only where the cause of the breach is a significant cash flow. A portfolio that falls below the minimum through market movement or through a series of cash flows that do not individually meet the firm's significant cash flow threshold must be removed in accordance with 3.A.7.",
+    "schema_name": "judge_verdicts",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "verdicts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "index": {
+                "type": "integer"
+              },
+              "faithful": {
+                "type": "boolean"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "index",
+              "faithful",
+              "reason"
+            ]
+          }
+        }
+      },
+      "required": [
+        "verdicts"
+      ]
+    },
+    "max_tokens": 1200
+  },
+  "response": {
+    "verdicts": [
+      {
+        "index": 0,
+        "faithful": true,
+        "reason": "The ruling says removal is not automatic when the breach results solely from a significant cash flow as defined in the documented policy, so it turns on whether the withdrawal qualifies."
+      },
+      {
+        "index": 1,
+        "faithful": true,
+        "reason": "This restates 3.A.7 accurately: no portfolios below a set minimum, and the minimum must be documented and applied consistently."
+      },
+      {
+        "index": 2,
+        "faithful": true,
+        "reason": "The ruling allows up to three full measurement periods after the cash flow when the breach results solely from a significant cash flow as defined in the policy."
+      },
+      {
+        "index": 3,
+        "faithful": true,
+        "reason": "The ruling conditions the treatment on the documented policy providing for it and on the determination being documented at the time it is made."
+      },
+      {
+        "index": 4,
+        "faithful": true,
+        "reason": "The ruling states that breaches through market movement or through cash flows that individually miss the threshold must be removed under 3.A.7."
+      },
+      {
+        "index": 5,
+        "faithful": true,
+        "reason": "The ruling requires removal if the portfolio is still below the minimum at the end of the period, and 1.D.10 defines the measurement period as the calendar month unless the policy specifies a shorter period."
+      },
+      {
+        "index": 6,
+        "faithful": true,
+        "reason": "The grace period end depends on the cash flow date, which is not given, and GS-2025-02 says a portfolio above the minimum at the start of a period is included for that entire period."
+      }
+    ]
+  }
+}

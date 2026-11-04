@@ -39,15 +39,15 @@
     "max_tokens": 800
   },
   "response": {
-    "answer": "It depends on the portfolio's characteristics, which the question does not specify. Under both the 2021 and 2025 editions, all actual, fee-paying, discretionary portfolios must be included in at least one composite. Non-fee-paying discretionary portfolios may be included but are not required to be; if they are included, the firm must disclose the percentage of composite assets they represent at each annual period end. If inclusion is required, timing also differs by edition: under the 2025 edition a new portfolio must be added no later than the start of the first full calendar month after it comes under management, and the firm must document the inclusion date. Under the 2021 edition the deadline is the start of the second full calendar month, unless the composite policy specifies an earlier date.",
+    "answer": "It depends on the portfolio's characteristics, which the question does not specify. Under both the 2021 and 2025 editions, every actual, fee-paying, discretionary portfolio must be included in at least one composite, while non-fee-paying discretionary portfolios may be included but are not required to be; if they are included, the firm must disclose the percentage of composite assets they represent as of each annual period end. Where inclusion is required, the 2025 edition requires a new portfolio to be added no later than the beginning of the first full calendar month after it comes under management, with the inclusion date documented. The 2021 edition allowed until the second full calendar month, unless the firm's composite policy specified an earlier date.",
     "conclusion": "depends",
     "cited": [
+      0,
       1,
       2,
+      3,
       4,
-      5,
-      0,
-      3
+      5
     ]
   }
 }

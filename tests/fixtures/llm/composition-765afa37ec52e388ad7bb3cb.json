@@ -1,0 +1,115 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-opus-5-5",
+    "system": "You draft answers for compliance professionals strictly from the evidence provided.\n\nRules — these are absolute:\n1. Use only the EVIDENCE IN FORCE. Every claim must cite one or more of its version IDs, copied exactly (the text in square brackets). Never cite anything else and never invent an ID.\n2. No outside knowledge. If the evidence does not address the question, set conclusion to \"not_covered\" and say so in one claim citing the closest evidence.\n3. The jurisdiction and as-of date are fixed. Answer for that place and that date only. Do not apply or speculate about material described as upcoming or not yet in force.\n4. Material marked NOT HELD is a known reference the system does not have the text of. Do not guess its contents. If it is relevant to the question, say in a caveat that it exists and has not been reviewed.\n5. Material marked PRACTITIONER NOTE is context only. It cannot be cited and must not be presented as a requirement.\n6. Where an exception or carve-out is in the evidence and could apply to the facts given, state the condition under which it applies as a \"condition\" claim.\n7. Write the first claim as the conclusion (kind \"conclusion\"). Keep every claim short and atomic — one point, one citation set, under 40 words. At most seven claims in total; prefer fewer. Use the display reference (e.g. 3.A.6) in the prose and the version ID in cites.\n8. Distinguish \"must\" (requirement) from \"should\" (recommendation) exactly as the evidence does.",
+    "user": "Question: Employee accounts with fully waived fees — must they be in a composite?\nJurisdiction: JN\nAs of: 2026-12-15\nFacts stated: account type: employee accounts; fees: fully waived\nUnresolved in the question: whether the employee accounts are discretionary (not stated)\n\nEVIDENCE IN FORCE (citable):\n- [def:fee-paying-portfolio@E2025-A1] 1.D.6 — provision, authoritative, obligation: definition; Amendment 2025-A1 to the GSB Standards, Edition 2025 — Definitions; in force from 2026-12-01\n    A fee-paying portfolio is one that is subject to the firm's investment management fee schedule, whether or not the fee is paid directly from the portfolio and whether or not the fee is reduced in part. Portfolios of related parties for which all investment management fees are waived in full are not fee-paying portfolios.\n- [prov:composite-inclusion-all-discretionary@E2025] 3.A.1 — provision, authoritative, obligation: must; GSB Standards, Edition 2025; in force from 2025-01-01\n    All actual, fee-paying, discretionary portfolios must be included in at least one composite.\n- [prov:non-fee-paying-inclusion@E2025] 3.A.2 — provision, authoritative, obligation: must; GSB Standards, Edition 2025; in force from 2025-01-01\n    Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.\n- [def:composite@E2025] 1.D.1 — definition, authoritative, obligation: definition; GSB Standards, Edition 2025; in force from 2025-01-01\n    A composite is an aggregation of one or more portfolios managed according to a similar investment mandate, objective, or strategy.\n- [def:discretionary-portfolio@E2025] 1.D.5 — definition, authoritative, obligation: definition; GSB Standards, Edition 2025; in force from 2025-01-01\n    A portfolio is discretionary when the firm has sufficient authority to implement its intended investment strategy. Client-imposed restrictions render a portfolio non-discretionary only where they materially impede implementation of the strategy. Firms must document the basis for each such determination.",
+    "schema_name": "composition",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "One sentence answering the question directly."
+        },
+        "conclusion": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "no",
+            "depends",
+            "not_covered"
+          ]
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "cites": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "conclusion",
+                  "requirement",
+                  "condition",
+                  "caveat"
+                ]
+              }
+            },
+            "required": [
+              "text",
+              "cites",
+              "kind"
+            ]
+          }
+        }
+      },
+      "required": [
+        "summary",
+        "conclusion",
+        "claims"
+      ]
+    },
+    "max_tokens": 3000
+  },
+  "response": {
+    "summary": "Not required if the employees count as related parties: fully waived accounts of related parties are not fee-paying under 1.D.6, so 3.A.1's mandatory inclusion does not apply, though they may be included with disclosure.",
+    "conclusion": "depends",
+    "claims": [
+      {
+        "text": "Under 3.A.1, only actual, fee-paying, discretionary portfolios must be included in at least one composite.",
+        "cites": [
+          "prov:composite-inclusion-all-discretionary@E2025"
+        ],
+        "kind": "conclusion"
+      },
+      {
+        "text": "Under 1.D.6, related-party portfolios whose investment management fees are waived in full are not fee-paying, so 3.A.1 would not require their inclusion.",
+        "cites": [
+          "def:fee-paying-portfolio@E2025-A1"
+        ],
+        "kind": "condition"
+      },
+      {
+        "text": "The evidence does not say whether employees are related parties. If they are not, a portfolio still subject to the fee schedule is fee-paying under 1.D.6.",
+        "cites": [
+          "def:fee-paying-portfolio@E2025-A1"
+        ],
+        "kind": "caveat"
+      },
+      {
+        "text": "Inclusion is mandatory only if the accounts are discretionary. Under 1.D.5, that means the firm has sufficient authority to implement its strategy, and the firm must document the determination.",
+        "cites": [
+          "def:discretionary-portfolio@E2025",
+          "prov:composite-inclusion-all-discretionary@E2025"
+        ],
+        "kind": "condition"
+      },
+      {
+        "text": "Under 3.A.2, non-fee-paying discretionary portfolios may be included in a composite.",
+        "cites": [
+          "prov:non-fee-paying-inclusion@E2025"
+        ],
+        "kind": "condition"
+      },
+      {
+        "text": "If they are included, 3.A.2 requires the firm to disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.",
+        "cites": [
+          "prov:non-fee-paying-inclusion@E2025"
+        ],
+        "kind": "requirement"
+      }
+    ]
+  }
+}

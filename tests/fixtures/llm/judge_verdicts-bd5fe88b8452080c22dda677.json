@@ -1,0 +1,61 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-5-5",
+    "system": "You check whether short claims are faithful to the source texts they cite.\n\nThe claims form one answer and are read together: a condition or exception stated in another claim does not need to be repeated, and a claim that summarises part of a text is faithful if that part is accurate. Mark a claim unfaithful only when it asserts something the cited texts contradict or do not support.\n\nFor each claim, answer: does the claim follow from the cited texts alone, without adding, narrowing, or changing anything they say? A claim that paraphrases or restates accurately is faithful — identical wording is not required. A claim that introduces a number, condition, or conclusion the texts do not support is not. Each cited text is labelled with its reference (e.g. \"3.A.6\") and title; a claim may use that label. Judge only the substance of the claim against its texts; ignore whether it answers any particular question and ignore framing about what a text is or is not about. Give a one-sentence reason.",
+    "user": "Claim 0: Yes. Under 3.A.3, firms must make a description of any composite available to any prospective client who requests it.\n  Cited texts:\n    [prov:composite-description-on-request@E2025] 3.A.3 Composite description available on request: Firms must make a description of any composite available to any prospective client on request.\n\nClaim 1: The obligation is triggered by a request from a prospective client, which matches the stated facts.\n  Cited texts:\n    [prov:composite-description-on-request@E2025] 3.A.3 Composite description available on request: Firms must make a description of any composite available to any prospective client on request.\n\nClaim 2: It applies to any composite, meaning an aggregation of one or more portfolios managed according to a similar investment mandate, objective, or strategy (1.D.1).\n  Cited texts:\n    [def:composite@E2025] 1.D.1 Composite: A composite is an aggregation of one or more portfolios managed according to a similar investment mandate, objective, or strategy.\n    [prov:composite-description-on-request@E2025] 3.A.3 Composite description available on request: Firms must make a description of any composite available to any prospective client on request.",
+    "schema_name": "judge_verdicts",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "verdicts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "index": {
+                "type": "integer"
+              },
+              "faithful": {
+                "type": "boolean"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "index",
+              "faithful",
+              "reason"
+            ]
+          }
+        }
+      },
+      "required": [
+        "verdicts"
+      ]
+    },
+    "max_tokens": 1200
+  },
+  "response": {
+    "verdicts": [
+      {
+        "index": 0,
+        "faithful": true,
+        "reason": "Restates 3.A.3 accurately: firms must make a description of any composite available to any prospective client on request."
+      },
+      {
+        "index": 1,
+        "faithful": true,
+        "reason": "3.A.3 makes availability upon request by a prospective client the trigger; the reference to 'stated facts' is just framing and adds no unsupported substance."
+      },
+      {
+        "index": 2,
+        "faithful": true,
+        "reason": "3.A.3 applies to any composite and 1.D.1 defines a composite exactly as stated in the claim."
+      }
+    ]
+  }
+}

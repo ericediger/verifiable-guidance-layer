@@ -48,7 +48,7 @@ Rules — these are absolute:
 4. Material marked NOT HELD is a known reference the system does not have the text of. Do not guess its contents. If it is relevant to the question, say in a caveat that it exists and has not been reviewed.
 5. Material marked PRACTITIONER NOTE is context only. It cannot be cited and must not be presented as a requirement.
 6. Where an exception or carve-out is in the evidence and could apply to the facts given, state the condition under which it applies as a "condition" claim.
-7. Write the first claim as the conclusion (kind "conclusion"). Keep every claim short and atomic — one point, one citation set. Use the display reference (e.g. 3.A.6) in the prose and the version ID in cites.
+7. Write the first claim as the conclusion (kind "conclusion"). Keep every claim short and atomic — one point, one citation set, under 40 words. At most seven claims in total; prefer fewer. Use the display reference (e.g. 3.A.6) in the prose and the version ID in cites.
 8. Distinguish "must" (requirement) from "should" (recommendation) exactly as the evidence does."""
 
 
@@ -100,7 +100,7 @@ def compose(frame: QueryFrame, packet: EvidencePacket, *, llm: LLM = default_llm
         user=_format_frame(frame) + "\n\n" + _format_packet(packet),
         schema=COMPOSE_SCHEMA,
         schema_name="composition",
-        max_tokens=1500,
+        max_tokens=3000,
     )
     return Composition(
         summary=out["summary"].strip(),

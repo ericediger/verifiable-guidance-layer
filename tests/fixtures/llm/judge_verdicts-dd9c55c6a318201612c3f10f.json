@@ -1,0 +1,71 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-5-5",
+    "system": "You check whether short claims are faithful to the source texts they cite.\n\nThe claims form one answer and are read together: a condition or exception stated in another claim does not need to be repeated, and a claim that summarises part of a text is faithful if that part is accurate. Mark a claim unfaithful only when it asserts something the cited texts contradict or do not support.\n\nFor each claim, answer: does the claim follow from the cited texts alone, without adding, narrowing, or changing anything they say? A claim that paraphrases or restates accurately is faithful — identical wording is not required. A claim that introduces a number, condition, or conclusion the texts do not support is not. Each cited text is labelled with its reference (e.g. \"3.A.6\") and title; a claim may use that label. Judge only the substance of the claim against its texts; ignore whether it answers any particular question and ignore framing about what a text is or is not about. Give a one-sentence reason.",
+    "user": "Claim 0: Non-fee-paying discretionary portfolios may be included in a composite under 3.A.2; inclusion is permitted, not required.\n  Cited texts:\n    [prov:non-fee-paying-inclusion@E2025] 3.A.2 Inclusion of non-fee-paying portfolios: Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.\n\nClaim 1: Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end (3.A.2).\n  Cited texts:\n    [prov:non-fee-paying-inclusion@E2025] 3.A.2 Inclusion of non-fee-paying portfolios: Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.\n\nClaim 2: The permission in 3.A.2 applies only to discretionary portfolios, i.e. where the firm has sufficient authority to implement its intended strategy (1.D.5).\n  Cited texts:\n    [prov:non-fee-paying-inclusion@E2025] 3.A.2 Inclusion of non-fee-paying portfolios: Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.\n    [def:discretionary-portfolio@E2025] 1.D.5 Discretionary portfolio: A portfolio is discretionary when the firm has sufficient authority to implement its intended investment strategy. Client-imposed restrictions render a portfolio non-discretionary only where they materially impede implementation of the strategy. Firms must document the basis for each such determination.\n\nClaim 3: A portfolio subject to the firm's fee schedule is fee-paying even if the fee is reduced or waived (1.D.6), so such portfolios must be included in at least one composite (3.A.1).\n  Cited texts:\n    [def:fee-paying-portfolio@E2025] 1.D.6 Fee-paying portfolio: A fee-paying portfolio is one that is subject to the firm's investment management fee schedule, whether or not the fee is paid directly from the portfolio and whether or not the fee is reduced or waived in whole or in part.\n    [prov:composite-inclusion-all-discretionary@E2025] 3.A.1 Inclusion of all fee-paying discretionary portfolios: All actual, fee-paying, discretionary portfolios must be included in at least one composite.\n\nClaim 4: Firms must document the basis for each determination that client restrictions render a portfolio non-discretionary (1.D.5).\n  Cited texts:\n    [def:discretionary-portfolio@E2025] 1.D.5 Discretionary portfolio: A portfolio is discretionary when the firm has sufficient authority to implement its intended investment strategy. Client-imposed restrictions render a portfolio non-discretionary only where they materially impede implementation of the strategy. Firms must document the basis for each such determination.",
+    "schema_name": "judge_verdicts",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "verdicts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "index": {
+                "type": "integer"
+              },
+              "faithful": {
+                "type": "boolean"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "index",
+              "faithful",
+              "reason"
+            ]
+          }
+        }
+      },
+      "required": [
+        "verdicts"
+      ]
+    },
+    "max_tokens": 1200
+  },
+  "response": {
+    "verdicts": [
+      {
+        "index": 0,
+        "faithful": true,
+        "reason": "3.A.2 says non-fee-paying discretionary portfolios 'may be included', which is permissive, not mandatory."
+      },
+      {
+        "index": 1,
+        "faithful": true,
+        "reason": "This restates the disclosure requirement in 3.A.2 accurately."
+      },
+      {
+        "index": 2,
+        "faithful": true,
+        "reason": "3.A.2 refers only to non-fee-paying discretionary portfolios, and 1.D.5 defines discretionary as sufficient authority to implement the intended strategy."
+      },
+      {
+        "index": 3,
+        "faithful": true,
+        "reason": "1.D.6 says a portfolio subject to the fee schedule is fee-paying even if the fee is reduced or waived, and 3.A.1 requires actual fee-paying discretionary portfolios to be in at least one composite; the claim's wording on 'such portfolios' is consistent when read with discretionary context."
+      },
+      {
+        "index": 4,
+        "faithful": true,
+        "reason": "1.D.5 requires firms to document the basis for each determination that client restrictions make a portfolio non-discretionary."
+      }
+    ]
+  }
+}

@@ -112,11 +112,20 @@ def resolve(
     as_of: dt.date,
     release_id: int | None = None,
     max_depth: int | None = None,
+    include_provisions_using_definitions: bool = False,
 ) -> EvidencePacket:
-    """Build the evidence packet for a set of entry concepts."""
+    """Build the evidence packet for a set of entry concepts.
+
+    `include_provisions_using_definitions`: when the question asks what must or may be
+    done and the answer turns on a definition, also resolve the provisions that depend
+    on that definition — the rule is in the provision, the meaning is in the definition.
+    """
     r = release_id if release_id is not None else current_release(conn)
     depth_limit = max_depth if max_depth is not None else settings.max_depth
-    entry = sorted(set(entry_concepts) | _subjects_of(conn, entry_concepts, r))
+    entry = set(entry_concepts) | _subjects_of(conn, entry_concepts, r)
+    if include_provisions_using_definitions:
+        entry |= _provisions_using(conn, entry_concepts, r)
+    entry = sorted(entry)
 
     # 1. Walk the graph. Keep the first (shallowest) way each concept was reached.
     walk = conn.execute(_WALK_SQL, {"entry": entry, "max_depth": depth_limit, "r": r}).fetchall()
@@ -270,6 +279,20 @@ def _subjects_of(conn: psycopg.Connection, concept_ids: list[str], release_id: i
     rows = conn.execute(
         f"""SELECT e.from_concept FROM edges e
             WHERE e.to_concept = ANY (%(c)s::text[]) AND e.kind IN ('CARVED_OUT_BY','INTERPRETED_BY')
+              AND {_VISIBLE.format(t='e')}""",
+        {"c": sorted(set(concept_ids)), "r": release_id},
+    ).fetchall()
+    return {row["from_concept"] for row in rows}
+
+
+def _provisions_using(conn: psycopg.Connection, concept_ids: list[str], release_id: int) -> set[str]:
+    """Provisions whose meaning depends on any definition among the given concepts."""
+    rows = conn.execute(
+        f"""SELECT e.from_concept FROM edges e
+            JOIN concepts src ON src.concept_id = e.from_concept
+            JOIN concepts dst ON dst.concept_id = e.to_concept
+            WHERE e.to_concept = ANY (%(c)s::text[]) AND e.kind = 'DEPENDS_ON_DEFINITION'
+              AND dst.kind = 'definition' AND src.kind = 'provision'
               AND {_VISIBLE.format(t='e')}""",
         {"c": sorted(set(concept_ids)), "r": release_id},
     ).fetchall()

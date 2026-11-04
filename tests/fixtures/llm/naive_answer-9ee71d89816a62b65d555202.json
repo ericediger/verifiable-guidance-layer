@@ -39,11 +39,12 @@
     "max_tokens": 800
   },
   "response": {
-    "answer": "Under the current 2025 Edition, a new portfolio must be included in a composite on a timely and consistent basis, and no later than the beginning of the first full calendar month after it comes under management. The firm must also document the inclusion date it applies for each composite. This tightens the 2021 Edition, which allowed up to the beginning of the second full calendar month unless the firm's composite-specific policy set an earlier date. Separately, a new portfolio below a documented composite minimum should not be included (per GS-2025-02).",
+    "answer": "Under the current GSB Standards (Edition 2025), a new portfolio must be included in a composite on a timely and consistent basis, and no later than the beginning of the first full calendar month after it comes under management; the firm must also document the inclusion date applied for each composite. This replaces the more lenient 2021 rule, which allowed inclusion as late as the beginning of the second full calendar month unless the firm's composite policy specified an earlier date. Separately, a portfolio below a documented composite minimum must not be included at all, so the deadline applies only to portfolios that meet any minimum.",
     "conclusion": "yes",
     "cited": [
       0,
       1,
+      3,
       5
     ]
   }

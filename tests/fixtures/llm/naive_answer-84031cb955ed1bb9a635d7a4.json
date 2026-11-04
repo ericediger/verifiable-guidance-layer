@@ -39,10 +39,11 @@
     "max_tokens": 800
   },
   "response": {
-    "answer": "Not necessarily. The general rule is that portfolios below a documented composite minimum must not be included (3.A.7), but where the breach results solely from a significant cash flow, as defined in your documented composite policy, the portfolio may remain in the composite for up to three full measurement periods after the cash flow. This applies only if your documented composite policy provides for this treatment and you document the determination at the time it is made. If the portfolio is still below the minimum at the end of that period, it must be removed. Whether you can retain it therefore depends on whether the 40% withdrawal meets your policy's significant cash flow definition and whether your policy permits this treatment.",
+    "answer": "Not necessarily. Provision 3.A.7 generally prohibits including portfolios below a documented composite minimum, but where the breach results solely from a significant cash flow (as defined in your documented composite policy), the portfolio may remain in the composite for up to three full measurement periods after the cash flow. This applies only if your composite policy provides for this treatment and you document the determination at the time it is made. If the portfolio is still below the minimum at the end of that period, it must be removed; and if your policy does not provide for this treatment, or the 40% withdrawal does not meet your significant cash flow definition, the general rule requiring exclusion applies.",
     "conclusion": "depends",
     "cited": [
       1,
+      2,
       3,
       5
     ]

@@ -74,9 +74,9 @@
   },
   "response": {
     "topics": [
-      "staking rewards return calculation",
-      "digital assets composite returns",
-      "income recognition in total return"
+      "staking rewards digital assets return calculation",
+      "income recognition in composite returns",
+      "digital asset valuation and return"
     ],
     "question_type": "requirement",
     "case_facts": [
@@ -85,7 +85,7 @@
         "value": "digital assets"
       },
       {
-        "fact": "income type",
+        "fact": "income source",
         "value": "staking rewards"
       }
     ],
