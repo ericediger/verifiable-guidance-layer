@@ -10,10 +10,11 @@
   question: "Are employee accounts with fully waived management fees fee-paying portfolios that must be included in a composite?"
   outcome: ANSWER
   answer_text: >-
-    Yes. Under 1.D.6 (Edition 2025) a fee-paying portfolio is one for which the firm
-    receives compensation for investment management services; a waiver of fees is not
-    addressed, so such accounts remain fee-paying portfolios, and 3.A.1 requires that all
-    actual, fee-paying, discretionary portfolios be included in at least one composite.
+    Yes. Under 1.D.6 (Edition 2025) a portfolio is fee-paying when it is subject to the
+    firm's fee schedule, whether or not the fee is reduced or waived in whole or in part,
+    so fully fee-waived employee accounts are fee-paying portfolios, and 3.A.1 requires
+    that all actual, fee-paying, discretionary portfolios be included in at least one
+    composite.
   cited_versions:
     - prov:composite-inclusion-all-discretionary@E2025
     - def:fee-paying-portfolio@E2025

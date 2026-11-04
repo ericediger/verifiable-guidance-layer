@@ -1,0 +1,91 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-5-5",
+    "system": "You check whether short claims are faithful to the source texts they cite.\n\nThe claims form one answer and are read together: a condition or exception stated in another claim does not need to be repeated, and a claim that summarises part of a text is faithful if that part is accurate. Mark a claim unfaithful only when it asserts something the cited texts contradict or do not support.\n\nFor each claim, answer: does the claim follow from the cited texts alone, without adding, narrowing, or changing anything they say? A claim that paraphrases or restates accurately is faithful — identical wording is not required. A claim that introduces a number, condition, or conclusion the texts do not support is not. Each cited text is labelled with its reference (e.g. \"3.A.6\") and title; a claim may use that label. Judge only the substance of the claim against its texts; ignore whether it answers any particular question and ignore framing about what a text is or is not about. Give a one-sentence reason.",
+    "user": "Claim 0: Under 3.A.7, a portfolio below a firm's documented composite minimum must not be included in the composite, so removal is generally required once the minimum is breached.\n  Cited texts:\n    [prov:composite-minimum@E2025] 3.A.7 Composite minimum asset level: If a firm sets a minimum asset level for portfolios to be included in a composite, the firm must not include portfolios below that minimum. Any such minimum must be documented and applied consistently.\n\nClaim 1: Under 3.A.7, any composite minimum must be documented and applied consistently.\n  Cited texts:\n    [prov:composite-minimum@E2025] 3.A.7 Composite minimum asset level: If a firm sets a minimum asset level for portfolios to be included in a composite, the firm must not include portfolios below that minimum. Any such minimum must be documented and applied consistently.\n\nClaim 2: GS-2025-02 says firms should assess each portfolio against the minimum at the beginning of each measurement period, using the valuation methodology in the composite policy.\n  Cited texts:\n    [gs:GS-2025-02@v1] GS-2025-02 Guidance Statement GS-2025-02 — Composite Minimums: Provision 3.A.7 requires that portfolios below a documented composite minimum not be included in the composite. Firms should assess each portfolio against the minimum at the beginning of each measurement period, using the valuation methodology documented in the composite policy. A portfolio that is above the minimum at the beginning of a measurement period is included for that period in its entirety. Where the firm changes a composite minimum, the change applies prospectively from the beginning of the next measurement period (see also recommendation 3.B.1). Where a portfolio falls below the minimum solely as a result of a significant cash flow, the Board has addressed the treatment of such temporary breaches in Q&A QA-2025-031.\n\nClaim 3: Under GS-2025-02, if the portfolio was above the minimum at the start of the measurement period in which the withdrawal occurred, it stays in the composite for that entire period.\n  Cited texts:\n    [gs:GS-2025-02@v1] GS-2025-02 Guidance Statement GS-2025-02 — Composite Minimums: Provision 3.A.7 requires that portfolios below a documented composite minimum not be included in the composite. Firms should assess each portfolio against the minimum at the beginning of each measurement period, using the valuation methodology documented in the composite policy. A portfolio that is above the minimum at the beginning of a measurement period is included for that period in its entirety. Where the firm changes a composite minimum, the change applies prospectively from the beginning of the next measurement period (see also recommendation 3.B.1). Where a portfolio falls below the minimum solely as a result of a significant cash flow, the Board has addressed the treatment of such temporary breaches in Q&A QA-2025-031.\n\nClaim 4: Under 1.D.10, the measurement period is the calendar month unless the composite policy specifies a shorter period. The exact withdrawal date and period start therefore determine when exclusion begins.\n  Cited texts:\n    [def:measurement-period@E2025] 1.D.10 Measurement period: The calendar month, unless the firm's documented policy for a composite specifies a shorter period.\n\nClaim 5: A client-directed 40% withdrawal is an external cash flow under 1.D.9.\n  Cited texts:\n    [def:external-cash-flow@E2025] 1.D.9 External cash flow: Capital, in cash or investments, that enters or exits a portfolio at the direction of the client.\n\nClaim 6: Under 1.D.11, the withdrawal is a significant cash flow only if it meets the size threshold in the firm's documented composite policy.\n  Cited texts:\n    [def:significant-cash-flow@E2025] 1.D.11 Significant cash flow: A significant cash flow is a client-directed external cash flow of a size, defined in the firm's documented policy for the composite, that would temporarily prevent the firm from implementing the composite strategy.\n\nClaim 7: If the portfolio fell below the minimum solely because of a significant cash flow, GS-2025-02 states that Q&A QA-2025-031 addresses temporary breaches. That Q&A has not been reviewed, and it may affect whether removal is required.\n  Cited texts:\n    [gs:GS-2025-02@v1] GS-2025-02 Guidance Statement GS-2025-02 — Composite Minimums: Provision 3.A.7 requires that portfolios below a documented composite minimum not be included in the composite. Firms should assess each portfolio against the minimum at the beginning of each measurement period, using the valuation methodology documented in the composite policy. A portfolio that is above the minimum at the beginning of a measurement period is included for that period in its entirety. Where the firm changes a composite minimum, the change applies prospectively from the beginning of the next measurement period (see also recommendation 3.B.1). Where a portfolio falls below the minimum solely as a result of a significant cash flow, the Board has addressed the treatment of such temporary breaches in Q&A QA-2025-031.\n\nClaim 8: The composite minimum amount was not given, so whether the portfolio is in fact below it has not been verified against the documented policy.\n  Cited texts:\n    [prov:composite-minimum@E2025] 3.A.7 Composite minimum asset level: If a firm sets a minimum asset level for portfolios to be included in a composite, the firm must not include portfolios below that minimum. Any such minimum must be documented and applied consistently.",
+    "schema_name": "judge_verdicts",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "verdicts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "index": {
+                "type": "integer"
+              },
+              "faithful": {
+                "type": "boolean"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "index",
+              "faithful",
+              "reason"
+            ]
+          }
+        }
+      },
+      "required": [
+        "verdicts"
+      ]
+    },
+    "max_tokens": 1200
+  },
+  "response": {
+    "verdicts": [
+      {
+        "index": 0,
+        "faithful": true,
+        "reason": "3.A.7 says firms must not include portfolios below a documented minimum; \"removal generally required\" is a reasonable restatement, consistent with the GS's period-based assessment."
+      },
+      {
+        "index": 1,
+        "faithful": true,
+        "reason": "Directly stated in 3.A.7."
+      },
+      {
+        "index": 2,
+        "faithful": true,
+        "reason": "GS-2025-02 says to assess at the beginning of each measurement period using the documented valuation methodology."
+      },
+      {
+        "index": 3,
+        "faithful": true,
+        "reason": "GS states a portfolio above the minimum at period start is included for that period in its entirety."
+      },
+      {
+        "index": 4,
+        "faithful": true,
+        "reason": "The definition matches 1.D.10; the added inference that withdrawal date and period start determine when exclusion begins is consistent with the GS's start-of-period assessment, though it is only a mild inference from 1.D.10 alone."
+      },
+      {
+        "index": 5,
+        "faithful": true,
+        "reason": "A client-directed withdrawal of capital is an external cash flow under 1.D.9."
+      },
+      {
+        "index": 6,
+        "faithful": true,
+        "reason": "1.D.11 defines significant cash flow by a size defined in the firm's documented policy that would temporarily prevent implementing the strategy; the claim captures the size-threshold element accurately without contradicting the definition."
+      },
+      {
+        "index": 7,
+        "faithful": true,
+        "reason": "GS says the Board addressed temporary breaches from significant cash flows in QA-2025-031; the text of that Q&A is not provided, so saying it hasn't been reviewed and may affect removal is consistent."
+      },
+      {
+        "index": 8,
+        "faithful": true,
+        "reason": "The cited text gives no minimum amount, so the claim that it was not given and not verified is consistent with the sources."
+      }
+    ]
+  }
+}

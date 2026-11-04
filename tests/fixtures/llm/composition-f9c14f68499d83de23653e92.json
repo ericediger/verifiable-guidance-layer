@@ -64,11 +64,11 @@
     "max_tokens": 1500
   },
   "response": {
-    "summary": "Under 3.A.4, a new portfolio must be included in a composite on a timely and consistent basis and no later than the beginning of the second full calendar month after it comes under management, unless the firm's documented composite-specific policy sets an earlier date.",
+    "summary": "Under 3.A.4, a new portfolio must be included in a composite on a timely and consistent basis, and no later than the beginning of the second full calendar month after it comes under management, unless the firm's documented composite-specific policy sets an earlier date.",
     "conclusion": "yes",
     "claims": [
       {
-        "text": "Under 3.A.4, a new portfolio must be included in a composite no later than the beginning of the second full calendar month after the portfolio comes under management.",
+        "text": "Under 3.A.4, new portfolios must be included in a composite no later than the beginning of the second full calendar month after the portfolio comes under management.",
         "cites": [
           "prov:composite-inclusion-timing@E2021"
         ],
@@ -82,7 +82,7 @@
         "kind": "requirement"
       },
       {
-        "text": "If the firm's documented composite-specific policy specifies an earlier date, that earlier date applies instead of the outer deadline in 3.A.4.",
+        "text": "If the firm's documented composite-specific policy specifies an earlier inclusion date, that earlier date applies instead of the 3.A.4 outer limit.",
         "cites": [
           "prov:composite-inclusion-timing@E2021"
         ],

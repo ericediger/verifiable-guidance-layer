@@ -3,7 +3,7 @@
     "provider": "anthropic",
     "model": "claude-sonnet-5-5",
     "system": "You are given a compliance question and a shortlist of items from a table of contents of investment performance standards (provisions, definitions, interpretive guidance, rulings). Choose the one to three items the question PRIMARILY turns on — the ones a compliance officer would open first.\n\nRules:\n- Pick from the shortlist only, by concept_id. Pick nothing if no item plausibly addresses the question.\n- Prefer the provision that states the rule. Add a definition only when the question hinges on what a term means (e.g. whether an account is \"discretionary\").\n- Pick interpretive guidance or a ruling only when the question is specifically about the subject in its title. Do not pick it because it mentions a word in the question.\n- Fewer is better. One item is the usual answer; three is the maximum.",
-    "user": "Question: How are staking rewards on digital assets treated in composite returns?\nTopics: staking rewards digital assets return calculation, composite return income treatment, digital assets valuation and income\n\nShortlist:\n- prov:non-fee-paying-inclusion — Inclusion of non-fee-paying portfolios (provision)\n- prov:composite-inclusion-timing — Timing of new portfolio inclusion (provision)\n- def:benchmark — Benchmark (definition)\n- def:composite — Composite (definition)\n- def:gross-of-fees-return — Gross-of-fees return (definition)\n- def:net-of-fees-return — Net-of-fees return (definition)\n- gs:GS-2025-02 — Guidance Statement GS-2025-02 — Composite Minimums (guidance)\n- prov:composite-minimum — Composite minimum asset level (provision)",
+    "user": "Question: Employee accounts with fully waived fees — must they be in a composite?\nTopics: fee-paying portfolio composite inclusion, discretionary portfolio definition\n\nShortlist:\n- def:fee-paying-portfolio — Fee-paying portfolio (definition)\n- prov:non-fee-paying-inclusion — Inclusion of non-fee-paying portfolios (provision)\n- gs:GS-2025-02 — Guidance Statement GS-2025-02 — Composite Minimums (guidance)\n- prov:composite-inclusion-all-discretionary — Inclusion of all fee-paying discretionary portfolios (provision)\n- prov:composite-inclusion-timing — Timing of new portfolio inclusion (provision)\n- prov:composite-definition-documented — Composite definition documented in writing (provision)\n- ruling:QA-2025-031 — Q&A QA-2025-031 — Temporary breach of a composite minimum following a significant cash flow (ruling)\n- def:benchmark — Benchmark (definition)",
     "schema_name": "entry_choice",
     "schema": {
       "type": "object",
@@ -29,8 +29,9 @@
   },
   "response": {
     "entry_concepts": [
-      "def:gross-of-fees-return"
+      "prov:non-fee-paying-inclusion",
+      "def:fee-paying-portfolio"
     ],
-    "reason": "The question is about how staking rewards (a form of income on digital assets) flow into returns. None of the shortlist items addresses digital assets or income treatment directly. The closest is the gross-of-fees return definition, which states that returns include income and are calculated before management fees. Composite return is built from portfolio returns, so this definition is the best entry point. The other items concern inclusion, timing, minimums, or benchmarks and do not address the question."
+    "reason": "The question asks whether employee accounts with fully waived fees must be included in a composite. That is governed by the provision on non-fee-paying portfolios, and the definition of fee-paying portfolio clarifies whether a fully waived fee makes an account non-fee-paying."
   }
 }

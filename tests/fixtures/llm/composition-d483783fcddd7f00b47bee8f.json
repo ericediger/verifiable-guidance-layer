@@ -1,0 +1,180 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-opus-5-5",
+    "system": "You draft answers for compliance professionals strictly from the evidence provided.\n\nRules — these are absolute:\n1. Use only the EVIDENCE IN FORCE. Every claim must cite one or more of its version IDs, copied exactly (the text in square brackets). Never cite anything else and never invent an ID.\n2. No outside knowledge. If the evidence does not address the question, set conclusion to \"not_covered\" and say so in one claim citing the closest evidence.\n3. The jurisdiction and as-of date are fixed. Answer for that place and that date only. Do not apply or speculate about material described as upcoming or not yet in force.\n4. Material marked NOT HELD is a known reference the system does not have the text of. Do not guess its contents. If it is relevant to the question, say in a caveat that it exists and has not been reviewed.\n5. Material marked PRACTITIONER NOTE is context only. It cannot be cited and must not be presented as a requirement.\n6. Where an exception or carve-out is in the evidence and could apply to the facts given, state the condition under which it applies as a \"condition\" claim.\n7. Write the first claim as the conclusion (kind \"conclusion\"). Keep every claim short and atomic — one point, one citation set. Use the display reference (e.g. 3.A.6) in the prose and the version ID in cites.\n8. Distinguish \"must\" (requirement) from \"should\" (recommendation) exactly as the evidence does.",
+    "user": "Question: A client withdrew 40% last month and the portfolio is now below our composite minimum. Must we remove it?\nJurisdiction: JN\nAs of: 2025-06-01\nFacts stated: withdrawal: 40% of assets; portfolio below composite minimum: yes\nUnresolved in the question: withdrawal date: 'last month' (no anchor date given); composite minimum: amount not specified\n\nEVIDENCE IN FORCE (citable):\n- [prov:composite-minimum@E2025] 3.A.7 — provision, authoritative, obligation: must; GSB Standards, Edition 2025; in force from 2025-01-01\n    If a firm sets a minimum asset level for portfolios to be included in a composite, the firm must not include portfolios below that minimum. Any such minimum must be documented and applied consistently.\n- [ruling:QA-2025-031@v1] QA-2025-031 — EXCEPTION / carve-out, interpretive, obligation: n/a; Q&A QA-2025-031 — Temporary breach of a composite minimum following a significant cash flow; in force from 2025-04-15\n    Question: Must a portfolio be removed from a composite when it falls below the composite minimum solely because of a significant cash flow? Answer: No. Where the breach results solely from a significant cash flow, as defined in the firm's documented policy for the composite, the portfolio may remain in the composite for up to three full measurement periods following the cash flow, provided that the firm's documented composite policy provides for this treatment and the determination is documented at the time it is made. If the portfolio remains below the minimum at the end of that period, it must be removed. This treatment is available only where the cause of the breach is a significant cash flow. A portfolio that falls below the minimum through market movement or through a series of cash flows that do not individually meet the firm's significant cash flow threshold must be removed in accordance with 3.A.7.\n    parameters: {'grace_period_months': 3}\n- [gs:GS-2025-02@v1] GS-2025-02 — interpretive guidance, interpretive, obligation: n/a; Guidance Statement GS-2025-02 — Composite Minimums; in force from 2025-03-01\n    Provision 3.A.7 requires that portfolios below a documented composite minimum not be included in the composite. Firms should assess each portfolio against the minimum at the beginning of each measurement period, using the valuation methodology documented in the composite policy. A portfolio that is above the minimum at the beginning of a measurement period is included for that period in its entirety. Where the firm changes a composite minimum, the change applies prospectively from the beginning of the next measurement period (see also recommendation 3.B.1). Where a portfolio falls below the minimum solely as a result of a significant cash flow, the Board has addressed the treatment of such temporary breaches in Q&A QA-2025-031.\n- [def:composite@E2025] 1.D.1 — definition, authoritative, obligation: definition; GSB Standards, Edition 2025; in force from 2025-01-01\n    A composite is an aggregation of one or more portfolios managed according to a similar investment mandate, objective, or strategy.\n- [def:measurement-period@E2025] 1.D.10 — definition, authoritative, obligation: definition; GSB Standards, Edition 2025; in force from 2025-01-01\n    The calendar month, unless the firm's documented policy for a composite specifies a shorter period.\n- [def:significant-cash-flow@E2025] 1.D.11 — definition, authoritative, obligation: definition; GSB Standards, Edition 2025; in force from 2025-01-01\n    A significant cash flow is a client-directed external cash flow of a size, defined in the firm's documented policy for the composite, that would temporarily prevent the firm from implementing the composite strategy.\n- [def:external-cash-flow@E2025] 1.D.9 — definition, authoritative, obligation: definition; GSB Standards, Edition 2025; in force from 2025-01-01\n    Capital, in cash or investments, that enters or exits a portfolio at the direction of the client.",
+    "schema_name": "composition",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "One sentence answering the question directly."
+        },
+        "conclusion": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "no",
+            "depends",
+            "not_covered"
+          ]
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "cites": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "conclusion",
+                  "requirement",
+                  "condition",
+                  "caveat"
+                ]
+              }
+            },
+            "required": [
+              "text",
+              "cites",
+              "kind"
+            ]
+          }
+        }
+      },
+      "required": [
+        "summary",
+        "conclusion",
+        "claims"
+      ]
+    },
+    "max_tokens": 1500
+  },
+  "response": {
+    "summary": "Not necessarily: 3.A.7 generally requires excluding portfolios below a documented composite minimum, but under QA-2025-031 the portfolio may stay for up to three full measurement periods if the breach results solely from a significant cash flow and your documented composite policy provides for this treatment.",
+    "conclusion": "depends",
+    "claims": [
+      {
+        "text": "Whether removal is required depends on whether the 40% withdrawal qualifies for the temporary-breach treatment in QA-2025-031; otherwise 3.A.7 requires exclusion.",
+        "cites": [
+          "prov:composite-minimum@E2025",
+          "ruling:QA-2025-031@v1"
+        ],
+        "kind": "conclusion"
+      },
+      {
+        "text": "Under 3.A.7, if the firm sets a composite minimum, it must not include portfolios below that minimum.",
+        "cites": [
+          "prov:composite-minimum@E2025"
+        ],
+        "kind": "requirement"
+      },
+      {
+        "text": "Any composite minimum must be documented and applied consistently.",
+        "cites": [
+          "prov:composite-minimum@E2025"
+        ],
+        "kind": "requirement"
+      },
+      {
+        "text": "The portfolio may remain in the composite only if the breach results solely from a significant cash flow, as defined in the firm's documented policy for the composite.",
+        "cites": [
+          "ruling:QA-2025-031@v1"
+        ],
+        "kind": "condition"
+      },
+      {
+        "text": "A client-directed withdrawal is an external cash flow. It is a significant cash flow only if its size meets the threshold in the composite's documented policy.",
+        "cites": [
+          "def:external-cash-flow@E2025",
+          "def:significant-cash-flow@E2025"
+        ],
+        "kind": "condition"
+      },
+      {
+        "text": "The firm's documented composite policy must itself provide for this temporary-breach treatment.",
+        "cites": [
+          "ruling:QA-2025-031@v1"
+        ],
+        "kind": "condition"
+      },
+      {
+        "text": "The decision to retain the portfolio must be documented at the time it is made.",
+        "cites": [
+          "ruling:QA-2025-031@v1"
+        ],
+        "kind": "condition"
+      },
+      {
+        "text": "If these conditions are met, the portfolio may remain for up to three full measurement periods following the cash flow.",
+        "cites": [
+          "ruling:QA-2025-031@v1"
+        ],
+        "kind": "condition"
+      },
+      {
+        "text": "A measurement period is the calendar month unless the composite policy specifies a shorter period.",
+        "cites": [
+          "def:measurement-period@E2025"
+        ],
+        "kind": "condition"
+      },
+      {
+        "text": "If the portfolio is still below the minimum at the end of the grace period, it must be removed.",
+        "cites": [
+          "ruling:QA-2025-031@v1"
+        ],
+        "kind": "requirement"
+      },
+      {
+        "text": "If market movement contributed to the breach, the portfolio must be removed under 3.A.7.",
+        "cites": [
+          "ruling:QA-2025-031@v1"
+        ],
+        "kind": "requirement"
+      },
+      {
+        "text": "The same applies if the breach came from a series of cash flows, none of which individually met the significant cash flow threshold.",
+        "cites": [
+          "ruling:QA-2025-031@v1"
+        ],
+        "kind": "requirement"
+      },
+      {
+        "text": "Firms should assess portfolios against the minimum at the beginning of each measurement period, using the documented valuation methodology.",
+        "cites": [
+          "gs:GS-2025-02@v1"
+        ],
+        "kind": "requirement"
+      },
+      {
+        "text": "A portfolio above the minimum at the start of a measurement period is included for that entire period.",
+        "cites": [
+          "gs:GS-2025-02@v1"
+        ],
+        "kind": "requirement"
+      },
+      {
+        "text": "The withdrawal date is not anchored and the minimum amount is not specified. The start and end of the three-period window, and whether 40% meets your threshold, cannot be confirmed from the facts given.",
+        "cites": [
+          "ruling:QA-2025-031@v1",
+          "def:significant-cash-flow@E2025"
+        ],
+        "kind": "caveat"
+      }
+    ]
+  }
+}

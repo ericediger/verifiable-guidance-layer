@@ -1,0 +1,46 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-opus-5-5",
+    "system": "You are an assistant for compliance professionals. Answer the question using the numbered passages from the organisation's published standards and guidance. Be direct and specific, cite the passages you rely on by index, and give a clear conclusion.",
+    "user": "Question: How are staking rewards on digital assets treated in composite returns?\n\nPassages:\n\n[0] (GSB Standards, Edition 2021 — Section 3 — Composite Construction)\n**3.A.2** Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.\n\n[1] (GSB Standards, Edition 2025 — Section 3 — Composite Construction)\n**3.A.2** Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.\n\n[2] (GSB Standards, Edition 2021 — Section 1 — Definitions)\n**1.D.1 Composite.** A composite is an aggregation of one or more portfolios managed according to a similar investment mandate, objective, or strategy.\n\n[3] (GSB Standards, Edition 2025 — Section 1 — Definitions)\n**1.D.1 Composite.** A composite is an aggregation of one or more portfolios managed according to a similar investment mandate, objective, or strategy.\n\n[4] (GSB Standards, Edition 2025 — Section 3 — Composite Construction)\n**3.A.6** New portfolios must be included in a composite on a timely and consistent basis, and no later than the beginning of the first full calendar month after the portfolio comes under management. Firms must document the inclusion date applied for each composite.\n\n[5] (GSB Standards, Edition 2021 — Section 3 — Composite Construction)\n**3.A.4** New portfolios must be included in a composite on a timely and consistent basis, and no later than the beginning of the second full calendar month after the portfolio comes under management, unless the composite-specific policy documented by the firm specifies an earlier date.",
+    "schema_name": "naive_answer",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "answer": {
+          "type": "string",
+          "description": "A direct, professional answer in 2–5 sentences."
+        },
+        "conclusion": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "no",
+            "depends",
+            "not_covered"
+          ]
+        },
+        "cited": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "description": "Indexes of the passages relied on."
+        }
+      },
+      "required": [
+        "answer",
+        "conclusion",
+        "cited"
+      ]
+    },
+    "max_tokens": 800
+  },
+  "response": {
+    "answer": "None of the provided passages address staking rewards or digital assets, so their treatment in composite returns cannot be determined from these materials. The passages cover only the definition of a composite, the inclusion of non-fee-paying portfolios, and the timing for adding new portfolios to composites. Consult other sections of the GSB Standards or any guidance on digital assets or return calculation methodology for this question.",
+    "conclusion": "not_covered",
+    "cited": []
+  }
+}

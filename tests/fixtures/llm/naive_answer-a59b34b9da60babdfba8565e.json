@@ -1,0 +1,51 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-opus-5-5",
+    "system": "You are an assistant for compliance professionals. Answer the question using the numbered passages from the organisation's published standards and guidance. Be direct and specific, cite the passages you rely on by index, and give a clear conclusion.",
+    "user": "Question: Employee accounts with fully waived fees — must they be in a composite?\n\nPassages:\n\n[0] (Amendment 2025-A1 to the GSB Standards, Edition 2025 — Definitions — Summary)\nUnder definition 1.D.6 as published in Edition 2025, a portfolio remains fee-paying when its fee is waived, so related-party portfolios — principals, employees, and affiliates of the firm — with fees waived in full have been required to be included in composites under provision 3.A.1. The Board has concluded that such portfolios are not representative of the firm's fee-paying business and is amending definition 1.D.6 to exclude them. No provision in Section 3 is amended.\n\n[1] (GSB Standards, Edition 2021 — Section 3 — Composite Construction)\n**3.A.2** Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.\n\n[2] (GSB Standards, Edition 2025 — Section 3 — Composite Construction)\n**3.A.2** Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.\n\n[3] (GSB Standards, Edition 2021 — Section 3 — Composite Construction)\n**3.A.1** All actual, fee-paying, discretionary portfolios must be included in at least one composite.\n\n[4] (GSB Standards, Edition 2025 — Section 3 — Composite Construction)\n**3.A.1** All actual, fee-paying, discretionary portfolios must be included in at least one composite.\n\n[5] (Amendment 2025-A1 to the GSB Standards, Edition 2025 — Definitions — Amendment)\n**1.D.6 Fee-paying portfolio.** A fee-paying portfolio is one that is subject to the firm's investment management fee schedule, whether or not the fee is paid directly from the portfolio and whether or not the fee is reduced in part. Portfolios of related parties for which all investment management fees are waived in full are not fee-paying portfolios.",
+    "schema_name": "naive_answer",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "answer": {
+          "type": "string",
+          "description": "A direct, professional answer in 2–5 sentences."
+        },
+        "conclusion": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "no",
+            "depends",
+            "not_covered"
+          ]
+        },
+        "cited": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "description": "Indexes of the passages relied on."
+        }
+      },
+      "required": [
+        "answer",
+        "conclusion",
+        "cited"
+      ]
+    },
+    "max_tokens": 800
+  },
+  "response": {
+    "answer": "No. Under Amendment 2025-A1, definition 1.D.6 now provides that related-party portfolios (principals, employees, affiliates) whose investment management fees are waived in full are not fee-paying portfolios, so the mandatory inclusion requirement in 3.A.1, which applies only to fee-paying discretionary portfolios, no longer captures them. Such accounts may still be included voluntarily under 3.A.2 as non-fee-paying discretionary portfolios, in which case the firm must disclose the percentage of composite assets they represent as of each annual period end. Note that this applies only where fees are waived in full; partially reduced fees still leave the portfolio fee-paying and subject to 3.A.1.",
+    "conclusion": "no",
+    "cited": [
+      0,
+      5,
+      4,
+      2
+    ]
+  }
+}

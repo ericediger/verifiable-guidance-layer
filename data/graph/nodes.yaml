@@ -56,9 +56,9 @@
   title: Fee-paying portfolio
   versions:
     - {version_id: def:fee-paying-portfolio@E2021, display_ref: 1.D.5, source_doc: doc:E2021, effective_from: 2021-01-01,
-       text: "A fee-paying portfolio is one for which the firm receives compensation for investment management services, whether or not the fee is paid directly from the portfolio."}
+       text: "A fee-paying portfolio is one that is subject to the firm's investment management fee schedule, whether or not the fee is paid directly from the portfolio and whether or not the fee is reduced or waived in whole or in part."}
     - {version_id: def:fee-paying-portfolio@E2025, display_ref: 1.D.6, source_doc: doc:E2025, effective_from: 2025-01-01,
-       text: "A fee-paying portfolio is one for which the firm receives compensation for investment management services, whether or not the fee is paid directly from the portfolio."}
+       text: "A fee-paying portfolio is one that is subject to the firm's investment management fee schedule, whether or not the fee is paid directly from the portfolio and whether or not the fee is reduced or waived in whole or in part."}
 
 - concept_id: def:gross-of-fees-return
   kind: definition

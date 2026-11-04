@@ -71,7 +71,7 @@ def ask_naive(conn: psycopg.Connection, question: str, release_id: int, *, k: in
                1 - (ch.embedding <=> %(e)s::vector) AS score
         FROM chunks ch JOIN documents d ON d.id = ch.document_id
         WHERE {_VISIBLE} AND ch.embedding IS NOT NULL
-        ORDER BY ch.embedding <=> %(e)s::vector
+        ORDER BY ch.embedding <=> %(e)s::vector, ch.id
         LIMIT %(k)s
         """,
         {"e": embedding, "r": release_id, "k": k},

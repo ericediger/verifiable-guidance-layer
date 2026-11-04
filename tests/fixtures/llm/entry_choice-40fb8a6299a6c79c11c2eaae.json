@@ -1,0 +1,36 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-5-5",
+    "system": "You are given a compliance question and a shortlist of items from a table of contents of investment performance standards (provisions, definitions, interpretive guidance, rulings). Choose the one to three items the question PRIMARILY turns on — the ones a compliance officer would open first.\n\nRules:\n- Pick from the shortlist only, by concept_id. Pick nothing if no item plausibly addresses the question.\n- Prefer the provision that states the rule. Add a definition only when the question hinges on what a term means (e.g. whether an account is \"discretionary\").\n- Pick interpretive guidance or a ruling only when the question is specifically about the subject in its title. Do not pick it because it mentions a word in the question.\n- Fewer is better. One item is the usual answer; three is the maximum.",
+    "user": "Question: How are staking rewards on digital assets treated in composite returns?\nTopics: staking rewards return calculation, digital assets composite returns, income recognition in total return\n\nShortlist:\n- prov:non-fee-paying-inclusion — Inclusion of non-fee-paying portfolios (provision)\n- prov:composite-inclusion-timing — Timing of new portfolio inclusion (provision)\n- def:benchmark — Benchmark (definition)\n- def:composite — Composite (definition)\n- def:gross-of-fees-return — Gross-of-fees return (definition)\n- def:net-of-fees-return — Net-of-fees return (definition)\n- gs:GS-2025-02 — Guidance Statement GS-2025-02 — Composite Minimums (guidance)\n- def:significant-cash-flow — Significant cash flow (definition)",
+    "schema_name": "entry_choice",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "entry_concepts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "concept_ids from the shortlist that the question primarily turns on; empty if none does"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "entry_concepts",
+        "reason"
+      ]
+    },
+    "max_tokens": 300
+  },
+  "response": {
+    "entry_concepts": [
+      "def:gross-of-fees-return"
+    ],
+    "reason": "The question is about how staking rewards (income on digital assets) are recognized in return calculations. The shortlist has no digital-asset or income-recognition provision, so the closest fit is the gross-of-fees return definition, which covers how returns include income and are stated before fees. The other items address inclusion, timing, benchmarks, or cash flows and do not address the question."
+  }
+}

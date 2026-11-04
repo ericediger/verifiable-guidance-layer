@@ -43,7 +43,7 @@ def _fts(conn: psycopg.Connection, query: str, release_id: int, limit: int = 10)
         WHERE {_VISIBLE} AND c.kind <> 'practice_note'
           AND to_tsvector('english', coalesce(n.display_ref,'') || ' ' || n.text)
               @@ websearch_to_tsquery('english', %(q)s)
-        ORDER BY score DESC LIMIT %(limit)s
+        ORDER BY score DESC, n.version_id LIMIT %(limit)s
         """,
         {"q": query, "r": release_id, "limit": limit},
     ).fetchall()
@@ -55,7 +55,7 @@ def _vector(conn: psycopg.Connection, embedding: list[float], release_id: int, l
         SELECT n.concept_id, n.version_id, 1 - (n.embedding <=> %(e)s::vector) AS score
         FROM nodes n JOIN concepts c ON c.concept_id = n.concept_id
         WHERE {_VISIBLE} AND c.kind <> 'practice_note' AND n.embedding IS NOT NULL
-        ORDER BY n.embedding <=> %(e)s::vector LIMIT %(limit)s
+        ORDER BY n.embedding <=> %(e)s::vector, n.version_id LIMIT %(limit)s
         """,
         {"e": embedding, "r": release_id, "limit": limit},
     ).fetchall()
@@ -92,7 +92,7 @@ def shortlist(conn: psycopg.Connection, frame: QueryFrame, release_id: int,
         d["score"] += VECTOR_WEIGHT / (RRF_K + rank)
         d["cosine"] = max(d["cosine"], float(h["score"]))
 
-    ranked = sorted(fused.values(), key=lambda d: -d["score"])
+    ranked = sorted(fused.values(), key=lambda d: (-d["score"], d["concept_id"]))
     # Coverage gate: a candidate counts only with a keyword hit or a confident vector hit.
     covered = [d for d in ranked if d["fts"] > 0 or d["cosine"] >= COVERAGE_MIN_COSINE][:k]
     if not covered:
@@ -158,7 +158,7 @@ def choose_entries(frame: QueryFrame, candidates: list[dict], llm: LLM = default
 def _dedupe_by_concept(rows: list[dict]) -> list[dict]:
     seen: set[str] = set()
     out: list[dict] = []
-    for r in sorted(rows, key=lambda r: -float(r["score"])):
+    for r in sorted(rows, key=lambda r: (-float(r["score"]), r["version_id"])):
         if r["concept_id"] in seen:
             continue
         seen.add(r["concept_id"])

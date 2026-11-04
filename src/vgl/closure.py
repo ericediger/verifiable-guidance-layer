@@ -116,7 +116,7 @@ def resolve(
     """Build the evidence packet for a set of entry concepts."""
     r = release_id if release_id is not None else current_release(conn)
     depth_limit = max_depth if max_depth is not None else settings.max_depth
-    entry = sorted(set(entry_concepts))
+    entry = sorted(set(entry_concepts) | _subjects_of(conn, entry_concepts, r))
 
     # 1. Walk the graph. Keep the first (shallowest) way each concept was reached.
     walk = conn.execute(_WALK_SQL, {"entry": entry, "max_depth": depth_limit, "r": r}).fetchall()
@@ -236,6 +236,18 @@ def resolve(
         for row in conn.execute(_EDGES_SQL, {"concepts": concepts, "r": r})
     ]
 
+    # A ruling or guidance statement is a carve-out or an interpretation because of the
+    # edge that points at it, not because of the path by which the search reached it.
+    modifier_role = {"CARVED_OUT_BY": "carve_out", "INTERPRETED_BY": "interpretation"}
+    for n in nodes:
+        if n.role in ("entry", "reference"):
+            for e in edges:
+                if e.to_concept == n.concept_id and e.kind in modifier_role:
+                    n.role = modifier_role[e.kind]
+                    n.via = e.kind
+                    n.from_concept = e.from_concept
+                    break
+
     role_order = {"entry": 0, "carve_out": 1, "interpretation": 2, "definition": 3, "reference": 4, "annotation": 5}
     nodes.sort(key=lambda n: (n.depth, role_order[n.role], n.version_id))
 
@@ -250,6 +262,18 @@ def resolve(
         upcoming=list(first_upcoming.values()),
         superseded=sorted(superseded, key=lambda s: (s.concept_id, s.in_force_from)),
     )
+
+
+def _subjects_of(conn: psycopg.Connection, concept_ids: list[str], release_id: int) -> set[str]:
+    """The clauses that given rulings/guidance modify. A ruling asked about directly is
+    resolved together with the provision it carves out or interprets."""
+    rows = conn.execute(
+        f"""SELECT e.from_concept FROM edges e
+            WHERE e.to_concept = ANY (%(c)s::text[]) AND e.kind IN ('CARVED_OUT_BY','INTERPRETED_BY')
+              AND {_VISIBLE.format(t='e')}""",
+        {"c": sorted(set(concept_ids)), "r": release_id},
+    ).fetchall()
+    return {row["from_concept"] for row in rows}
 
 
 def dependents_of(conn: psycopg.Connection, concept_ids: list[str], release_id: int,

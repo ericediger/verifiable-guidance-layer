@@ -89,15 +89,15 @@ organisation "publishes", what naive RAG chunks, and what the structured graph w
 |---|---|---|---|---|
 | `def:composite` | 1.D.1 | 1.D.1 | A composite is an aggregation of one or more portfolios managed according to a similar investment mandate, objective, or strategy. | *unchanged* |
 | `def:discretionary-portfolio` | 1.D.4 | **1.D.5** | A portfolio is discretionary when the firm has sole authority to implement its intended investment strategy. A portfolio subject to client-imposed restrictions is non-discretionary. | A portfolio is discretionary when the firm has sufficient authority to implement its intended investment strategy. Client-imposed restrictions render a portfolio non-discretionary only where they materially impede implementation of the strategy. Firms must document the basis for each such determination. |
-| `def:fee-paying-portfolio` | 1.D.5 | **1.D.6** | A fee-paying portfolio is one for which the firm receives compensation for investment management services, whether or not the fee is paid directly from the portfolio. | *unchanged* |
+| `def:fee-paying-portfolio` | 1.D.5 | **1.D.6** | A fee-paying portfolio is one that is subject to the firm's investment management fee schedule, whether or not the fee is paid directly from the portfolio and whether or not the fee is reduced or waived in whole or in part. | *unchanged* |
 | `def:significant-cash-flow` | 1.D.9 | **1.D.11** | A significant cash flow is a client-directed external cash flow of a size, defined in the firm's documented policy for the composite, that would temporarily prevent the firm from implementing the composite strategy. | *unchanged* |
 
 **Amendment 2025-A1** (effective 2026-12-01) creates `def:fee-paying-portfolio@E2025-A1`:
 
-> A fee-paying portfolio is one for which the firm receives compensation for investment
-> management services, whether or not the fee is paid directly from the portfolio.
-> **Portfolios of related parties for which all investment management fees are waived in
-> full are not fee-paying portfolios.**
+> A fee-paying portfolio is one that is subject to the firm's investment management fee
+> schedule, whether or not the fee is paid directly from the portfolio and whether or not
+> the fee is reduced in part. **Portfolios of related parties for which all investment
+> management fees are waived in full are not fee-paying portfolios.**
 
 ### 3.2 Section 3 — Composite Construction
 
@@ -168,9 +168,9 @@ ref `HPA-77`), jurisdiction `JN`, as-of 2025-03-10.
 
 > **Q.** Are employee accounts with fully waived management fees fee-paying portfolios
 > that must be included in a composite?
-> **A.** ANSWER — Yes. Under 1.D.6 (Edition 2025) a fee-paying portfolio is one for which
-> the firm receives compensation; the waiver is not addressed, so such accounts are
-> fee-paying and 3.A.1 requires their inclusion.
+> **A.** ANSWER — Yes. Under 1.D.6 (Edition 2025) a portfolio is fee-paying when it is
+> subject to the firm's fee schedule, whether or not the fee is reduced or waived, so such
+> accounts are fee-paying and 3.A.1 requires their inclusion.
 > **Cites:** `prov:composite-inclusion-all-discretionary@E2025`, `def:fee-paying-portfolio@E2025`
 
 Correct when issued. **Becomes stale on 2026-12-01** when Amendment 2025-A1 takes effect.

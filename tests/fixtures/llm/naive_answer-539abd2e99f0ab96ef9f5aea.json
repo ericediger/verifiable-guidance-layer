@@ -1,0 +1,53 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-opus-5-5",
+    "system": "You are an assistant for compliance professionals. Answer the question using the numbered passages from the organisation's published standards and guidance. Be direct and specific, cite the passages you rely on by index, and give a clear conclusion.",
+    "user": "Question: Does this portfolio need to be in a composite?\n\nPassages:\n\n[0] (GSB Standards, Edition 2025 — Section 3 — Composite Construction)\n**3.A.6** New portfolios must be included in a composite on a timely and consistent basis, and no later than the beginning of the first full calendar month after the portfolio comes under management. Firms must document the inclusion date applied for each composite.\n\n[1] (GSB Standards, Edition 2021 — Section 3 — Composite Construction)\n**3.A.1** All actual, fee-paying, discretionary portfolios must be included in at least one composite.\n\n[2] (GSB Standards, Edition 2025 — Section 3 — Composite Construction)\n**3.A.1** All actual, fee-paying, discretionary portfolios must be included in at least one composite.\n\n[3] (GSB Standards, Edition 2021 — Section 3 — Composite Construction)\n**3.A.4** New portfolios must be included in a composite on a timely and consistent basis, and no later than the beginning of the second full calendar month after the portfolio comes under management, unless the composite-specific policy documented by the firm specifies an earlier date.\n\n[4] (GSB Standards, Edition 2021 — Section 3 — Composite Construction)\n**3.A.2** Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.\n\n[5] (GSB Standards, Edition 2025 — Section 3 — Composite Construction)\n**3.A.2** Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.",
+    "schema_name": "naive_answer",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "answer": {
+          "type": "string",
+          "description": "A direct, professional answer in 2–5 sentences."
+        },
+        "conclusion": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "no",
+            "depends",
+            "not_covered"
+          ]
+        },
+        "cited": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "description": "Indexes of the passages relied on."
+        }
+      },
+      "required": [
+        "answer",
+        "conclusion",
+        "cited"
+      ]
+    },
+    "max_tokens": 800
+  },
+  "response": {
+    "answer": "It depends on the portfolio's characteristics, which the question does not specify. Under both the 2021 and 2025 editions, all actual, fee-paying, discretionary portfolios must be included in at least one composite. Non-fee-paying discretionary portfolios may be included but are not required to be; if they are included, the firm must disclose the percentage of composite assets they represent at each annual period end. If inclusion is required, timing also differs by edition: under the 2025 edition a new portfolio must be added no later than the start of the first full calendar month after it comes under management, and the firm must document the inclusion date. Under the 2021 edition the deadline is the start of the second full calendar month, unless the composite policy specifies an earlier date.",
+    "conclusion": "depends",
+    "cited": [
+      1,
+      2,
+      4,
+      5,
+      0,
+      3
+    ]
+  }
+}

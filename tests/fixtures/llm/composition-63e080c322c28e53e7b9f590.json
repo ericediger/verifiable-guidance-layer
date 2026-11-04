@@ -64,23 +64,15 @@
     "max_tokens": 1500
   },
   "response": {
-    "summary": "Generally yes for the current period if it was below the documented minimum at the start of that period, but it stays in for the period in which the withdrawal occurred, and separate unreviewed Board Q&A on significant cash flows may change the outcome.",
+    "summary": "Generally yes: under 3.A.7 a portfolio below a documented composite minimum must not be included, but it stays in for any measurement period it began above the minimum, and a separate Board Q&A (not reviewed) addresses temporary breaches caused by a significant cash flow.",
     "conclusion": "depends",
     "claims": [
       {
-        "text": "Removal depends on when the portfolio is assessed against the minimum and whether the withdrawal is a significant cash flow under your composite policy.",
-        "cites": [
-          "prov:composite-minimum@E2025",
-          "gs:GS-2025-02@v1"
-        ],
-        "kind": "conclusion"
-      },
-      {
-        "text": "Under 3.A.7, if the firm sets a composite minimum, it must not include portfolios below that minimum.",
+        "text": "Under 3.A.7, a portfolio below a firm's documented composite minimum must not be included in the composite, so removal is generally required once the minimum is breached.",
         "cites": [
           "prov:composite-minimum@E2025"
         ],
-        "kind": "requirement"
+        "kind": "conclusion"
       },
       {
         "text": "Under 3.A.7, any composite minimum must be documented and applied consistently.",
@@ -97,52 +89,43 @@
         "kind": "requirement"
       },
       {
-        "text": "Under 1.D.10, a measurement period is the calendar month, unless your documented composite policy sets a shorter period.",
+        "text": "Under GS-2025-02, if the portfolio was above the minimum at the start of the measurement period in which the withdrawal occurred, it stays in the composite for that entire period.",
+        "cites": [
+          "gs:GS-2025-02@v1"
+        ],
+        "kind": "condition"
+      },
+      {
+        "text": "Under 1.D.10, the measurement period is the calendar month unless the composite policy specifies a shorter period. The exact withdrawal date and period start therefore determine when exclusion begins.",
         "cites": [
           "def:measurement-period@E2025"
         ],
         "kind": "condition"
       },
       {
-        "text": "If the portfolio was above the minimum at the start of the period in which the withdrawal occurred, GS-2025-02 says it is included for that entire period.",
-        "cites": [
-          "gs:GS-2025-02@v1"
-        ],
-        "kind": "condition"
-      },
-      {
-        "text": "If the portfolio is below the minimum at the start of a later measurement period, 3.A.7 means it must not be included for that period.",
-        "cites": [
-          "prov:composite-minimum@E2025",
-          "gs:GS-2025-02@v1"
-        ],
-        "kind": "condition"
-      },
-      {
-        "text": "Under 1.D.9, a client-directed withdrawal is an external cash flow.",
+        "text": "A client-directed 40% withdrawal is an external cash flow under 1.D.9.",
         "cites": [
           "def:external-cash-flow@E2025"
         ],
         "kind": "condition"
       },
       {
-        "text": "Under 1.D.11, a withdrawal is a significant cash flow only if it meets the size threshold in your composite policy and would temporarily prevent implementing the strategy.",
+        "text": "Under 1.D.11, the withdrawal is a significant cash flow only if it meets the size threshold in the firm's documented composite policy.",
         "cites": [
           "def:significant-cash-flow@E2025"
         ],
         "kind": "condition"
       },
       {
-        "text": "GS-2025-02 says the treatment of temporary breaches caused solely by a significant cash flow is addressed in Q&A QA-2025-031. That Q&A is not held and has not been reviewed, so it may affect whether removal is required.",
+        "text": "If the portfolio fell below the minimum solely because of a significant cash flow, GS-2025-02 states that Q&A QA-2025-031 addresses temporary breaches. That Q&A has not been reviewed, and it may affect whether removal is required.",
         "cites": [
           "gs:GS-2025-02@v1"
         ],
         "kind": "caveat"
       },
       {
-        "text": "The exact withdrawal date and the minimum amount were not given, so it is not possible to confirm which measurement periods are affected.",
+        "text": "The composite minimum amount was not given, so whether the portfolio is in fact below it has not been verified against the documented policy.",
         "cites": [
-          "def:measurement-period@E2025",
           "prov:composite-minimum@E2025"
         ],
         "kind": "caveat"

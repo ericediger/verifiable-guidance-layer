@@ -1,0 +1,66 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-5-5",
+    "system": "You check whether short claims are faithful to the source texts they cite.\n\nThe claims form one answer and are read together: a condition or exception stated in another claim does not need to be repeated, and a claim that summarises part of a text is faithful if that part is accurate. Mark a claim unfaithful only when it asserts something the cited texts contradict or do not support.\n\nFor each claim, answer: does the claim follow from the cited texts alone, without adding, narrowing, or changing anything they say? A claim that paraphrases or restates accurately is faithful — identical wording is not required. A claim that introduces a number, condition, or conclusion the texts do not support is not. Each cited text is labelled with its reference (e.g. \"3.A.6\") and title; a claim may use that label. Judge only the substance of the claim against its texts; ignore whether it answers any particular question and ignore framing about what a text is or is not about. Give a one-sentence reason.",
+    "user": "Claim 0: Avoiding retroactive changes to a composite minimum is recommended, not mandated. Provision 3.B.1 uses \"should\", not \"must\".\n  Cited texts:\n    [prov:composite-minimum-no-retroactive-change@E2025] 3.B.1 No retroactive change to a composite minimum: Firms should not apply changes to a composite minimum retroactively.\n\nClaim 1: Under 3.B.1, firms should not apply changes to a composite minimum retroactively.\n  Cited texts:\n    [prov:composite-minimum-no-retroactive-change@E2025] 3.B.1 No retroactive change to a composite minimum: Firms should not apply changes to a composite minimum retroactively.\n\nClaim 2: Under 1.D.1, a composite is an aggregation of one or more portfolios managed according to a similar investment mandate, objective, or strategy.\n  Cited texts:\n    [def:composite@E2025] 1.D.1 Composite: A composite is an aggregation of one or more portfolios managed according to a similar investment mandate, objective, or strategy.\n\nClaim 3: Although 3.B.1 is phrased as a recommendation, it is authoritative guidance in the GSB Standards, Edition 2025, in force from 2025-01-01. Departing from it may need justification.\n  Cited texts:\n    [prov:composite-minimum-no-retroactive-change@E2025] 3.B.1 No retroactive change to a composite minimum: Firms should not apply changes to a composite minimum retroactively.",
+    "schema_name": "judge_verdicts",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "verdicts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "index": {
+                "type": "integer"
+              },
+              "faithful": {
+                "type": "boolean"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "index",
+              "faithful",
+              "reason"
+            ]
+          }
+        }
+      },
+      "required": [
+        "verdicts"
+      ]
+    },
+    "max_tokens": 1200
+  },
+  "response": {
+    "verdicts": [
+      {
+        "index": 0,
+        "faithful": true,
+        "reason": "The text uses 'should not', which expresses a recommendation rather than a mandate; the claim accurately restates this."
+      },
+      {
+        "index": 1,
+        "faithful": true,
+        "reason": "This restates the provision's text accurately."
+      },
+      {
+        "index": 2,
+        "faithful": true,
+        "reason": "This matches the definition of composite in 1.D.1 verbatim."
+      },
+      {
+        "index": 3,
+        "faithful": false,
+        "reason": "The cited text contains nothing about the GSB Standards, Edition 2025, an in-force date of 2025-01-01, its authoritative status, or any need to justify departures; these are unsupported additions."
+      }
+    ]
+  }
+}

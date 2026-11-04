@@ -1,0 +1,50 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-opus-5-5",
+    "system": "You are an assistant for compliance professionals. Answer the question using the numbered passages from the organisation's published standards and guidance. Be direct and specific, cite the passages you rely on by index, and give a clear conclusion.",
+    "user": "Question: Are we required to avoid changing a composite minimum retroactively?\n\nPassages:\n\n[0] (GSB Standards, Edition 2021 — Section 3 — Composite Construction)\n**3.B.1** Firms should not apply changes to a composite minimum retroactively.\n\n[1] (GSB Standards, Edition 2025 — Section 3 — Composite Construction)\n**3.B.1** Firms should not apply changes to a composite minimum retroactively.\n\n[2] (Guidance Statement GS-2025-02 — Composite Minimums — Guidance)\nWhere the firm changes a composite minimum, the change applies prospectively from the beginning of the next measurement period (see also recommendation 3.B.1).\n\n[3] (Guidance Statement GS-2025-02 — Composite Minimums — Guidance)\nProvision 3.A.7 requires that portfolios below a documented composite minimum not be included in the composite. Firms should assess each portfolio against the minimum at the beginning of each measurement period, using the valuation methodology documented in the composite policy. A portfolio that is above the minimum at the beginning of a measurement period is included for that period in its entirety.\n\n[4] (GSB Standards, Edition 2025 — Section 3 — Composite Construction)\n**3.A.6** New portfolios must be included in a composite on a timely and consistent basis, and no later than the beginning of the first full calendar month after the portfolio comes under management. Firms must document the inclusion date applied for each composite.\n\n[5] (GSB Standards, Edition 2021 — Section 3 — Composite Construction)\n**3.A.4** New portfolios must be included in a composite on a timely and consistent basis, and no later than the beginning of the second full calendar month after the portfolio comes under management, unless the composite-specific policy documented by the firm specifies an earlier date.",
+    "schema_name": "naive_answer",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "answer": {
+          "type": "string",
+          "description": "A direct, professional answer in 2–5 sentences."
+        },
+        "conclusion": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "no",
+            "depends",
+            "not_covered"
+          ]
+        },
+        "cited": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "description": "Indexes of the passages relied on."
+        }
+      },
+      "required": [
+        "answer",
+        "conclusion",
+        "cited"
+      ]
+    },
+    "max_tokens": 800
+  },
+  "response": {
+    "answer": "No, it is not a strict requirement. In both the 2021 and 2025 editions, 3.B.1 states that firms \"should not\" apply changes to a composite minimum retroactively, which makes it a recommendation rather than a mandatory provision. GS-2025-02 describes the expected practice: a changed minimum applies prospectively from the beginning of the next measurement period, and it refers to 3.B.1 as a recommendation. Following this practice is strongly advised, but the standards do not mandate it.",
+    "conclusion": "no",
+    "cited": [
+      0,
+      1,
+      2
+    ]
+  }
+}

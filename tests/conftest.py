@@ -100,3 +100,14 @@ def conn(seeded_db):
 def embedded(seeded_db) -> None:
     if not seeded_db:
         pytest.skip("no embeddings recorded; run `pytest --record` once with API keys")
+
+
+# ── eval results ─────────────────────────────────────────────────────────────────
+
+@pytest.fixture(scope="session")
+def results():
+    from tests.eval.report import Results
+
+    r = Results()
+    yield r
+    r.write()

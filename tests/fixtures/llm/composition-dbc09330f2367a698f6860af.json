@@ -64,32 +64,32 @@
     "max_tokens": 1500
   },
   "response": {
-    "summary": "Under 3.A.6, a new portfolio must be included in a composite on a timely and consistent basis, and no later than the beginning of the first full calendar month after it comes under management.",
+    "summary": "Under 3.A.6, a new portfolio must be included in a composite on a timely and consistent basis, and no later than the beginning of the first full calendar month after the portfolio comes under management.",
     "conclusion": "yes",
     "claims": [
       {
-        "text": "A new portfolio must be included in a composite no later than the beginning of the first full calendar month after the portfolio comes under management (3.A.6).",
+        "text": "Under 3.A.6, a new portfolio must be included in a composite no later than the beginning of the first full calendar month after it comes under management.",
         "cites": [
           "prov:composite-inclusion-timing@E2025"
         ],
         "kind": "conclusion"
       },
       {
-        "text": "Inclusion must also be on a timely and consistent basis (3.A.6).",
+        "text": "Under 3.A.6, inclusion must also be on a timely and consistent basis.",
         "cites": [
           "prov:composite-inclusion-timing@E2025"
         ],
         "kind": "requirement"
       },
       {
-        "text": "Firms must document the inclusion date applied for each composite (3.A.6).",
+        "text": "Under 3.A.6, firms must document the inclusion date applied for each composite.",
         "cites": [
           "prov:composite-inclusion-timing@E2025"
         ],
         "kind": "requirement"
       },
       {
-        "text": "A composite is an aggregation of one or more portfolios managed according to a similar investment mandate, objective, or strategy (1.D.1).",
+        "text": "Under 1.D.1, a composite is an aggregation of one or more portfolios managed according to a similar investment mandate, objective, or strategy.",
         "cites": [
           "def:composite@E2025"
         ],

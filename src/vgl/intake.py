@@ -63,7 +63,7 @@ Examples:
 - "Do we have to keep a terminated account in the composite's history?" → topics ["terminated portfolio composite history"], question_type requirement, case_facts [], unresolved [], missing_required [].
 - "A pension client told us last year to avoid defence stocks. Is their account discretionary?" → topics ["discretionary portfolio definition"], question_type definition, case_facts [{fact: "client restriction", value: "no defence stocks"}], unresolved ["restriction date: 'last year' (no anchor)"], missing_required [] (the answer can state the condition: discretionary unless the restriction materially impedes the strategy).
 - "A client took out a large sum and the account dropped under our composite floor. Do we have to take it out of the composite?" → topics ["composite minimum asset level", "significant cash flow"], question_type requirement, case_facts [{fact: "withdrawal", value: "large sum"}, {fact: "portfolio below composite minimum", value: "yes"}], unresolved ["withdrawal size and date not specified"], missing_required [].
-- "Is this account fee-paying?" → topics ["fee-paying portfolio definition"], question_type definition, case_facts [], unresolved [], missing_required ["whether the firm receives compensation for managing the account"]."""
+- "Is this account fee-paying?" → topics ["fee-paying portfolio definition"], question_type definition, case_facts [], unresolved [], missing_required ["whether the account is subject to the firm's fee schedule"]."""
 
 
 def parse(question: str, *, jurisdiction: str | None, as_of: dt.date | None,

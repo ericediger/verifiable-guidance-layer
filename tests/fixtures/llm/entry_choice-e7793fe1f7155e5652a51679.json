@@ -3,7 +3,7 @@
     "provider": "anthropic",
     "model": "claude-sonnet-5-5",
     "system": "You are given a compliance question and a shortlist of items from a table of contents of investment performance standards (provisions, definitions, interpretive guidance, rulings). Choose the one to three items the question PRIMARILY turns on — the ones a compliance officer would open first.\n\nRules:\n- Pick from the shortlist only, by concept_id. Pick nothing if no item plausibly addresses the question.\n- Prefer the provision that states the rule. Add a definition only when the question hinges on what a term means (e.g. whether an account is \"discretionary\").\n- Pick interpretive guidance or a ruling only when the question is specifically about the subject in its title. Do not pick it because it mentions a word in the question.\n- Fewer is better. One item is the usual answer; three is the maximum.",
-    "user": "Question: A client withdrew 40% last month and the portfolio is now below our composite minimum. Must we remove it?\nTopics: composite minimum asset level, significant cash flow, portfolio removal from composite\n\nShortlist:\n- gs:GS-2025-02 — Guidance Statement GS-2025-02 — Composite Minimums (guidance)\n- prov:composite-minimum — Composite minimum asset level (provision)\n- prov:non-fee-paying-inclusion — Inclusion of non-fee-paying portfolios (provision)\n- prov:composite-inclusion-timing — Timing of new portfolio inclusion (provision)\n- def:external-cash-flow — External cash flow (definition)\n- prov:composite-inclusion-all-discretionary — Inclusion of all fee-paying discretionary portfolios (provision)\n- prov:terminated-portfolio-inclusion — Terminated portfolios retained in history (provision)\n- def:significant-cash-flow — Significant cash flow (definition)",
+    "user": "Question: A client bars us from buying tobacco stocks; the portfolio otherwise follows the strategy. Must it be in a composite?\nTopics: discretionary portfolio definition, composite inclusion requirement, client-imposed restrictions\n\nShortlist:\n- def:discretionary-portfolio — Discretionary portfolio (definition)\n- gs:GS-2025-02 — Guidance Statement GS-2025-02 — Composite Minimums (guidance)\n- prov:non-fee-paying-inclusion — Inclusion of non-fee-paying portfolios (provision)\n- prov:composite-inclusion-all-discretionary — Inclusion of all fee-paying discretionary portfolios (provision)\n- def:composite — Composite (definition)\n- def:portfolio — Portfolio (definition)\n- def:significant-cash-flow — Significant cash flow (definition)\n- prov:composite-inclusion-timing — Timing of new portfolio inclusion (provision)",
     "schema_name": "entry_choice",
     "schema": {
       "type": "object",
@@ -29,8 +29,9 @@
   },
   "response": {
     "entry_concepts": [
-      "prov:composite-minimum"
+      "prov:composite-inclusion-all-discretionary",
+      "def:discretionary-portfolio"
     ],
-    "reason": "The question is whether a portfolio that falls below the composite minimum asset level after a client withdrawal must be removed from the composite. The composite minimum provision states the rule. It governs whether portfolios below the minimum are included or removed, and whether they stay in when they fall below it. The guidance statement on composite minimums and the significant cash flow definition are related, but the question does not turn on them."
+    "reason": "The question asks whether a portfolio with a client-imposed restriction (no tobacco) must be in a composite. The provision requiring all fee-paying discretionary portfolios to be included states the rule. The definition of discretionary portfolio is needed because the answer depends on whether the restriction makes the portfolio non-discretionary."
   }
 }

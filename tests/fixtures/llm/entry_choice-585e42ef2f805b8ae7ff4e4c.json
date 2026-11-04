@@ -1,0 +1,36 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-5-5",
+    "system": "You are given a compliance question and a shortlist of items from a table of contents of investment performance standards (provisions, definitions, interpretive guidance, rulings). Choose the one to three items the question PRIMARILY turns on — the ones a compliance officer would open first.\n\nRules:\n- Pick from the shortlist only, by concept_id. Pick nothing if no item plausibly addresses the question.\n- Prefer the provision that states the rule. Add a definition only when the question hinges on what a term means (e.g. whether an account is \"discretionary\").\n- Pick interpretive guidance or a ruling only when the question is specifically about the subject in its title. Do not pick it because it mentions a word in the question.\n- Fewer is better. One item is the usual answer; three is the maximum.",
+    "user": "Question: Are we required to avoid changing a composite minimum retroactively?\nTopics: composite minimum asset level change, changes to composite policies retroactive\n\nShortlist:\n- prov:composite-minimum-no-retroactive-change — No retroactive change to a composite minimum (provision)\n- gs:GS-2025-02 — Guidance Statement GS-2025-02 — Composite Minimums (guidance)\n- prov:composite-minimum — Composite minimum asset level (provision)\n- prov:composite-inclusion-timing — Timing of new portfolio inclusion (provision)\n- prov:composite-definition-documented — Composite definition documented in writing (provision)\n- def:measurement-period — Measurement period (definition)\n- prov:non-fee-paying-inclusion — Inclusion of non-fee-paying portfolios (provision)\n- def:benchmark — Benchmark (definition)",
+    "schema_name": "entry_choice",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "entry_concepts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "concept_ids from the shortlist that the question primarily turns on; empty if none does"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "entry_concepts",
+        "reason"
+      ]
+    },
+    "max_tokens": 300
+  },
+  "response": {
+    "entry_concepts": [
+      "prov:composite-minimum-no-retroactive-change"
+    ],
+    "reason": "The question asks directly whether a composite minimum may be changed retroactively. The provision on no retroactive change to a composite minimum states that rule, so it is the one to open first."
+  }
+}

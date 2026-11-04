@@ -1,0 +1,52 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-opus-5-5",
+    "system": "You are an assistant for compliance professionals. Answer the question using the numbered passages from the organisation's published standards and guidance. Be direct and specific, cite the passages you rely on by index, and give a clear conclusion.",
+    "user": "Question: Can we include non-fee-paying portfolios in a composite?\n\nPassages:\n\n[0] (GSB Standards, Edition 2021 — Section 3 — Composite Construction)\n**3.A.2** Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.\n\n[1] (GSB Standards, Edition 2025 — Section 3 — Composite Construction)\n**3.A.2** Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.\n\n[2] (GSB Standards, Edition 2021 — Section 3 — Composite Construction)\n**3.A.1** All actual, fee-paying, discretionary portfolios must be included in at least one composite.\n\n[3] (GSB Standards, Edition 2025 — Section 3 — Composite Construction)\n**3.A.1** All actual, fee-paying, discretionary portfolios must be included in at least one composite.\n\n[4] (GSB Standards, Edition 2025 — Section 3 — Composite Construction)\n**3.A.6** New portfolios must be included in a composite on a timely and consistent basis, and no later than the beginning of the first full calendar month after the portfolio comes under management. Firms must document the inclusion date applied for each composite.\n\n[5] (GSB Standards, Edition 2021 — Section 1 — Definitions)\n**1.D.5 Fee-paying portfolio.** A fee-paying portfolio is one that is subject to the firm's investment management fee schedule, whether or not the fee is paid directly from the portfolio and whether or not the fee is reduced or waived in whole or in part.",
+    "schema_name": "naive_answer",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "answer": {
+          "type": "string",
+          "description": "A direct, professional answer in 2–5 sentences."
+        },
+        "conclusion": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "no",
+            "depends",
+            "not_covered"
+          ]
+        },
+        "cited": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "description": "Indexes of the passages relied on."
+        }
+      },
+      "required": [
+        "answer",
+        "conclusion",
+        "cited"
+      ]
+    },
+    "max_tokens": 800
+  },
+  "response": {
+    "answer": "Yes. Non-fee-paying discretionary portfolios may be included in a composite; this permission is unchanged between the 2021 and 2025 editions. If you include them, you must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end. Inclusion is optional, unlike actual, fee-paying, discretionary portfolios, which must be included in at least one composite. Note that under the 2021 definition, a portfolio subject to your fee schedule counts as fee-paying even if the fee is reduced or waived, so confirm the classification before treating a portfolio as non-fee-paying.",
+    "conclusion": "yes",
+    "cited": [
+      0,
+      1,
+      2,
+      3,
+      5
+    ]
+  }
+}

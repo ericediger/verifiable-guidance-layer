@@ -24,8 +24,11 @@
     forbidden_flags: [unresolved_reference, pending_adoption]
     summary_contains_any: ["first full calendar month", "first full month"]
   naive:
-    failure_if_cites_any: [prov:composite-inclusion-timing@E2021]
-    failure_if_answer_contains_any: ["second full"]
+    failure_if_answer_lacks_all: ["first full"]
+    note: >-
+      the baseline often states the current rule correctly here because "current" happens
+      to coincide with the as-of date; it has no way to know that, and G2 and G7 show what
+      happens when it does not
 
 - id: G2
   name: Jurisdiction branch
@@ -56,13 +59,13 @@
   entry_concepts: [prov:composite-inclusion-all-discretionary, def:discretionary-portfolio]
   expect:
     answered: true
-    conclusion_in: [yes, depends]
+    conclusion_in: ["yes", depends]
     must_cite: [def:discretionary-portfolio@E2025]
     must_not_cite: [def:discretionary-portfolio@E2021]
     forbidden_flags: [unresolved_reference]
   naive:
     failure_if_cites_any: [def:discretionary-portfolio@E2021]
-    failure_if_conclusion_in: [no]
+    failure_if_conclusion_in: ["no"]
     note: the old definition made any client restriction non-discretionary
 
 - id: G4a
@@ -79,7 +82,7 @@
     must_cite: [prov:composite-minimum@E2025]
     gap_concepts: [ruling:QA-2025-031]
   naive:
-    failure_if_conclusion_in: [yes]
+    failure_if_conclusion_in: ["yes"]
     note: the baseline says "remove it" with confidence; it does not know what it does not hold
 
 - id: G4b
@@ -93,13 +96,13 @@
   entry_concepts: [prov:composite-minimum]
   expect:
     answered: true
-    conclusion_in: [no, depends]
+    conclusion_in: ["no", depends]
     required_flags: [carve_out]
     forbidden_flags: [unresolved_reference]
     must_cite: [ruling:QA-2025-031@v1]
     summary_contains_any: ["three", "3 "]
   naive:
-    failure_if_conclusion_in: [yes]
+    failure_if_conclusion_in: ["yes"]
 
 - id: G5
   name: No coverage
@@ -113,7 +116,7 @@
     outcome: REVIEW
     max_claims: 1
   naive:
-    failure_if_conclusion_in: [yes, no, depends]
+    failure_if_conclusion_in: ["yes", "no", depends]
     note: the baseline fabricates an answer from whatever passages it found
 
 - id: G6
@@ -128,7 +131,7 @@
     outcome: CLARIFY
     clarifications_mention_any: [discretionary, fee-paying]
   naive:
-    failure_if_conclusion_in: [yes, no]
+    failure_if_conclusion_in: ["yes", "no"]
     note: the baseline answers anyway
 
 - id: G7
@@ -159,11 +162,11 @@
   entry_concepts: [prov:composite-description-on-request]
   expect:
     answered: true
-    conclusion_in: [yes]
+    conclusion_in: ["yes"]
     must_cite: [prov:composite-description-on-request@E2025]
     forbidden_flags: [unresolved_reference]
   naive:
-    failure_if_conclusion_in: [no, not_covered]
+    failure_if_conclusion_in: ["no", not_covered]
 
 - id: G9
   name: Straightforward permission with a disclosure condition
@@ -175,11 +178,11 @@
   entry_concepts: [prov:non-fee-paying-inclusion]
   expect:
     answered: true
-    conclusion_in: [yes, depends]
+    conclusion_in: ["yes", depends]
     must_cite: [prov:non-fee-paying-inclusion@E2025]
     summary_contains_any: [disclos, percentage]
   naive:
-    failure_if_conclusion_in: [no, not_covered]
+    failure_if_conclusion_in: ["no", not_covered]
 
 - id: G10
   name: Obligation tier — recommendation, not requirement
@@ -191,11 +194,11 @@
   entry_concepts: [prov:composite-minimum-no-retroactive-change]
   expect:
     answered: true
-    conclusion_in: [no, depends]
+    conclusion_in: ["no", depends]
     must_cite: [prov:composite-minimum-no-retroactive-change@E2025]
     required_flags: [recommendation_not_requirement]
   naive:
-    failure_if_conclusion_in: [yes]
+    failure_if_conclusion_in: ["yes"]
     note: the baseline often reads "should" as "must"
 
 - id: G11a
@@ -209,13 +212,13 @@
   entry_concepts: [prov:composite-inclusion-all-discretionary, def:fee-paying-portfolio]
   expect:
     answered: true
-    conclusion_in: [yes, depends]
+    conclusion_in: ["yes", depends]
     must_cite: [def:fee-paying-portfolio@E2025]
     must_not_cite: [def:fee-paying-portfolio@E2025-A1]
     required_flags: [upcoming_amendment]
   naive:
     failure_if_cites_any: [def:fee-paying-portfolio@E2025-A1]
-    failure_if_conclusion_in: [no]
+    failure_if_conclusion_in: ["no"]
     note: the baseline has both texts and no dates; it may apply the amendment early
 
 - id: G11b
@@ -229,9 +232,9 @@
   entry_concepts: [prov:composite-inclusion-all-discretionary, def:fee-paying-portfolio]
   expect:
     answered: true
-    conclusion_in: [no, depends]
+    conclusion_in: ["no", depends]
     must_cite: [def:fee-paying-portfolio@E2025-A1]
     must_not_cite: [def:fee-paying-portfolio@E2025]
   naive:
     failure_if_cites_any: [def:fee-paying-portfolio@E2025]
-    failure_if_conclusion_in: [yes]
+    failure_if_conclusion_in: ["yes"]

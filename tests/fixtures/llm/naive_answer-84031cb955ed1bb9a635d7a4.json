@@ -1,0 +1,50 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-opus-5-5",
+    "system": "You are an assistant for compliance professionals. Answer the question using the numbered passages from the organisation's published standards and guidance. Be direct and specific, cite the passages you rely on by index, and give a clear conclusion.",
+    "user": "Question: A client withdrew 40% last month and the portfolio is now below our composite minimum. Must we remove it?\n\nPassages:\n\n[0] (Q&A QA-2025-031 — Temporary breach of a composite minimum following a significant cash flow — Question)\nMust a portfolio be removed from a composite when it falls below the composite minimum solely because of a significant cash flow?\n\n[1] (Q&A QA-2025-031 — Temporary breach of a composite minimum following a significant cash flow — Answer)\nNo. Where the breach results solely from a significant cash flow, as defined in the firm's documented policy for the composite, the portfolio may remain in the composite for up to three full measurement periods following the cash flow, provided that the firm's documented composite policy provides for this treatment and the determination is documented at the time it is made. If the portfolio remains below the minimum at the end of that period, it must be removed.\n\n[2] (Guidance Statement GS-2025-02 — Composite Minimums — Guidance)\nProvision 3.A.7 requires that portfolios below a documented composite minimum not be included in the composite. Firms should assess each portfolio against the minimum at the beginning of each measurement period, using the valuation methodology documented in the composite policy. A portfolio that is above the minimum at the beginning of a measurement period is included for that period in its entirety.\n\n[3] (GSB Standards, Edition 2025 — Section 3 — Composite Construction)\n**3.A.7** If a firm sets a minimum asset level for portfolios to be included in a composite, the firm must not include portfolios below that minimum. Any such minimum must be documented and applied consistently.\n\n[4] (GSB Standards, Edition 2021 — Section 3 — Composite Construction)\n**3.A.5** If a firm sets a minimum asset level for portfolios to be included in a composite, the firm must not include portfolios below that minimum. Any such minimum must be documented and applied consistently.\n\n[5] (Guidance Statement GS-2025-02 — Composite Minimums — Guidance)\nWhere a portfolio falls below the minimum solely as a result of a significant cash flow, the Board has addressed the treatment of such temporary breaches in **Q&A QA-2025-031**.",
+    "schema_name": "naive_answer",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "answer": {
+          "type": "string",
+          "description": "A direct, professional answer in 2–5 sentences."
+        },
+        "conclusion": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "no",
+            "depends",
+            "not_covered"
+          ]
+        },
+        "cited": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "description": "Indexes of the passages relied on."
+        }
+      },
+      "required": [
+        "answer",
+        "conclusion",
+        "cited"
+      ]
+    },
+    "max_tokens": 800
+  },
+  "response": {
+    "answer": "Not necessarily. The general rule is that portfolios below a documented composite minimum must not be included (3.A.7), but where the breach results solely from a significant cash flow, as defined in your documented composite policy, the portfolio may remain in the composite for up to three full measurement periods after the cash flow. This applies only if your documented composite policy provides for this treatment and you document the determination at the time it is made. If the portfolio is still below the minimum at the end of that period, it must be removed. Whether you can retain it therefore depends on whether the 40% withdrawal meets your policy's significant cash flow definition and whether your policy permits this treatment.",
+    "conclusion": "depends",
+    "cited": [
+      1,
+      3,
+      5
+    ]
+  }
+}

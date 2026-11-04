@@ -11,10 +11,10 @@ submitted_by: editor:a.okafor
 submitted_role: Standards editor, GSB publications
 basis: GSB Board decision, published 3 November 2026; effective 1 December 2026
 rationale: >-
-  The Board has amended definition 1.D.6 to exclude related-party portfolios for which
-  all investment management fees are waived in full. Provision 3.A.1 depends on this
-  definition, so the amendment changes which portfolios must be included in a composite
-  without changing the text of 3.A.1.
+  Under 1.D.6 as published, a fee-waived portfolio is still fee-paying, so related-party
+  accounts with fees waived in full must be included in composites under 3.A.1. The Board
+  has amended 1.D.6 to exclude them. Provision 3.A.1 depends on this definition, so the
+  amendment changes which portfolios must be included without changing the text of 3.A.1.
 
 bundle:
   documents:
@@ -34,9 +34,9 @@ bundle:
       tier: authoritative
       obligation: definition
       text: >-
-        A fee-paying portfolio is one for which the firm receives compensation for
-        investment management services, whether or not the fee is paid directly from the
-        portfolio. Portfolios of related parties for which all investment management fees
-        are waived in full are not fee-paying portfolios.
+        A fee-paying portfolio is one that is subject to the firm's investment management
+        fee schedule, whether or not the fee is paid directly from the portfolio and whether
+        or not the fee is reduced in part. Portfolios of related parties for which all
+        investment management fees are waived in full are not fee-paying portfolios.
 
   edges: []

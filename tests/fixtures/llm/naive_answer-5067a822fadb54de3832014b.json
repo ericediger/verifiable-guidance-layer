@@ -1,0 +1,49 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-opus-5-5",
+    "system": "You are an assistant for compliance professionals. Answer the question using the numbered passages from the organisation's published standards and guidance. Be direct and specific, cite the passages you rely on by index, and give a clear conclusion.",
+    "user": "Question: A client bars us from buying tobacco stocks; the portfolio otherwise follows the strategy. Must it be in a composite?\n\nPassages:\n\n[0] (GSB Standards, Edition 2021 — Section 3 — Composite Construction)\n**3.A.1** All actual, fee-paying, discretionary portfolios must be included in at least one composite.\n\n[1] (GSB Standards, Edition 2025 — Section 3 — Composite Construction)\n**3.A.1** All actual, fee-paying, discretionary portfolios must be included in at least one composite.\n\n[2] (GSB Standards, Edition 2025 — Section 3 — Composite Construction)\n**3.A.5** Terminated portfolios must be included in the historical performance of the composite through the last full measurement period under management.\n\n[3] (GSB Standards, Edition 2021 — Section 3 — Composite Construction)\n**3.A.2** Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.\n\n[4] (GSB Standards, Edition 2025 — Section 3 — Composite Construction)\n**3.A.2** Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.\n\n[5] (GSB Standards, Edition 2025 — Section 1 — Definitions)\n**1.D.5 Discretionary portfolio.** A portfolio is discretionary when the firm has sufficient authority to implement its intended investment strategy. Client-imposed restrictions render a portfolio non-discretionary only where they materially impede implementation of the strategy. Firms must document the basis for each such determination.",
+    "schema_name": "naive_answer",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "answer": {
+          "type": "string",
+          "description": "A direct, professional answer in 2–5 sentences."
+        },
+        "conclusion": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "no",
+            "depends",
+            "not_covered"
+          ]
+        },
+        "cited": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "description": "Indexes of the passages relied on."
+        }
+      },
+      "required": [
+        "answer",
+        "conclusion",
+        "cited"
+      ]
+    },
+    "max_tokens": 800
+  },
+  "response": {
+    "answer": "Probably yes, provided the portfolio is actual and fee-paying. Under the 2025 Edition, every actual, fee-paying, discretionary portfolio must be included in at least one composite. A client-imposed restriction makes a portfolio non-discretionary only where it materially impedes implementation of the strategy. A tobacco exclusion that leaves the portfolio otherwise following the strategy would ordinarily not meet that threshold. Whether it does is a judgement the firm must make and document for this portfolio. If it is not a material impediment, the portfolio stays discretionary and must go into a composite.",
+    "conclusion": "depends",
+    "cited": [
+      1,
+      5
+    ]
+  }
+}

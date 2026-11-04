@@ -1,0 +1,115 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-opus-5-5",
+    "system": "You draft answers for compliance professionals strictly from the evidence provided.\n\nRules — these are absolute:\n1. Use only the EVIDENCE IN FORCE. Every claim must cite one or more of its version IDs, copied exactly (the text in square brackets). Never cite anything else and never invent an ID.\n2. No outside knowledge. If the evidence does not address the question, set conclusion to \"not_covered\" and say so in one claim citing the closest evidence.\n3. The jurisdiction and as-of date are fixed. Answer for that place and that date only. Do not apply or speculate about material described as upcoming or not yet in force.\n4. Material marked NOT HELD is a known reference the system does not have the text of. Do not guess its contents. If it is relevant to the question, say in a caveat that it exists and has not been reviewed.\n5. Material marked PRACTITIONER NOTE is context only. It cannot be cited and must not be presented as a requirement.\n6. Where an exception or carve-out is in the evidence and could apply to the facts given, state the condition under which it applies as a \"condition\" claim.\n7. Write the first claim as the conclusion (kind \"conclusion\"). Keep every claim short and atomic — one point, one citation set. Use the display reference (e.g. 3.A.6) in the prose and the version ID in cites.\n8. Distinguish \"must\" (requirement) from \"should\" (recommendation) exactly as the evidence does.",
+    "user": "Question: Can we include non-fee-paying portfolios in a composite?\nJurisdiction: JN\nAs of: 2025-06-01\n\nEVIDENCE IN FORCE (citable):\n- [prov:non-fee-paying-inclusion@E2025] 3.A.2 — provision, authoritative, obligation: must; GSB Standards, Edition 2025; in force from 2025-01-01\n    Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end.\n- [def:composite@E2025] 1.D.1 — definition, authoritative, obligation: definition; GSB Standards, Edition 2025; in force from 2025-01-01\n    A composite is an aggregation of one or more portfolios managed according to a similar investment mandate, objective, or strategy.\n- [def:discretionary-portfolio@E2025] 1.D.5 — definition, authoritative, obligation: definition; GSB Standards, Edition 2025; in force from 2025-01-01\n    A portfolio is discretionary when the firm has sufficient authority to implement its intended investment strategy. Client-imposed restrictions render a portfolio non-discretionary only where they materially impede implementation of the strategy. Firms must document the basis for each such determination.\n- [def:fee-paying-portfolio@E2025] 1.D.6 — definition, authoritative, obligation: definition; GSB Standards, Edition 2025; in force from 2025-01-01\n    A fee-paying portfolio is one that is subject to the firm's investment management fee schedule, whether or not the fee is paid directly from the portfolio and whether or not the fee is reduced or waived in whole or in part.",
+    "schema_name": "composition",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "One sentence answering the question directly."
+        },
+        "conclusion": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "no",
+            "depends",
+            "not_covered"
+          ]
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "cites": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "conclusion",
+                  "requirement",
+                  "condition",
+                  "caveat"
+                ]
+              }
+            },
+            "required": [
+              "text",
+              "cites",
+              "kind"
+            ]
+          }
+        }
+      },
+      "required": [
+        "summary",
+        "conclusion",
+        "claims"
+      ]
+    },
+    "max_tokens": 1500
+  },
+  "response": {
+    "summary": "Yes — under 3.A.2, non-fee-paying discretionary portfolios may be included in a composite, provided the firm discloses the percentage of composite assets they represent as of each annual period end.",
+    "conclusion": "yes",
+    "claims": [
+      {
+        "text": "Under 3.A.2, non-fee-paying discretionary portfolios may be included in a composite.",
+        "cites": [
+          "prov:non-fee-paying-inclusion@E2025"
+        ],
+        "kind": "conclusion"
+      },
+      {
+        "text": "Where such portfolios are included, the firm must disclose the percentage of composite assets they represent as of each annual period end.",
+        "cites": [
+          "prov:non-fee-paying-inclusion@E2025"
+        ],
+        "kind": "requirement"
+      },
+      {
+        "text": "The permission in 3.A.2 covers only discretionary portfolios. Under 1.D.5, a portfolio is discretionary when the firm has sufficient authority to implement its intended investment strategy.",
+        "cites": [
+          "prov:non-fee-paying-inclusion@E2025",
+          "def:discretionary-portfolio@E2025"
+        ],
+        "kind": "condition"
+      },
+      {
+        "text": "Client-imposed restrictions make a portfolio non-discretionary only where they materially impede implementation of the strategy. The firm must document the basis for each such determination.",
+        "cites": [
+          "def:discretionary-portfolio@E2025"
+        ],
+        "kind": "requirement"
+      },
+      {
+        "text": "Under 1.D.6, a portfolio subject to the firm's fee schedule is still fee-paying even if the fee is reduced or waived in whole or in part, or is not paid directly from the portfolio. Such portfolios would not count toward the non-fee-paying disclosure.",
+        "cites": [
+          "def:fee-paying-portfolio@E2025"
+        ],
+        "kind": "caveat"
+      },
+      {
+        "text": "Under 1.D.1, a composite aggregates portfolios managed to a similar investment mandate, objective, or strategy. Any non-fee-paying portfolio included must therefore fit the composite's mandate.",
+        "cites": [
+          "def:composite@E2025"
+        ],
+        "kind": "condition"
+      }
+    ]
+  }
+}

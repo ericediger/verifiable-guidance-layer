@@ -1,0 +1,66 @@
+{
+  "request": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-5-5",
+    "system": "You check whether short claims are faithful to the source texts they cite.\n\nThe claims form one answer and are read together: a condition or exception stated in another claim does not need to be repeated, and a claim that summarises part of a text is faithful if that part is accurate. Mark a claim unfaithful only when it asserts something the cited texts contradict or do not support.\n\nFor each claim, answer: does the claim follow from the cited texts alone, without adding, narrowing, or changing anything they say? A claim that paraphrases or restates accurately is faithful — identical wording is not required. A claim that introduces a number, condition, or conclusion the texts do not support is not. Each cited text is labelled with its reference (e.g. \"3.A.6\") and title; a claim may use that label. Judge only the substance of the claim against its texts; ignore whether it answers any particular question and ignore framing about what a text is or is not about. Give a one-sentence reason.",
+    "user": "Claim 0: Under 3.A.4, new portfolios must be included in a composite no later than the beginning of the second full calendar month after the portfolio comes under management.\n  Cited texts:\n    [prov:composite-inclusion-timing@E2021] 3.A.4 Timing of new portfolio inclusion: New portfolios must be included in a composite on a timely and consistent basis, and no later than the beginning of the second full calendar month after the portfolio comes under management, unless the composite-specific policy documented by the firm specifies an earlier date.\n\nClaim 1: Under 3.A.4, inclusion must also be on a timely and consistent basis.\n  Cited texts:\n    [prov:composite-inclusion-timing@E2021] 3.A.4 Timing of new portfolio inclusion: New portfolios must be included in a composite on a timely and consistent basis, and no later than the beginning of the second full calendar month after the portfolio comes under management, unless the composite-specific policy documented by the firm specifies an earlier date.\n\nClaim 2: If the firm's documented composite-specific policy specifies an earlier date, that earlier date applies instead of the two-month outer limit in 3.A.4.\n  Cited texts:\n    [prov:composite-inclusion-timing@E2021] 3.A.4 Timing of new portfolio inclusion: New portfolios must be included in a composite on a timely and consistent basis, and no later than the beginning of the second full calendar month after the portfolio comes under management, unless the composite-specific policy documented by the firm specifies an earlier date.\n\nClaim 3: Under 1.D.1, a composite is an aggregation of one or more portfolios managed according to a similar investment mandate, objective, or strategy.\n  Cited texts:\n    [def:composite@E2021] 1.D.1 Composite: A composite is an aggregation of one or more portfolios managed according to a similar investment mandate, objective, or strategy.",
+    "schema_name": "judge_verdicts",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "verdicts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "index": {
+                "type": "integer"
+              },
+              "faithful": {
+                "type": "boolean"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "index",
+              "faithful",
+              "reason"
+            ]
+          }
+        }
+      },
+      "required": [
+        "verdicts"
+      ]
+    },
+    "max_tokens": 1200
+  },
+  "response": {
+    "verdicts": [
+      {
+        "index": 0,
+        "faithful": false,
+        "reason": "The claim states the second-full-calendar-month deadline as unconditional, but 3.A.4 applies it only unless the firm's composite-specific policy specifies an earlier date; the claim omits this exception, so it overstates the rule."
+      },
+      {
+        "index": 1,
+        "faithful": true,
+        "reason": "3.A.4 expressly requires inclusion on a timely and consistent basis."
+      },
+      {
+        "index": 2,
+        "faithful": true,
+        "reason": "The text says the outer limit applies unless the documented composite-specific policy specifies an earlier date, so the earlier date governs."
+      },
+      {
+        "index": 3,
+        "faithful": true,
+        "reason": "The claim restates the 1.D.1 definition of a composite accurately."
+      }
+    ]
+  }
+}

@@ -64,11 +64,11 @@
     "max_tokens": 1500
   },
   "response": {
-    "summary": "The evidence in force does not address how staking rewards on digital assets are treated in composite returns; it only defines gross-of-fees return.",
+    "summary": "The evidence provided does not address how staking rewards on digital assets are treated in composite returns; it contains only the definition of gross-of-fees return.",
     "conclusion": "not_covered",
     "claims": [
       {
-        "text": "The evidence does not address the treatment of staking rewards on digital assets in composite returns. The closest provision, 1.D.7, only defines gross-of-fees return as the return on investments reduced by transaction costs only.",
+        "text": "The evidence in force does not address the treatment of staking rewards on digital assets in composite returns; the closest provision, 1.D.7, only defines gross-of-fees return as the return on investments reduced by transaction costs only.",
         "cites": [
           "def:gross-of-fees-return@E2025"
         ],
