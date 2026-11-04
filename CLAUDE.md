@@ -27,7 +27,7 @@ answer changes, because a definition, exception, or ruling elsewhere has changed
   metaprogramming, no framework magic. Small files named for concepts.
 - **The spec is `docs/00-corpus-spec.md`.** If code and spec disagree, stop and fix the
   spec first, then the code.
-- **The gold set is the spec for behaviour.** `tests/eval/gold.yaml` defines what correct
+- **The gold set is the spec for behaviour.** `data/gold.yaml` defines what correct
   means. Change it deliberately, in its own commit, with a reason.
 
 ## Deliverable mapping (from the brief)
@@ -40,7 +40,7 @@ answer changes, because a definition, exception, or ruling elsewhere has changed
 
 ## Stack (locked)
 
-- Python 3.12 · FastAPI · Pydantic v2 · SQLAlchemy Core (no ORM) · psycopg 3
+- Python 3.12 · FastAPI · Pydantic v2 · psycopg 3 with plain SQL (no ORM — the closure query is the system and should read as SQL)
 - PostgreSQL 16 + pgvector, via Docker Compose; recursive CTEs for closure
 - pytest as the test and eval harness
 - LLMs: Anthropic `claude-opus-5-5` composes, `claude-sonnet-5-5` judges and parses
@@ -57,14 +57,17 @@ README.md
 compose.yaml  Dockerfile  .env.example  pyproject.toml
 docs/        00-corpus-spec.md  01-architecture.md  03-decisions.md  diagrams/
 data/
+  gold.yaml  the gold set — the specification of correct behaviour, as data
   sources/   prose documents (what the body publishes; what naive RAG chunks)
-  graph/     structured seed: nodes.yaml  edges.yaml  jurisdictions.yaml  issued_answers.yaml
+  graph/     structured seed: nodes.yaml  edges.yaml  documents.yaml  jurisdictions.yaml  issued_answers.yaml
+  proposals/ the two bundles that arrive during the demo (Scene B, Scene A)
 src/vgl/
   contracts.py   Pydantic models: QueryFrame, Claim, EvidencePacket, Outcome, Answer
   db.py          connection + schema
   seed.py        load data/graph into Postgres; create Release 1
   intake.py      question → QueryFrame (LLM, structured; never infers date/jurisdiction)
-  search.py      hybrid entry-point retrieval
+  search.py      shortlist (FTS + pgvector, RRF) then choose_entries (LLM, validated against shortlist)
+  pipeline.py    ask(): intake → shortlist → choose → resolve → compose → verify (+judge)
   closure.py     deterministic as-of, per-jurisdiction traversal → EvidencePacket
   compose.py     EvidencePacket → structured claims (LLM)
   verify.py      rules V1–V6 + judge → Outcome
@@ -73,9 +76,11 @@ src/vgl/
   llm.py         single client with record/replay
   api.py         FastAPI app; serves demo/
 tests/
+  conftest.py    --live / --record / --repeat; tests run against <db>_test, never the demo db
   unit/          closure, verify, releases — deterministic, exact expectations
-  eval/          gold.yaml, test_gold.py, test_intake.py, test_baseline.py, report.py
-  fixtures/      recorded LLM responses
+  eval/          test_gold.py, test_baseline.py (records, never asserts), test_intake.py,
+                 expectations.py, report.py (writes docs/eval-report.md)
+  fixtures/      recorded model responses (llm/*.json) and embeddings.json
 demo/            index.html  app.js  styles.css
 ```
 
@@ -96,19 +101,29 @@ demo/            index.html  app.js  styles.css
 ```
 docker compose up --build          # Postgres + API + UI at http://localhost:8000
 docker compose run --rm app pytest # unit + eval (replay mode)
-docker compose run --rm app pytest --live --repeat 5   # evals against real APIs
-docker compose run --rm app python -m vgl.seed         # reseed to Release 1
+docker compose run --rm app pytest tests/eval --live --repeat 5   # evals against real APIs
+docker compose run --rm app python -m vgl.seed         # reseed to Release 1 (or POST /api/reset)
+# without Docker, from the repo root with a local Postgres:
+.venv/bin/python -m vgl.seed && .venv/bin/uvicorn vgl.api:app --port 8000
 ```
 
 ## Status
 
-- [x] Spec drafted (`docs/00-corpus-spec.md`)
-- [ ] Spec signed off
-- [ ] Schema + seed + Release 1
-- [ ] Closure + unit tests
-- [ ] Contracts + intake + compose + verify
-- [ ] Gold set + baseline + eval report
-- [ ] Releases: proposals, impact preview, publish
+- [x] Spec drafted and signed off (`docs/00-corpus-spec.md`)
+- [x] Schema + seed + Release 1
+- [x] Closure + unit tests
+- [x] Contracts + intake + compose + verify
+- [x] Gold set + baseline + eval report
+- [x] Releases: proposals, impact preview, publish
 - [ ] Demo UI
-- [ ] docs 01 and 03, diagram
-- [ ] Drill prep
+- [x] docs 01 and 03, diagram
+- [ ] Verified on the presenter's Mac with Docker
+- [ ] Drill prep (kept outside the repo)
+
+## Things that bit once
+
+- PyYAML parses unquoted `yes`/`no` as booleans — quote them in `gold.yaml`.
+- The structured-output API rejects `minItems`/`maxItems` on arrays; say it in the description.
+- Retrieval ties must be broken deterministically (identical texts across editions have
+  identical embeddings), or the rerank prompt — and therefore the replay key — drifts.
+- `git add -A` will happily commit an agent worktree under `.claude/`; it is ignored now.

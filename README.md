@@ -6,37 +6,106 @@ standards body's authoritative guidance and the AI systems that answer questions
 > A clause can remain word-for-word identical while the correct answer changes, because a
 > definition, exception, or ruling elsewhere has changed.
 
-Retrieval finds relevant text. This layer answers a different question: *does the text
-that was found actually support the conclusion, for this jurisdiction, on this date, given
-everything else that modifies it?* It does that by keeping truth in a deterministic,
-versioned, relationship-aware graph, using the LLM only for language, and verifying every
-composed claim against the graph before anything reaches the user. "The guidance doesn't
-cover this" is a first-class answer.
+Retrieval finds relevant text. This layer answers a different question: *does the text that
+was found actually support the conclusion, for this jurisdiction, on this date, given
+everything else that modifies it?* Truth lives in a deterministic, versioned,
+relationship-aware graph; language models handle language; nothing reaches a person
+unverified. "The guidance doesn't cover this" is a first-class answer.
 
-## Status
-
-**Specification stage.** See [`docs/00-corpus-spec.md`](docs/00-corpus-spec.md) — the
-fictional corpus, its deliberate traps, the outcome contract, the gold set, and the demo
-script. Code follows the spec, not the other way round.
+![Architecture](docs/diagrams/architecture.svg)
 
 ## Deliverables
 
-| | Brief requirement | Location |
+| | Brief requirement | Where |
 |---|---|---|
-| 01 | Architecture for a PoC, and 0→1 | `docs/01-architecture.md` *(pending)* |
-| 02 | Something concrete | `src/`, `data/`, `tests/`, `demo/` *(pending)* |
-| 03 | Design choices and rationale | `docs/03-decisions.md` *(pending)* |
+| **01** | Architecture for a PoC, and 0 → 1 | [`docs/01-architecture.md`](docs/01-architecture.md) |
+| **02** | Something concrete | This repository: `docker compose up` and ask it a question. Evidence in [`docs/eval-report.md`](docs/eval-report.md) |
+| **03** | Design choices and rationale | [`docs/03-decisions.md`](docs/03-decisions.md), and the commit history |
 
-## Running it
+The specification everything was built to: [`docs/00-corpus-spec.md`](docs/00-corpus-spec.md).
+
+## Run it
 
 ```
-cp .env.example .env     # add ANTHROPIC_API_KEY and OPENAI_API_KEY
-docker compose up --build
-open http://localhost:8000
+cp .env.example .env          # add ANTHROPIC_API_KEY and OPENAI_API_KEY
+docker compose up --build     # Postgres 16 + pgvector, and the app
+open http://localhost:8000    # the demo; API docs at /docs; health at /api/health
 ```
 
-*(Compose files land with the first code commit.)*
+First start seeds Release 1 (40 clause versions, 19 edges, 2 pending proposals). Everything
+in the corpus is fictional — a *Global Standards Board* shaped like a real standards body,
+with nothing copied from any real standard.
 
-## Working conventions
+## Test it
 
-See [`CLAUDE.md`](CLAUDE.md).
+```
+docker compose run --rm app pytest                       # unit + evals, replayed from fixtures; no network
+docker compose run --rm app pytest tests/unit            # the deterministic core alone (< 2 s)
+docker compose run --rm app pytest tests/eval --live     # evals against the real models
+docker compose run --rm app pytest tests/eval --live --repeat 5   # rates, not pass/fail
+```
+
+Tests use their own database (`vgl_test`) and never touch the demo's. The eval session
+writes [`docs/eval-report.md`](docs/eval-report.md). The gold set is
+[`data/gold.yaml`](data/gold.yaml): *the gold set is the spec*.
+
+## What the demo shows
+
+1. **The traps.** Three questions naive RAG gets wrong in ways that matter — a superseded
+   clause, a provision whose meaning moved because a *definition* changed, a carve-out the
+   system knows it does not hold — answered with citations to the versions in force, or
+   routed for review with the gap named. Side by side with ordinary document RAG over the
+   same documents with the same model.
+2. **Scene B — the system learns something.** A practitioner proposes the missing Q&A. The
+   editor sees the source, the proposed edges, their provenance, and an **impact preview**:
+   the gold cases that would change and the client answers that would expire. Approve →
+   Release 2. The same question now answers; open Release 1 and it still says REVIEW.
+3. **Scene A — the regulation changes.** An amendment to a definition is published. No
+   provision changes. The impact preview names the provisions that depend on it and the
+   client answer from March that becomes stale on the effective date — with the client's
+   reference.
+4. **Jurisdiction.** The same question, a different place, a different answer, a pending
+   adoption flagged, a practitioner note surfaced and labelled.
+
+The drill question the two scenes answer: *did the regulation change, or did your system
+learn something it should already have known?* Scene A, Scene B, and the release history
+to prove which.
+
+## How it works, in one screen
+
+```
+question + jurisdiction + as-of
+   → intake        (model: topics, case facts, missing facts — never a date or place)
+   → shortlist     (full-text + vector, recall)
+   → choose        (model picks entry concepts from titles; validated against the shortlist)
+   → RESOLVE       (deterministic: versions in force here on this date, their definitions,
+                    interpretations, carve-outs, notes — and every reference that resolves to nothing)
+   → compose       (model writes claims bound to version IDs, from the packet only)
+   → VERIFY        (deterministic: V1–V6; removes, flags, or refuses)
+   → judge         (second model; may add a soft flag, never clears a check)
+   → ANSWER · ANSWER_WITH_FLAGS · CLARIFY · REVIEW
+```
+
+Knowledge changes only through a proposal → impact preview → editor → immutable release.
+
+## Honest results
+
+From the generated report, on this corpus: 13/13 gold cases pass; 100% of composed claims
+grounded; 0 stale citations reach a user; 100% closure recall; abstention precision and
+recall 100%. The baseline — ordinary RAG over the same prose with the same model — gets most
+ordinary questions right and fails **every** question that depends on *when* or *where*,
+without any way to say which. The layer's advantage is not more right answers on easy
+questions; it is zero unflagged wrong answers, and knowing when not to answer.
+
+## Layout
+
+```
+docs/        00 spec · 01 architecture · 03 decisions · eval-report · diagrams/
+data/        sources/ (prose) · graph/ (structured seed) · proposals/ · gold.yaml
+src/vgl/     contracts · db · schema.sql · seed · search · closure · intake · compose
+             verify · releases · naive · llm · pipeline · api · config
+tests/       unit/ (deterministic) · eval/ (gold, baseline, intake, report) · fixtures/
+demo/        the page
+```
+
+Working conventions for anyone (or any agent) editing this repo: [`CLAUDE.md`](CLAUDE.md).
