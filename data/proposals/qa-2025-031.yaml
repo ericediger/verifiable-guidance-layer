@@ -1,0 +1,58 @@
+# SCENE B — "the system learns something it should already have known."
+#
+# A practitioner proposes the Q&A that GS-2025-02 references but the graph does not
+# hold. On approval this becomes Release 2. Nothing in Release 1 changes.
+id: prop:QA-2025-031
+title: Add Q&A QA-2025-031 (temporary breach of a composite minimum) and link it to 3.A.7
+kind: new_source
+submitted_by: practitioner:m.delacroix
+submitted_role: Compliance lead, verification practice (JN)
+basis: GSB Interpretations Committee publication, 15 April 2025 (GSB Q&A database entry 2025-031)
+rationale: >-
+  Guidance Statement GS-2025-02 refers firms to QA-2025-031 for the treatment of
+  portfolios that fall below a composite minimum solely because of a significant cash
+  flow. The layer currently returns REVIEW on that question because it does not hold
+  the Q&A. The Q&A was published on 15 April 2025 and carves out an exception to 3.A.7.
+
+bundle:
+  documents:
+    - id: doc:QA-2025-031
+      title: Q&A QA-2025-031 — Temporary breach of a composite minimum following a significant cash flow
+      tier: interpretive
+      published_on: 2025-04-15
+      effective_from: 2025-04-15
+      body_path: sources/QA-2025-031.md
+
+  nodes:
+    - concept_id: ruling:QA-2025-031
+      version_id: ruling:QA-2025-031@v1
+      display_ref: QA-2025-031
+      source_doc: doc:QA-2025-031
+      effective_from: 2025-04-15
+      tier: interpretive
+      obligation: n/a
+      parameters: {grace_period_months: 3}
+      text: >-
+        Question: Must a portfolio be removed from a composite when it falls below the
+        composite minimum solely because of a significant cash flow? Answer: No. Where the
+        breach results solely from a significant cash flow, as defined in the firm's
+        documented policy for the composite, the portfolio may remain in the composite for
+        up to three full measurement periods following the cash flow, provided that the
+        firm's documented composite policy provides for this treatment and the
+        determination is documented at the time it is made. If the portfolio remains below
+        the minimum at the end of that period, it must be removed. This treatment is
+        available only where the cause of the breach is a significant cash flow. A
+        portfolio that falls below the minimum through market movement or through a
+        series of cash flows that do not individually meet the firm's significant cash
+        flow threshold must be removed in accordance with 3.A.7.
+
+  edges:
+    - {kind: CARVED_OUT_BY, from: prov:composite-minimum, to: ruling:QA-2025-031,
+       asserted_by: practitioner:m.delacroix, basis: proposal,
+       source_passage: "the portfolio may remain in the composite for up to three full measurement periods following the cash flow"}
+    - {kind: DEPENDS_ON_DEFINITION, from: ruling:QA-2025-031, to: def:significant-cash-flow,
+       asserted_by: practitioner:m.delacroix, basis: proposal,
+       source_passage: "solely because of a significant cash flow"}
+    - {kind: DEPENDS_ON_DEFINITION, from: ruling:QA-2025-031, to: def:measurement-period,
+       asserted_by: practitioner:m.delacroix, basis: proposal,
+       source_passage: "up to three full measurement periods"}

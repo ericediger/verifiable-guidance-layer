@@ -1,0 +1,42 @@
+# SCENE A — "the regulation changed."
+#
+# The Board publishes Amendment 2025-A1, narrowing the definition of a fee-paying
+# portfolio. No Section 3 provision changes, yet 3.A.1's effect changes for fee-waived
+# related-party accounts — and a previously issued answer (IA-0001) becomes stale.
+# On approval this becomes Release 3.
+id: prop:A1
+title: Publish Amendment 2025-A1 — revised definition 1.D.6 (fee-paying portfolio)
+kind: amendment
+submitted_by: editor:a.okafor
+submitted_role: Standards editor, GSB publications
+basis: GSB Board decision, published 3 November 2026; effective 1 December 2026
+rationale: >-
+  The Board has amended definition 1.D.6 to exclude related-party portfolios for which
+  all investment management fees are waived in full. Provision 3.A.1 depends on this
+  definition, so the amendment changes which portfolios must be included in a composite
+  without changing the text of 3.A.1.
+
+bundle:
+  documents:
+    - id: doc:A1
+      title: Amendment 2025-A1 to the GSB Standards, Edition 2025 — Definitions
+      tier: authoritative
+      published_on: 2026-11-03
+      effective_from: 2026-12-01
+      body_path: sources/A1.md
+
+  nodes:
+    - concept_id: def:fee-paying-portfolio
+      version_id: def:fee-paying-portfolio@E2025-A1
+      display_ref: 1.D.6
+      source_doc: doc:A1
+      effective_from: 2026-12-01
+      tier: authoritative
+      obligation: definition
+      text: >-
+        A fee-paying portfolio is one for which the firm receives compensation for
+        investment management services, whether or not the fee is paid directly from the
+        portfolio. Portfolios of related parties for which all investment management fees
+        are waived in full are not fee-paying portfolios.
+
+  edges: []

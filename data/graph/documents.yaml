@@ -1,0 +1,45 @@
+# Published instruments visible in Release 1. Prose lives under data/sources/.
+# QA-2025-031 and Amendment 2025-A1 are deliberately absent: they arrive via proposals.
+documents:
+  - id: doc:E2021
+    title: GSB Standards, Edition 2021
+    tier: authoritative
+    published_on: 2020-06-30
+    effective_from: 2021-01-01
+    body_path: sources/E2021.md
+
+  - id: doc:E2025
+    title: GSB Standards, Edition 2025
+    tier: authoritative
+    published_on: 2024-06-30
+    effective_from: 2025-01-01
+    body_path: sources/E2025.md
+
+  - id: doc:GS-2025-02
+    title: Guidance Statement GS-2025-02 — Composite Minimums
+    tier: interpretive
+    published_on: 2025-02-15
+    effective_from: 2025-03-01
+    body_path: sources/GS-2025-02.md
+
+  - id: doc:JS-AN-2024-11
+    title: Jurisdiction South — Adoption Notice 2024-11
+    tier: authoritative
+    published_on: 2024-11-15
+    effective_from: 2024-11-15
+    body_path: sources/JS-AN-2024-11.md
+
+  - id: doc:PN-001
+    title: Practice Note PN-001 — Inclusion-timing policy wording in Jurisdiction South
+    tier: practitioner
+    published_on: 2025-05-27
+    effective_from: 2025-05-20
+    body_path: sources/PN-001.md
+
+# Jurisdiction-specific adoption. Absent a row, a document is in force everywhere
+# from its own effective_from. JS adopts Edition 2025 a year late.
+adoptions:
+  - document_id: doc:E2025
+    jurisdiction: JS
+    effective_from: 2026-01-01
+    source_doc: doc:JS-AN-2024-11

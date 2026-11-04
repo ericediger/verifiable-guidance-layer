@@ -1,0 +1,80 @@
+# Typed relationships between concepts — Release 1.
+#
+# Every edge names who asserted it and on what basis. "extractor:v0" marks edges a
+# structuring pass would produce from the text itself (basis: source_text); an editor
+# has reviewed each one. Edges with basis "editorial" are editorial judgements that
+# the text does not state outright.
+
+# ─── Definitions that depend on definitions ─────────────────────────────────────
+- {kind: DEPENDS_ON_DEFINITION, from: def:significant-cash-flow, to: def:external-cash-flow,
+   asserted_by: extractor:v0, basis: source_text, reviewed_by: editor:a.okafor,
+   source_passage: "a client-directed external cash flow of a size"}
+
+# ─── Section 3 provisions → definitions ─────────────────────────────────────────
+- {kind: DEPENDS_ON_DEFINITION, from: prov:composite-inclusion-all-discretionary, to: def:discretionary-portfolio,
+   asserted_by: extractor:v0, basis: source_text, reviewed_by: editor:a.okafor,
+   source_passage: "All actual, fee-paying, discretionary portfolios"}
+- {kind: DEPENDS_ON_DEFINITION, from: prov:composite-inclusion-all-discretionary, to: def:fee-paying-portfolio,
+   asserted_by: extractor:v0, basis: source_text, reviewed_by: editor:a.okafor,
+   source_passage: "All actual, fee-paying, discretionary portfolios"}
+- {kind: DEPENDS_ON_DEFINITION, from: prov:composite-inclusion-all-discretionary, to: def:composite,
+   asserted_by: extractor:v0, basis: source_text, reviewed_by: editor:a.okafor,
+   source_passage: "included in at least one composite"}
+
+- {kind: DEPENDS_ON_DEFINITION, from: prov:non-fee-paying-inclusion, to: def:fee-paying-portfolio,
+   asserted_by: extractor:v0, basis: source_text, reviewed_by: editor:a.okafor,
+   source_passage: "Non-fee-paying discretionary portfolios"}
+- {kind: DEPENDS_ON_DEFINITION, from: prov:non-fee-paying-inclusion, to: def:discretionary-portfolio,
+   asserted_by: extractor:v0, basis: source_text, reviewed_by: editor:a.okafor,
+   source_passage: "Non-fee-paying discretionary portfolios"}
+- {kind: DEPENDS_ON_DEFINITION, from: prov:non-fee-paying-inclusion, to: def:composite,
+   asserted_by: extractor:v0, basis: source_text, reviewed_by: editor:a.okafor,
+   source_passage: "may be included in a composite"}
+
+- {kind: DEPENDS_ON_DEFINITION, from: prov:composite-description-on-request, to: def:composite,
+   asserted_by: extractor:v0, basis: source_text, reviewed_by: editor:a.okafor,
+   source_passage: "a description of any composite"}
+
+- {kind: DEPENDS_ON_DEFINITION, from: prov:composite-definition-documented, to: def:composite,
+   asserted_by: extractor:v0, basis: source_text, reviewed_by: editor:a.okafor,
+   source_passage: "the definition of each composite"}
+
+- {kind: DEPENDS_ON_DEFINITION, from: prov:terminated-portfolio-inclusion, to: def:composite,
+   asserted_by: extractor:v0, basis: source_text, reviewed_by: editor:a.okafor,
+   source_passage: "the historical performance of the composite"}
+- {kind: DEPENDS_ON_DEFINITION, from: prov:terminated-portfolio-inclusion, to: def:measurement-period,
+   asserted_by: extractor:v0, basis: source_text, reviewed_by: editor:a.okafor,
+   source_passage: "through the last full measurement period"}
+
+- {kind: DEPENDS_ON_DEFINITION, from: prov:composite-inclusion-timing, to: def:composite,
+   asserted_by: extractor:v0, basis: source_text, reviewed_by: editor:a.okafor,
+   source_passage: "must be included in a composite"}
+
+- {kind: DEPENDS_ON_DEFINITION, from: prov:composite-minimum, to: def:composite,
+   asserted_by: extractor:v0, basis: source_text, reviewed_by: editor:a.okafor,
+   source_passage: "portfolios to be included in a composite"}
+
+- {kind: DEPENDS_ON_DEFINITION, from: prov:composite-minimum-no-retroactive-change, to: def:composite,
+   asserted_by: extractor:v0, basis: source_text, reviewed_by: editor:a.okafor,
+   source_passage: "a composite minimum"}
+
+# ─── Interpretive layer ─────────────────────────────────────────────────────────
+- {kind: INTERPRETED_BY, from: prov:composite-minimum, to: gs:GS-2025-02,
+   asserted_by: extractor:v0, basis: source_text, reviewed_by: editor:a.okafor,
+   source_passage: "Interprets provision 3.A.7 of the GSB Standards, Edition 2025 (provision 3.A.5 of Edition 2021)."}
+- {kind: DEPENDS_ON_DEFINITION, from: gs:GS-2025-02, to: def:significant-cash-flow,
+   asserted_by: extractor:v0, basis: source_text, reviewed_by: editor:a.okafor,
+   source_passage: "solely as a result of a significant cash flow"}
+- {kind: DEPENDS_ON_DEFINITION, from: gs:GS-2025-02, to: def:measurement-period,
+   asserted_by: extractor:v0, basis: source_text, reviewed_by: editor:a.okafor,
+   source_passage: "at the beginning of each measurement period"}
+
+# The reference that makes G4a a KNOWN gap rather than a confident wrong answer.
+- {kind: REFERENCES, from: gs:GS-2025-02, to: ruling:QA-2025-031,
+   asserted_by: extractor:v0, basis: source_text, reviewed_by: editor:a.okafor,
+   source_passage: "the Board has addressed the treatment of such temporary breaches in Q&A QA-2025-031"}
+
+# ─── Practitioner layer ─────────────────────────────────────────────────────────
+- {kind: ANNOTATED_BY, from: prov:composite-inclusion-timing, to: note:PN-001,
+   asserted_by: editor:a.okafor, basis: editorial, reviewed_by: editor:a.okafor,
+   source_passage: "Relates to: composite inclusion timing (3.A.4 of Edition 2021; 3.A.6 of Edition 2025)"}

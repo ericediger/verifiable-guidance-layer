@@ -1,0 +1,225 @@
+# The structured graph "extracted" from data/sources — Release 1.
+#
+# Each entry is a CONCEPT (a stable identity) with its dated VERSIONS. The number a
+# human sees (display_ref) changes between editions; the concept_id never does.
+# "In force" is computed from effective_from at query time, never stored.
+
+# ─── Section 1 · Definitions ────────────────────────────────────────────────────
+
+- concept_id: def:composite
+  kind: definition
+  title: Composite
+  versions:
+    - {version_id: def:composite@E2021, display_ref: 1.D.1, source_doc: doc:E2021, effective_from: 2021-01-01,
+       text: "A composite is an aggregation of one or more portfolios managed according to a similar investment mandate, objective, or strategy."}
+    - {version_id: def:composite@E2025, display_ref: 1.D.1, source_doc: doc:E2025, effective_from: 2025-01-01,
+       text: "A composite is an aggregation of one or more portfolios managed according to a similar investment mandate, objective, or strategy."}
+
+- concept_id: def:firm
+  kind: definition
+  title: Firm
+  versions:
+    - {version_id: def:firm@E2021, display_ref: 1.D.2, source_doc: doc:E2021, effective_from: 2021-01-01,
+       text: "A firm is the entity defined for the purpose of claiming compliance with the GSB Standards, comprising all portfolios managed under its investment authority."}
+    - {version_id: def:firm@E2025, display_ref: 1.D.2, source_doc: doc:E2025, effective_from: 2025-01-01,
+       text: "A firm is the entity defined for the purpose of claiming compliance with the GSB Standards, comprising all portfolios managed under its investment authority."}
+
+- concept_id: def:portfolio
+  kind: definition
+  title: Portfolio
+  versions:
+    - {version_id: def:portfolio@E2021, display_ref: 1.D.3, source_doc: doc:E2021, effective_from: 2021-01-01,
+       text: "A portfolio is an individually managed group of investments, which may be a segregated account or a pooled fund."}
+    - {version_id: def:portfolio@E2025, display_ref: 1.D.3, source_doc: doc:E2025, effective_from: 2025-01-01,
+       text: "A portfolio is an individually managed group of investments, which may be a segregated account or a pooled fund."}
+
+- concept_id: def:benchmark
+  kind: definition
+  title: Benchmark
+  versions:
+    - {version_id: def:benchmark@E2025, display_ref: 1.D.4, source_doc: doc:E2025, effective_from: 2025-01-01,
+       text: "A point of reference against which the performance of a composite is compared, selected to reflect the composite's investment mandate, objective, or strategy."}
+
+# TRAP G3 — the definition changes between editions; the provision that depends on it does not.
+- concept_id: def:discretionary-portfolio
+  kind: definition
+  title: Discretionary portfolio
+  versions:
+    - {version_id: def:discretionary-portfolio@E2021, display_ref: 1.D.4, source_doc: doc:E2021, effective_from: 2021-01-01,
+       text: "A portfolio is discretionary when the firm has sole authority to implement its intended investment strategy. A portfolio subject to client-imposed restrictions is non-discretionary."}
+    - {version_id: def:discretionary-portfolio@E2025, display_ref: 1.D.5, source_doc: doc:E2025, effective_from: 2025-01-01,
+       text: "A portfolio is discretionary when the firm has sufficient authority to implement its intended investment strategy. Client-imposed restrictions render a portfolio non-discretionary only where they materially impede implementation of the strategy. Firms must document the basis for each such determination."}
+
+# SCENE A — Amendment 2025-A1 will add a third version of this concept, live.
+- concept_id: def:fee-paying-portfolio
+  kind: definition
+  title: Fee-paying portfolio
+  versions:
+    - {version_id: def:fee-paying-portfolio@E2021, display_ref: 1.D.5, source_doc: doc:E2021, effective_from: 2021-01-01,
+       text: "A fee-paying portfolio is one for which the firm receives compensation for investment management services, whether or not the fee is paid directly from the portfolio."}
+    - {version_id: def:fee-paying-portfolio@E2025, display_ref: 1.D.6, source_doc: doc:E2025, effective_from: 2025-01-01,
+       text: "A fee-paying portfolio is one for which the firm receives compensation for investment management services, whether or not the fee is paid directly from the portfolio."}
+
+- concept_id: def:gross-of-fees-return
+  kind: definition
+  title: Gross-of-fees return
+  versions:
+    - {version_id: def:gross-of-fees-return@E2021, display_ref: 1.D.6, source_doc: doc:E2021, effective_from: 2021-01-01,
+       text: "The return on investments reduced by transaction costs only."}
+    - {version_id: def:gross-of-fees-return@E2025, display_ref: 1.D.7, source_doc: doc:E2025, effective_from: 2025-01-01,
+       text: "The return on investments reduced by transaction costs only."}
+
+- concept_id: def:net-of-fees-return
+  kind: definition
+  title: Net-of-fees return
+  versions:
+    - {version_id: def:net-of-fees-return@E2021, display_ref: 1.D.7, source_doc: doc:E2021, effective_from: 2021-01-01,
+       text: "The gross-of-fees return reduced by investment management fees."}
+    - {version_id: def:net-of-fees-return@E2025, display_ref: 1.D.8, source_doc: doc:E2025, effective_from: 2025-01-01,
+       text: "The gross-of-fees return reduced by investment management fees."}
+
+- concept_id: def:external-cash-flow
+  kind: definition
+  title: External cash flow
+  versions:
+    - {version_id: def:external-cash-flow@E2021, display_ref: 1.D.8, source_doc: doc:E2021, effective_from: 2021-01-01,
+       text: "Capital, in cash or investments, that enters or exits a portfolio at the direction of the client."}
+    - {version_id: def:external-cash-flow@E2025, display_ref: 1.D.9, source_doc: doc:E2025, effective_from: 2025-01-01,
+       text: "Capital, in cash or investments, that enters or exits a portfolio at the direction of the client."}
+
+- concept_id: def:measurement-period
+  kind: definition
+  title: Measurement period
+  versions:
+    - {version_id: def:measurement-period@E2025, display_ref: 1.D.10, source_doc: doc:E2025, effective_from: 2025-01-01,
+       text: "The calendar month, unless the firm's documented policy for a composite specifies a shorter period."}
+
+- concept_id: def:significant-cash-flow
+  kind: definition
+  title: Significant cash flow
+  versions:
+    - {version_id: def:significant-cash-flow@E2021, display_ref: 1.D.9, source_doc: doc:E2021, effective_from: 2021-01-01,
+       text: "A significant cash flow is a client-directed external cash flow of a size, defined in the firm's documented policy for the composite, that would temporarily prevent the firm from implementing the composite strategy."}
+    - {version_id: def:significant-cash-flow@E2025, display_ref: 1.D.11, source_doc: doc:E2025, effective_from: 2025-01-01,
+       text: "A significant cash flow is a client-directed external cash flow of a size, defined in the firm's documented policy for the composite, that would temporarily prevent the firm from implementing the composite strategy."}
+
+# ─── Section 2 · Input Data ─────────────────────────────────────────────────────
+
+- concept_id: prov:portfolio-valuation-fair-value
+  kind: provision
+  title: Valuation at fair value
+  versions:
+    - {version_id: prov:portfolio-valuation-fair-value@E2021, display_ref: 2.A.1, source_doc: doc:E2021, effective_from: 2021-01-01, obligation: must,
+       text: "Portfolios must be valued in accordance with the definition of fair value and the firm's documented valuation policy."}
+    - {version_id: prov:portfolio-valuation-fair-value@E2025, display_ref: 2.A.1, source_doc: doc:E2025, effective_from: 2025-01-01, obligation: must,
+       text: "Portfolios must be valued in accordance with the definition of fair value and the firm's documented valuation policy."}
+
+- concept_id: prov:trade-date-accounting
+  kind: provision
+  title: Trade-date accounting
+  versions:
+    - {version_id: prov:trade-date-accounting@E2021, display_ref: 2.A.2, source_doc: doc:E2021, effective_from: 2021-01-01, obligation: must,
+       text: "Trade-date accounting must be used for all periods."}
+    - {version_id: prov:trade-date-accounting@E2025, display_ref: 2.A.2, source_doc: doc:E2025, effective_from: 2025-01-01, obligation: must,
+       text: "Trade-date accounting must be used for all periods."}
+
+# ─── Section 3 · Composite Construction ─────────────────────────────────────────
+
+# TRAP G3 / SCENE A — text identical in both editions; meaning moves with its definitions.
+- concept_id: prov:composite-inclusion-all-discretionary
+  kind: provision
+  title: Inclusion of all fee-paying discretionary portfolios
+  versions:
+    - {version_id: prov:composite-inclusion-all-discretionary@E2021, display_ref: 3.A.1, source_doc: doc:E2021, effective_from: 2021-01-01, obligation: must,
+       text: "All actual, fee-paying, discretionary portfolios must be included in at least one composite."}
+    - {version_id: prov:composite-inclusion-all-discretionary@E2025, display_ref: 3.A.1, source_doc: doc:E2025, effective_from: 2025-01-01, obligation: must,
+       text: "All actual, fee-paying, discretionary portfolios must be included in at least one composite."}
+
+- concept_id: prov:non-fee-paying-inclusion
+  kind: provision
+  title: Inclusion of non-fee-paying portfolios
+  versions:
+    - {version_id: prov:non-fee-paying-inclusion@E2021, display_ref: 3.A.2, source_doc: doc:E2021, effective_from: 2021-01-01, obligation: must,
+       text: "Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end."}
+    - {version_id: prov:non-fee-paying-inclusion@E2025, display_ref: 3.A.2, source_doc: doc:E2025, effective_from: 2025-01-01, obligation: must,
+       text: "Non-fee-paying discretionary portfolios may be included in a composite. Where included, the firm must disclose the percentage of composite assets represented by non-fee-paying portfolios as of each annual period end."}
+
+- concept_id: prov:composite-description-on-request
+  kind: provision
+  title: Composite description available on request
+  versions:
+    - {version_id: prov:composite-description-on-request@E2021, display_ref: 3.A.3, source_doc: doc:E2021, effective_from: 2021-01-01, obligation: must,
+       text: "Firms must make a description of any composite available to any prospective client on request."}
+    - {version_id: prov:composite-description-on-request@E2025, display_ref: 3.A.3, source_doc: doc:E2025, effective_from: 2025-01-01, obligation: must,
+       text: "Firms must make a description of any composite available to any prospective client on request."}
+
+- concept_id: prov:composite-definition-documented
+  kind: provision
+  title: Composite definition documented in writing
+  versions:
+    - {version_id: prov:composite-definition-documented@E2025, display_ref: 3.A.4, source_doc: doc:E2025, effective_from: 2025-01-01, obligation: must,
+       text: "Firms must document the definition of each composite in writing, including the criteria for inclusion and exclusion of portfolios."}
+
+- concept_id: prov:terminated-portfolio-inclusion
+  kind: provision
+  title: Terminated portfolios retained in history
+  versions:
+    - {version_id: prov:terminated-portfolio-inclusion@E2025, display_ref: 3.A.5, source_doc: doc:E2025, effective_from: 2025-01-01, obligation: must,
+       text: "Terminated portfolios must be included in the historical performance of the composite through the last full measurement period under management."}
+
+# TRAP G1 / G2 / G7 — amended AND renumbered between editions.
+- concept_id: prov:composite-inclusion-timing
+  kind: provision
+  title: Timing of new portfolio inclusion
+  versions:
+    - {version_id: prov:composite-inclusion-timing@E2021, display_ref: 3.A.4, source_doc: doc:E2021, effective_from: 2021-01-01, obligation: must,
+       parameters: {inclusion_deadline_months: 2},
+       text: "New portfolios must be included in a composite on a timely and consistent basis, and no later than the beginning of the second full calendar month after the portfolio comes under management, unless the composite-specific policy documented by the firm specifies an earlier date."}
+    - {version_id: prov:composite-inclusion-timing@E2025, display_ref: 3.A.6, source_doc: doc:E2025, effective_from: 2025-01-01, obligation: must,
+       parameters: {inclusion_deadline_months: 1},
+       text: "New portfolios must be included in a composite on a timely and consistent basis, and no later than the beginning of the first full calendar month after the portfolio comes under management. Firms must document the inclusion date applied for each composite."}
+
+# TRAP G4 — text identical; interpreted by GS-2025-02, which references a Q&A the graph does not yet hold.
+- concept_id: prov:composite-minimum
+  kind: provision
+  title: Composite minimum asset level
+  versions:
+    - {version_id: prov:composite-minimum@E2021, display_ref: 3.A.5, source_doc: doc:E2021, effective_from: 2021-01-01, obligation: must,
+       text: "If a firm sets a minimum asset level for portfolios to be included in a composite, the firm must not include portfolios below that minimum. Any such minimum must be documented and applied consistently."}
+    - {version_id: prov:composite-minimum@E2025, display_ref: 3.A.7, source_doc: doc:E2025, effective_from: 2025-01-01, obligation: must,
+       text: "If a firm sets a minimum asset level for portfolios to be included in a composite, the firm must not include portfolios below that minimum. Any such minimum must be documented and applied consistently."}
+
+# G10 — a recommendation, to test the obligation tier.
+- concept_id: prov:composite-minimum-no-retroactive-change
+  kind: provision
+  title: No retroactive change to a composite minimum
+  versions:
+    - {version_id: prov:composite-minimum-no-retroactive-change@E2021, display_ref: 3.B.1, source_doc: doc:E2021, effective_from: 2021-01-01, obligation: should,
+       text: "Firms should not apply changes to a composite minimum retroactively."}
+    - {version_id: prov:composite-minimum-no-retroactive-change@E2025, display_ref: 3.B.1, source_doc: doc:E2025, effective_from: 2025-01-01, obligation: should,
+       text: "Firms should not apply changes to a composite minimum retroactively."}
+
+# ─── Interpretive layer ─────────────────────────────────────────────────────────
+
+- concept_id: gs:GS-2025-02
+  kind: guidance
+  title: Guidance Statement GS-2025-02 — Composite Minimums
+  versions:
+    - {version_id: gs:GS-2025-02@v1, display_ref: GS-2025-02, source_doc: doc:GS-2025-02, effective_from: 2025-03-01, tier: interpretive, obligation: n/a,
+       text: "Provision 3.A.7 requires that portfolios below a documented composite minimum not be included in the composite. Firms should assess each portfolio against the minimum at the beginning of each measurement period, using the valuation methodology documented in the composite policy. A portfolio that is above the minimum at the beginning of a measurement period is included for that period in its entirety. Where the firm changes a composite minimum, the change applies prospectively from the beginning of the next measurement period (see also recommendation 3.B.1). Where a portfolio falls below the minimum solely as a result of a significant cash flow, the Board has addressed the treatment of such temporary breaches in Q&A QA-2025-031."}
+
+# KNOWN GAP in Release 1: the concept is registered because GS-2025-02 references it,
+# but the graph holds no version of it. The resolver reports this as a gap, not an answer.
+- concept_id: ruling:QA-2025-031
+  kind: ruling
+  title: Q&A QA-2025-031 — Temporary breach of a composite minimum following a significant cash flow
+  versions: []
+
+# ─── Practitioner layer ─────────────────────────────────────────────────────────
+
+- concept_id: note:PN-001
+  kind: practice_note
+  title: Practice Note PN-001 — Inclusion-timing policy wording in Jurisdiction South
+  versions:
+    - {version_id: note:PN-001@v1, display_ref: PN-001, source_doc: doc:PN-001, effective_from: 2025-05-20, tier: practitioner, obligation: n/a, jurisdiction_scope: JS,
+       text: "JS examiners expect the composite policy to state the specific inclusion month. Policies using \"as soon as practicable\" drew findings in 2024 examinations. Firms preparing for examination should state the month explicitly and show that it has been applied consistently across the composite."}

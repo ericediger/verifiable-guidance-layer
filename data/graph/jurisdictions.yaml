@@ -1,0 +1,7 @@
+# Jurisdictions. GLOBAL is the baseline; JN tracks GSB dates; JS lags by notice.
+- code: GLOBAL
+  name: Global baseline
+- code: JN
+  name: Jurisdiction North
+- code: JS
+  name: Jurisdiction South
