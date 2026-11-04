@@ -29,8 +29,8 @@ from vgl.contracts import (
     Answer, Check, Claim, Composition, EvidencePacket, Flag, QueryFrame, Verification,
 )
 
-JudgeFn = Callable[[Claim, list[str]], dict] | None
-"""Given a claim and the texts it cites, return {"faithful": bool, "reason": str}."""
+JudgeFn = Callable[[list[Claim], EvidencePacket], list[dict]] | None
+"""Given the kept claims and the packet, return one {"faithful": bool, "reason": str} per claim."""
 
 
 def _conclusion_index(claims: list[Claim]) -> int:
@@ -153,9 +153,7 @@ def verify(frame: QueryFrame, packet: EvidencePacket, composition: Composition,
     judge_report = None
     if judge is not None and kept:
         disagreements = []
-        for c in kept:
-            texts = [packet.by_version(v).text for v in c.cites if packet.by_version(v)]
-            verdict = judge(c, texts)
+        for c, verdict in zip(kept, judge(kept, packet)):
             if not verdict.get("faithful", True):
                 disagreements.append({"claim": c.text, "reason": verdict.get("reason", "")})
                 flags.append(Flag(kind="judge_disagreement",

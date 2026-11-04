@@ -126,9 +126,9 @@ class LLM:
     ) -> dict[str, Any]:
         """Ask a model for a JSON object conforming to `schema`.
 
-        Implemented with Anthropic tool use: the schema is presented as the single
-        tool the model must call, so the response is structured by construction.
-        temperature=0 throughout — we want the most likely composition, not variety.
+        Uses the API's native structured outputs, so the response conforms to the
+        schema by construction. Determinism across runs comes from record/replay and
+        from the verifier downstream, not from the model.
         """
         request = {
             "provider": "anthropic",
@@ -161,24 +161,19 @@ class LLM:
                 raise RuntimeError("ANTHROPIC_API_KEY is not set and no fixture exists")
             self._anthropic = Anthropic(api_key=settings.anthropic_api_key)
 
-        tool = {
-            "name": request["schema_name"],
-            "description": f"Return the {request['schema_name']} as structured data.",
-            "input_schema": request["schema"],
-        }
+        # Native structured outputs: the API enforces the schema, so the response is
+        # valid JSON of the requested shape by construction.
         resp = self._anthropic.messages.create(
             model=request["model"],
             max_tokens=request["max_tokens"],
-            temperature=0,
             system=request["system"],
             messages=[{"role": "user", "content": request["user"]}],
-            tools=[tool],
-            tool_choice={"type": "tool", "name": request["schema_name"]},
+            output_config={"format": {"type": "json_schema", "schema": request["schema"]}},
         )
-        for block in resp.content:
-            if getattr(block, "type", None) == "tool_use":
-                return dict(block.input)
-        raise RuntimeError("model returned no structured output")
+        text = "".join(getattr(b, "text", "") for b in resp.content if getattr(b, "type", None) == "text")
+        if not text:
+            raise RuntimeError(f"model returned no text (stop_reason={resp.stop_reason})")
+        return json.loads(text)
 
 
 # A module-level default so callers can simply `from vgl.llm import llm`.

@@ -159,8 +159,8 @@ def test_clarify_lists_what_is_missing():
 def test_judge_disagreement_is_a_soft_flag(conn):
     p = resolve(conn, ["prov:composite-inclusion-timing"], "JN", D, release_id=1)
 
-    def suspicious_judge(claim, texts):
-        return {"faithful": False, "reason": "the text says first month, not first week"}
+    def suspicious_judge(claims, packet):
+        return [{"faithful": False, "reason": "the text says first month, not first week"} for _ in claims]
 
     a = verify(FRAME, p, comp(
         Claim(text="By the first full week.", cites=["prov:composite-inclusion-timing@E2025"], kind="conclusion"),
