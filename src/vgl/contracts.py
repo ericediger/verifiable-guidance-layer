@@ -100,9 +100,14 @@ class Upcoming(BaseModel):
     display_ref: str | None
     source_doc: str
     source_title: str
+    effective_from: dt.date
     in_force_from: dt.date
     replaces_version_id: str | None = None
     text_changed: bool = True
+
+    def is_adoption_delay(self, as_of: dt.date) -> bool:
+        """Already effective globally, not yet adopted in this jurisdiction."""
+        return self.effective_from <= as_of < self.in_force_from
 
 
 class Superseded(BaseModel):

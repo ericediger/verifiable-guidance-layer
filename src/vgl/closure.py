@@ -80,7 +80,7 @@ ORDER BY n.concept_id, in_force_from DESC, n.effective_from DESC
 # used to find what comes next (upcoming) and what came before (superseded).
 _ALL_VERSIONS_SQL = f"""
 SELECT n.version_id, n.concept_id, n.display_ref, n.source_doc, d.title AS source_title,
-       n.jurisdiction_scope, n.text,
+       n.jurisdiction_scope, n.text, n.effective_from,
        GREATEST(n.effective_from, COALESCE(a.effective_from, n.effective_from)) AS in_force_from
 FROM nodes n
 JOIN documents d ON d.id = n.source_doc
@@ -207,6 +207,7 @@ def resolve(
                         display_ref=v["display_ref"],
                         source_doc=v["source_doc"],
                         source_title=v["source_title"],
+                        effective_from=v["effective_from"],
                         in_force_from=v["in_force_from"],
                         replaces_version_id=chosen["version_id"],
                         text_changed=v["text"] != chosen["text"],
