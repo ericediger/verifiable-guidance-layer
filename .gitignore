@@ -23,3 +23,6 @@ pgdata/
 .idea/
 .vscode/
 .cursor/
+
+# agent worktrees and local tooling
+.claude/
