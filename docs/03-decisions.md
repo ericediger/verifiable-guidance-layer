@@ -203,7 +203,7 @@ record what it did; they do not assert that it fails.
 **Why:** The comparison should isolate the layer, not the model. And a baseline that happens
 to get a question right is a data point, not a broken test. The honest finding is the
 useful one: with a frontier model and a small corpus, naive RAG gets most ordinary
-questions right; it fails every case that depends on when or where, and cannot say which.
+questions right; it fails every case where the right answer is not the newest text applied everywhere, now — a different place, a past date, an amendment not yet in force — and cannot say which.
 
 **With more time:** `--repeat N` in live mode already turns pass/fail into a rate per case;
 a composer-sensitivity matrix (Opus vs Sonnet composing) is a config switch away and was

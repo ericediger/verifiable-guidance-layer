@@ -95,8 +95,9 @@ Knowledge changes only through a proposal → impact preview → editor → immu
 From the generated report, on this corpus: 13/13 gold cases pass; 100% of composed claims
 grounded; 0 stale citations reach a user; 100% closure recall; abstention precision and
 recall 100%. The baseline — ordinary RAG over the same prose with the same model — gets most
-ordinary questions right and fails **every** question that depends on *when* or *where*,
-without any way to say which. The layer's advantage is not more right answers on easy
+ordinary questions right and fails **every** question where the right answer is not simply the
+newest text applied everywhere, now — a different place, a past date, an amendment not yet in
+force — without any way to say which. The layer's advantage is not more right answers on easy
 questions; it is zero unflagged wrong answers, and knowing when not to answer.
 
 ## Layout
