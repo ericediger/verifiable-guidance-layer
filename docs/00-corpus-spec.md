@@ -1,6 +1,6 @@
 # 00 · Corpus Specification
 
-**Status:** Draft for sign-off. This document is the spec. Every seed record, gold-set
+**Status:** Signed off 2026-11-04. Canonical for the data in `data/`; the gold set itself lives in `data/gold.yaml`. This document is the spec. Every seed record, gold-set
 question, verifier rule, screen, and demo beat derives from it. Nothing in `src/` should
 exist without a line here that justifies it.
 
@@ -192,21 +192,29 @@ Every versioned node carries: `concept_id`, `version_id`, `display_ref`, `tier`,
 
 ### 4.2 Edge kinds
 
+Edges connect **concepts**, not versions; the version at each end is chosen by date at
+query time, so an edge never needs re-asserting when an edition changes.
+
 | Edge | From → To | Meaning |
 |---|---|---|
 | `DEPENDS_ON_DEFINITION` | clause → definition concept | The clause's meaning depends on this definition |
-| `REFERENCES` | version → concept | Explicit cross-reference in the text |
-| `SUPERSEDED_BY` | version → version | A later version of the same concept |
-| `AMENDED_BY` | version → document | The amending instrument |
-| `INTERPRETED_BY` | clause → guidance/ruling | Interpretive material that applies |
+| `REFERENCES` | any → concept | Explicit cross-reference in the text (may point at a concept with no versions — a known gap) |
+| `INTERPRETED_BY` | clause → guidance | Interpretive material that applies |
 | `CARVED_OUT_BY` | clause → ruling | An exception that modifies the clause's effect |
-| `ADOPTED_IN` | edition document → jurisdiction | With `effective_from` per jurisdiction |
 | `ANNOTATED_BY` | clause → practice note | Practitioner-tier note |
-| `CITES` | issued answer → version | The exact versions the answer relied on |
+
+Not stored as edges, by design:
+
+| Relationship | Where it lives | Why |
+|---|---|---|
+| *Superseded by* | Derived from version chronology of a concept | One less thing that can disagree with the dates |
+| *Amended by* | The superseding version's `source_doc` | Same |
+| *Adopted in* | The `adoptions` table (document, jurisdiction, effective date, source notice) | It is a date, not a relationship between clauses |
+| *Cites* | `issued_answers.cited_versions` | An answer's pins are its own record |
 
 **Every edge carries provenance:** `asserted_by` (person or extractor), `basis`
 (`source_text` / `editorial` / `proposal`), `source_passage`, `reviewed_by`,
-`release_id`. Nothing links two nodes without someone or something accountable for it.
+`created_release`. Nothing links two concepts without someone or something accountable for it.
 
 ### 4.3 Resolution rule (deterministic)
 
@@ -334,11 +342,12 @@ learn something it should already have known?"* — Scene A, Scene B, release hi
 
 ---
 
-## 10. Open questions for sign-off
+## 10. Sign-off notes
 
-1. Does the world read as credible to a standards-body audience without imitating any
-   real standard?
-2. G3 and Scene A are both definition-driven on purpose — one in retrieval, one in
-   propagation. Keep both, or swap one for a different mechanism?
-3. Stretch, if time allows: a `JS` local overlay (a notice making JS stricter than GSB on
-   one point before 2025) to show a true local override rather than only delayed adoption.
+1. World judged credible without imitating any real standard — keep.
+2. G3 and Scene A both definition-driven, one in retrieval and one in propagation — keep both.
+3. The `JS` local-override stretch was cut for the Friday deadline; listed under "with more
+   time" in `docs/03-decisions.md`.
+4. One correction after the first live run: the pre-amendment definition of a fee-paying
+   portfolio now says explicitly that a reduced or waived fee does not change the status, so
+   that Amendment 2025-A1 changes the answer rather than restating it.
