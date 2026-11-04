@@ -1,0 +1,198 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" font-family="-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Inter, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6e6e73"/>
+    </marker>
+    <marker id="arrow-soft" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#a1a1a6"/>
+    </marker>
+    <style>
+      .band { fill: #fafafa; stroke: #e5e5ea; stroke-width: 1; rx: 14; }
+      .bandTitle { font-size: 15px; font-weight: 600; fill: #6e6e73; letter-spacing: 0.08em; text-transform: uppercase; }
+      .box { stroke-width: 1.25; rx: 10; }
+      .prob { fill: #fff6e8; stroke: #e2a046; }
+      .det  { fill: #eaf2ff; stroke: #3a7bd5; }
+      .store{ fill: #eef7ee; stroke: #4c9a5a; }
+      .human{ fill: #f3eefb; stroke: #8e6bc7; }
+      .io   { fill: #ffffff; stroke: #8e8e93; }
+      .t  { font-size: 16px; fill: #1d1d1f; text-anchor: middle; }
+      .tb { font-size: 16px; font-weight: 600; fill: #1d1d1f; text-anchor: middle; }
+      .ts { font-size: 13px; fill: #6e6e73; text-anchor: middle; font-style: italic; }
+      .tl { font-size: 13px; fill: #6e6e73; }
+      .flow { stroke: #6e6e73; stroke-width: 1.5; fill: none; marker-end: url(#arrow); }
+      .soft { stroke: #a1a1a6; stroke-width: 1.5; fill: none; stroke-dasharray: 5 5; marker-end: url(#arrow-soft); }
+      .both { stroke: #6e6e73; stroke-width: 1.5; fill: none; marker-end: url(#arrow); marker-start: url(#arrow); }
+      .legend { font-size: 13px; fill: #6e6e73; }
+    </style>
+  </defs>
+
+  <!-- Title -->
+  <text x="60" y="48" font-size="26" font-weight="300" fill="#1d1d1f">Verifiable Guidance Layer</text>
+  <text x="60" y="72" font-size="15" fill="#6e6e73">Truth lives in a deterministic, versioned graph. Models handle language. Nothing reaches a person unverified.</text>
+
+  <!-- Legend -->
+  <g transform="translate(1040,34)">
+    <rect x="0" y="0" width="18" height="14" class="box det" rx="3"/><text x="26" y="12" class="legend">deterministic</text>
+    <rect x="130" y="0" width="18" height="14" class="box prob" rx="3"/><text x="156" y="12" class="legend">language model</text>
+    <rect x="286" y="0" width="18" height="14" class="box human" rx="3"/><text x="312" y="12" class="legend">person</text>
+    <rect x="384" y="0" width="18" height="14" class="box store" rx="3"/><text x="410" y="12" class="legend">store</text>
+    <rect x="0" y="24" width="18" height="14" class="box io" rx="3"/><text x="26" y="36" class="legend">input / output</text>
+  </g>
+
+  <!-- ===== Band 1: Answering a question ===== -->
+  <rect x="60" y="100" width="1480" height="250" class="band"/>
+  <text x="84" y="128" class="bandTitle">Answering a question</text>
+
+  <!-- Question -->
+  <rect x="84" y="166" width="150" height="76" class="box io"/>
+  <text x="159" y="196" class="t">Question</text>
+  <text x="159" y="218" class="ts">jurisdiction · as-of</text>
+
+  <!-- Intake -->
+  <rect x="262" y="166" width="140" height="76" class="box prob"/>
+  <text x="332" y="196" class="t">Intake</text>
+  <text x="332" y="218" class="ts">structured frame</text>
+
+  <!-- Shortlist -->
+  <rect x="430" y="166" width="140" height="76" class="box prob"/>
+  <text x="500" y="196" class="t">Shortlist</text>
+  <text x="500" y="218" class="ts">full-text + vector</text>
+
+  <!-- Choose -->
+  <rect x="598" y="166" width="140" height="76" class="box prob"/>
+  <text x="668" y="196" class="t">Choose entries</text>
+  <text x="668" y="218" class="ts">from shortlist only</text>
+
+  <!-- Resolve -->
+  <rect x="766" y="152" width="200" height="104" class="box det"/>
+  <text x="866" y="184" class="tb">Resolve</text>
+  <text x="866" y="206" class="t">as-of · jurisdiction</text>
+  <text x="866" y="226" class="t">closure · known gaps</text>
+  <text x="866" y="246" class="ts">same inputs, same packet</text>
+
+  <!-- Compose -->
+  <rect x="994" y="166" width="140" height="76" class="box prob"/>
+  <text x="1064" y="196" class="t">Compose</text>
+  <text x="1064" y="218" class="ts">packet only</text>
+
+  <!-- Verify -->
+  <rect x="1162" y="152" width="170" height="104" class="box det"/>
+  <text x="1247" y="184" class="tb">Verify</text>
+  <text x="1247" y="206" class="t">V1–V6</text>
+  <text x="1247" y="226" class="t">citations · dates · tiers</text>
+  <text x="1247" y="246" class="ts">removes, flags, or refuses</text>
+
+  <!-- Outcome -->
+  <rect x="1352" y="152" width="170" height="104" class="box io"/>
+  <text x="1438" y="180" class="tb">ANSWER</text>
+  <text x="1438" y="200" class="t">ANSWER_WITH_FLAGS</text>
+  <text x="1438" y="220" class="t">CLARIFY · REVIEW</text>
+  <text x="1438" y="243" class="ts">claims · citations · flags</text>
+
+  <!-- Judge -->
+  <rect x="1010" y="276" width="190" height="56" class="box prob"/>
+  <text x="1105" y="299" class="t">Judge</text>
+  <text x="1105" y="319" class="ts">second model · soft flag only</text>
+
+  <!-- pipeline arrows -->
+  <line x1="234" y1="204" x2="262" y2="204" class="flow"/>
+  <line x1="402" y1="204" x2="430" y2="204" class="flow"/>
+  <line x1="570" y1="204" x2="598" y2="204" class="flow"/>
+  <line x1="738" y1="204" x2="766" y2="204" class="flow"/>
+  <line x1="966" y1="204" x2="994" y2="204" class="flow"/>
+  <line x1="1134" y1="204" x2="1162" y2="204" class="flow"/>
+  <line x1="1332" y1="204" x2="1352" y2="204" class="flow"/>
+  <path d="M 1064 242 L 1064 276" class="soft"/>
+  <path d="M 1200 304 L 1247 304 L 1247 256" class="soft"/>
+
+  <!-- early exits -->
+  <path d="M 332 242 L 332 262 L 1438 262 L 1438 256" class="soft"/>
+  <text x="372" y="257" class="tl">early exits → CLARIFY · REVIEW</text>
+
+  <!-- ===== Band 2: Knowledge layer ===== -->
+  <rect x="60" y="392" width="1480" height="166" class="band"/>
+  <text x="84" y="420" class="bandTitle">Knowledge layer · Postgres + pgvector</text>
+
+  <!-- Graph store -->
+  <g transform="translate(560,440)">
+    <path d="M 0 14 a 160 14 0 0 1 320 0 v 70 a 160 14 0 0 1 -320 0 z" class="store" stroke-width="1.25"/>
+    <ellipse cx="160" cy="14" rx="160" ry="14" class="store" stroke-width="1.25"/>
+    <text x="160" y="48" class="tb">Concepts · dated versions · typed edges</text>
+    <text x="160" y="70" class="t">jurisdictional adoptions · releases as watermarks</text>
+    <text x="160" y="90" class="ts">provenance on every edge · “in force” computed, never stored</text>
+  </g>
+
+  <!-- Answers store -->
+  <g transform="translate(1040,440)">
+    <path d="M 0 14 a 130 14 0 0 1 260 0 v 70 a 130 14 0 0 1 -260 0 z" class="store" stroke-width="1.25"/>
+    <ellipse cx="130" cy="14" rx="130" ry="14" class="store" stroke-width="1.25"/>
+    <text x="130" y="48" class="tb">Answers · issued answers</text>
+    <text x="130" y="70" class="t">pinned to the release that produced them</text>
+    <text x="130" y="90" class="ts">staleness computed on demand</text>
+  </g>
+
+  <!-- Why it holds (left text block) -->
+  <g transform="translate(96,448)">
+    <text x="0" y="0" font-size="15" font-weight="600" fill="#1d1d1f">Two ideas carry the design</text>
+    <text x="0" y="24" font-size="14" fill="#3a3a3c">A concept keeps its identity across editions and renumbering;</text>
+    <text x="0" y="42" font-size="14" fill="#3a3a3c">the version in force is a date question, answered at query time.</text>
+    <text x="0" y="68" font-size="14" fill="#3a3a3c">A release is a watermark, not a copy: pin an answer to it and</text>
+    <text x="0" y="86" font-size="14" fill="#3a3a3c">the answer reproduces exactly, forever.</text>
+  </g>
+
+  <!-- store arrows -->
+  <path d="M 866 256 L 866 392" class="both"/>
+  <path d="M 500 242 L 500 310 L 640 310 L 640 440" class="flow"/>
+  <path d="M 1247 256 L 1247 368 L 1170 368 L 1170 440" class="flow"/>
+
+  <!-- ===== Band 3: Governance ===== -->
+  <rect x="60" y="600" width="1480" height="250" class="band"/>
+  <text x="84" y="628" class="bandTitle">Changing what the layer knows</text>
+
+  <!-- Proposal -->
+  <rect x="84" y="672" width="190" height="90" class="box human"/>
+  <text x="179" y="704" class="tb">Proposal</text>
+  <text x="179" y="726" class="t">practitioner or editor</text>
+  <text x="179" y="746" class="ts">source · edges · basis</text>
+
+  <!-- Impact preview -->
+  <rect x="330" y="658" width="320" height="118" class="box det"/>
+  <text x="490" y="688" class="tb">Impact preview</text>
+  <text x="490" y="710" class="t">re-resolve every gold case</text>
+  <text x="490" y="730" class="t">dependents · issued answers that would expire</text>
+  <text x="490" y="752" class="ts">the test suite, run against a change that does not exist yet</text>
+
+  <!-- Editor -->
+  <rect x="706" y="672" width="170" height="90" class="box human"/>
+  <text x="791" y="704" class="tb">Editor</text>
+  <text x="791" y="726" class="t">approve or reject</text>
+  <text x="791" y="746" class="ts">with a recorded reason</text>
+
+  <!-- Release -->
+  <rect x="932" y="672" width="190" height="90" class="box store"/>
+  <text x="1027" y="704" class="tb">Release N+1</text>
+  <text x="1027" y="726" class="t">immutable</text>
+  <text x="1027" y="746" class="ts">release N is unchanged</text>
+
+  <!-- Eval harness -->
+  <rect x="1190" y="658" width="326" height="118" class="box det"/>
+  <text x="1353" y="688" class="tb">Eval harness · pytest</text>
+  <text x="1353" y="710" class="t">gold set · naive baseline · intake checks</text>
+  <text x="1353" y="730" class="t">replay by default · live on demand</text>
+  <text x="1353" y="752" class="ts">the gold set is the spec</text>
+
+  <!-- governance arrows -->
+  <line x1="274" y1="717" x2="330" y2="717" class="flow"/>
+  <line x1="650" y1="717" x2="706" y2="717" class="flow"/>
+  <line x1="876" y1="717" x2="932" y2="717" class="flow"/>
+  <path d="M 1027 672 L 1027 600 L 880 600 L 880 538 L 860 538" class="flow"/>
+  <path d="M 1170 538 L 1170 580 L 560 580 L 560 658" class="soft"/>
+  <text x="1180" y="596" class="tl">issued answers: staleness against the proposed release</text>
+
+  <!-- eval arrows -->
+  <path d="M 1353 658 L 1353 576 L 1540 576 L 1540 350" class="soft"/>
+  <path d="M 1190 740 L 1160 740 L 1160 800 L 490 800 L 490 776" class="soft"/>
+
+  <!-- footer -->
+  <text x="84" y="836" font-size="13" fill="#8e8e93">Deterministic modules import nothing from the model client. A model may narrow a search or add a flag; it can never add knowledge or clear a check.</text>
+</svg>
