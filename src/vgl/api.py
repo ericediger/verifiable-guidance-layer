@@ -86,13 +86,23 @@ class DecisionRequest(BaseModel):
 
 # ── answering ────────────────────────────────────────────────────────────────────
 
+REPLAY_ONLY = (
+    "This copy is running on recorded model responses (no API keys), so only the thirteen "
+    "recorded questions can be asked, exactly as worded — click one of the question chips. "
+    "To ask anything: put ANTHROPIC_API_KEY and OPENAI_API_KEY in .env and set VGL_LLM_MODE=live."
+)
+
+
 @app.post("/api/ask")
 def ask(req: AskRequest) -> dict[str, Any]:
     with db.connection() as conn:
-        answer = pipeline.ask(
-            conn, req.question, jurisdiction=req.jurisdiction, as_of=req.as_of, release_id=req.release_id,
-            frame=req.frame, use_judge=req.use_judge, composer_model=req.composer_model,
-        )
+        try:
+            answer = pipeline.ask(
+                conn, req.question, jurisdiction=req.jurisdiction, as_of=req.as_of, release_id=req.release_id,
+                frame=req.frame, use_judge=req.use_judge, composer_model=req.composer_model,
+            )
+        except FixtureMissing:
+            raise HTTPException(409, REPLAY_ONLY)
         out: dict[str, Any] = {"answer": answer.model_dump(mode="json")}
         if req.compare_naive:
             try:

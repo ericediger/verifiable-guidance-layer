@@ -81,12 +81,13 @@
   };
 
   async function loadBasics() {
-    const [jurisdictions, releases, gold] = await Promise.all([
-      api("/api/jurisdictions"), api("/api/releases"), api("/api/gold"),
+    const [jurisdictions, releases, gold, health] = await Promise.all([
+      api("/api/jurisdictions"), api("/api/releases"), api("/api/gold"), api("/api/health").catch(() => null),
     ]);
     state.jurisdictions = jurisdictions;
     state.releases = releases;
     state.gold = gold;
+    state.llmMode = health?.llm_mode || "live";
     if (state.form.release_id == null || !releases.some((r) => r.id === state.form.release_id)) {
       state.form.release_id = releases[releases.length - 1]?.id ?? 1;
     }
@@ -99,6 +100,9 @@
     b.innerHTML = latest
       ? `<strong>Release ${latest.id}</strong> · ${latest.node_count} versions · ${latest.edge_count} relationships`
       : "No releases";
+    if (state.llmMode === "replay") {
+      b.append(el("span", { class: "mode-tag", title: "No API keys: the model steps replay recorded responses. The thirteen recorded questions work; anything else needs keys." }, "recorded responses"));
+    }
   }
 
   // ── tabs ────────────────────────────────────────────────────────────────────

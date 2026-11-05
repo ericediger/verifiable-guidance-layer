@@ -1,7 +1,8 @@
 # docker compose up --build   →   http://localhost:8000
 #
 # Two services: Postgres 16 with pgvector, and the application (API + demo UI).
-# The application seeds Release 1 on first start. API keys come from .env.
+# The application seeds Release 1 on first start. API keys come from .env;
+# without keys:  VGL_LLM_MODE=replay docker compose up --build   (recorded model responses)
 services:
   db:
     image: pgvector/pgvector:pg16
@@ -22,7 +23,8 @@ services:
   app:
     build: .
     env_file:
-      - .env
+      - path: .env            # API keys; optional — without it, run with VGL_LLM_MODE=replay
+        required: false
     environment:
       DATABASE_URL: postgresql://vgl:vgl@db:5432/vgl
       VGL_LLM_MODE: ${VGL_LLM_MODE:-live}

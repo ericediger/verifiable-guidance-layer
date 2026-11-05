@@ -14,6 +14,24 @@ unverified. "The guidance doesn't cover this" is a first-class answer.
 
 ![Architecture](docs/diagrams/architecture.svg)
 
+## Start here
+
+Ten minutes to the argument; fifteen more to run it; the documents for the rest.
+
+1. **Watch it make its case (10 minutes, nothing to install).** The walkthrough at
+   **[ericediger.com/vgl](https://ericediger.com/vgl)** steps through nine sections of recorded
+   output: a superseded clause, the same question in a different place, the system learning a
+   ruling it did not hold, and a definition amendment that changes an issued answer without
+   changing a single provision. Press `→` or click to advance.
+2. **Run it yourself (one command, Docker only).** No API keys needed — see *Run it*, below.
+   The thirteen recorded questions, both proposal scenes and the release history all work on
+   recorded model responses; the deterministic parts are identical either way.
+3. **Read, in this order.** [`docs/01-architecture.md`](docs/01-architecture.md) (the design
+   and the 0 → 1 path), [`docs/03-decisions.md`](docs/03-decisions.md) (fourteen non-obvious
+   decisions, ADR-style), [`docs/eval-report.md`](docs/eval-report.md) (generated results,
+   including the honest baseline), and [`docs/00-corpus-spec.md`](docs/00-corpus-spec.md)
+   (the fictional corpus everything was built to).
+
 ## Deliverables
 
 | | Brief requirement | Where |
@@ -26,15 +44,36 @@ The specification everything was built to: [`docs/00-corpus-spec.md`](docs/00-co
 
 ## Run it
 
+You need Docker Desktop (or Docker Engine with Compose v2). Nothing else.
+
+**Without API keys** — the model steps replay recorded responses:
+
 ```
-cp .env.example .env          # add ANTHROPIC_API_KEY and OPENAI_API_KEY
-docker compose up --build     # Postgres 16 + pgvector, and the app
-open http://localhost:8000    # the demo; API docs at /docs; health at /api/health
+git clone https://github.com/ericediger/verifiable-guidance-layer.git
+cd verifiable-guidance-layer
+VGL_LLM_MODE=replay docker compose up --build
 ```
 
-First start seeds Release 1 (40 clause versions, 19 edges, 2 pending proposals). Everything
-in the corpus is fictional — a *Global Standards Board* shaped like a real standards body,
-with nothing copied from any real standard.
+Then open **http://localhost:8000**. The header shows *recorded responses*. Click any of the
+question chips — they are the thirteen cases the layer is tested against — and run the two
+scenes from the **Releases** tab (impact preview → approve → ask again on the new release;
+**Issued answers** shows the client answer that expires). A question that is not one of the
+recorded thirteen returns a plain message saying so rather than an answer.
+
+**With API keys** — ask it anything:
+
+```
+cp .env.example .env          # add ANTHROPIC_API_KEY and OPENAI_API_KEY
+docker compose up --build
+```
+
+First start seeds Release 1 (40 clause versions, 19 relationships, 2 pending proposals).
+**Reset to Release 1** is at the bottom of the Releases tab, or `POST /api/reset`. API docs at
+`/docs`; health at `/api/health`. Everything in the corpus is fictional — a *Global Standards
+Board* shaped like a real standards body, with nothing copied from any real standard.
+
+On Windows, set the variable first: `set VGL_LLM_MODE=replay` (cmd) or
+`$env:VGL_LLM_MODE="replay"` (PowerShell), then `docker compose up --build`.
 
 ## Test it
 

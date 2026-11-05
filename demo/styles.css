@@ -71,6 +71,7 @@ a:hover { text-decoration: underline; }
 .descriptor { color: var(--ink-2); font-weight: 300; margin-top: 2px; font-size: 14px; max-width: 48ch; }
 .release-badge { color: var(--ink-2); font-size: 13px; white-space: nowrap; padding-top: 3px; }
 .release-badge strong { color: var(--ink); font-weight: 600; }
+.release-badge .mode-tag { margin-left: 10px; padding: 1px 8px; border: 1px solid var(--line-strong); border-radius: 999px; font-size: 12px; color: var(--ink-2); }
 nav { margin-top: 18px; padding-bottom: 14px; }
 .segmented { display: inline-flex; gap: 2px; padding: 3px; background: var(--neutral-soft); border-radius: var(--radius-pill); max-width: 100%; overflow-x: auto; }
 .segmented button {

@@ -100,6 +100,7 @@ demo/            index.html  app.js  styles.css
 
 ```
 docker compose up --build          # Postgres + API + UI at http://localhost:8000
+VGL_LLM_MODE=replay docker compose up --build   # the same, with no API keys (recorded model responses)
 docker compose run --rm app pytest # unit + eval (replay mode)
 docker compose run --rm app pytest tests/eval --live --repeat 5   # evals against real APIs
 docker compose run --rm app python -m vgl.seed         # reseed to Release 1 (or POST /api/reset)
