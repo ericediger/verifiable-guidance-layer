@@ -23,7 +23,7 @@ Ten minutes to the argument; fifteen more to run it; the documents for the rest.
    output: a superseded clause, the same question in a different place, the system learning a
    ruling it did not hold, and a definition amendment that changes an issued answer without
    changing a single provision. Press `→` or click to advance. The same argument on paper:
-   [`docs/vgl-walkthrough.pdf`](docs/vgl-walkthrough.pdf), ten pages.
+   [`docs/vgl-walkthrough.pdf`](docs/vgl-walkthrough.pdf), eleven pages.
 2. **Run it yourself (one command, Docker only).** No API keys needed — see *Run it*, below.
    The thirteen recorded questions, both proposal scenes and the release history all work on
    recorded model responses; the deterministic parts are identical either way.

@@ -86,9 +86,15 @@ same questions with the same model.
 | A second standard changes the conclusion | `DEPENDS_ON_DEFINITION` pulls the definition version *in force*, so an unchanged provision resolves against a changed definition; `INTERPRETED_BY` pulls guidance |
 | An interpretive ruling carves out an exception the AI is unaware of | If held: `CARVED_OUT_BY` puts it in the packet and V4 forces it to surface. If referenced but not held: the resolver reports a **known gap** and V5 withholds finality — REVIEW with the gap named |
 
-And the two the brief implies: jurisdiction (per-jurisdiction adoption dates select
-different versions for the same date, with a pending-adoption flag), and change over time
-(releases, pinned answers, computed staleness with a date and a reason).
+And the rest of what the brief names about the knowledge itself:
+
+| The brief | Mechanism |
+|---|---|
+| Jurisdictional variations branch the answer | Each jurisdiction's own adoption date selects the version in force; a pending adoption is a flag on the answer |
+| Updates to one standard cascade into others that reference it | The reverse walk and the impact preview name every dependent before publication; issued client answers expire with a date and a reason |
+| Practitioner knowledge has no authoritative home | A third authority tier: attached to clauses by edge, scoped to a jurisdiction, surfaced with its label on every relevant answer, never able to ground a claim (V6) |
+| The ground moves continuously | Releases as watermarks; every answer pinned to one; an earlier release reproduces byte for byte |
+| Trustworthy for professionals, usable by agents with confidence | Deterministic verification before anything is shown; four outcomes; the same JSON for a person's screen and an agent's tool call, with no path that skips the check |
 
 ## 0 → 1
 
