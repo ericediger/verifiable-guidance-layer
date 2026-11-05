@@ -125,7 +125,7 @@ docker compose run --rm app python -m vgl.seed         # reseed to Release 1 (or
 - [x] Keyless replay path (`VGL_LLM_MODE=replay`), verified end to end on a fresh database
 - [x] Hosted walkthrough at https://ericediger.com/vgl (recorded output; 9 sections, 47 steps)
 - [x] `docs/04-demonstration.md` — what is recorded, what runs, how it was built
-- [ ] Narrated video over the walkthrough (link goes in README "Start here" when it exists)
+- [x] Narrated video over the walkthrough (seven minutes; on Vercel Blob; linked from ericediger.com/vgl/review, the walkthrough's closing frame and README "Start here")
 - [x] PDF walkthrough, `docs/vgl-walkthrough.pdf` (11 pages, Letter landscape; regenerate with `python docs/pdf/render.py`)
 - [ ] Reviewer access: GitHub invites and/or a zip of `main`; cover email
 

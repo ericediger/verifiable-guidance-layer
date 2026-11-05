@@ -18,12 +18,13 @@ unverified. "The guidance doesn't cover this" is a first-class answer.
 
 Ten minutes to the argument; fifteen more to run it; the documents for the rest.
 
-1. **Watch it make its case (10 minutes, nothing to install).** The walkthrough at
-   **[ericediger.com/vgl](https://ericediger.com/vgl)** steps through nine sections of recorded
-   output: a superseded clause, the same question in a different place, the system learning a
-   ruling it did not hold, and a definition amendment that changes an issued answer without
-   changing a single provision. Press `→` or click to advance. The same argument on paper:
-   [`docs/vgl-walkthrough.pdf`](docs/vgl-walkthrough.pdf), eleven pages.
+1. **Watch it make its case (seven minutes, nothing to install).** Everything for a reviewer is at
+   **[ericediger.com/vgl/review](https://ericediger.com/vgl/review)**: the narrated video, and the
+   walkthrough it narrates — **[ericediger.com/vgl](https://ericediger.com/vgl)**, nine chapters of
+   recorded output you can step through yourself (press `→` or click): a superseded clause, the
+   same question in a different place, the system learning a ruling it did not hold, and a
+   definition amendment that changes an issued answer without changing a single provision. The
+   same argument on paper: [`docs/vgl-walkthrough.pdf`](docs/vgl-walkthrough.pdf), eleven pages.
 2. **Run it yourself (one command, Docker only).** No API keys needed — see *Run it*, below.
    The thirteen recorded questions, both proposal scenes and the release history all work on
    recorded model responses; the deterministic parts are identical either way.
