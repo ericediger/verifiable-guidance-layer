@@ -26,3 +26,6 @@ pgdata/
 
 # agent worktrees and local tooling
 .claude/
+
+# presenter-only material kept beside the clone on the presenter's machine
+vgl-walkthrough-site/
