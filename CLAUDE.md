@@ -7,8 +7,9 @@ carries the working agreement so no chat has to re-establish it.
 
 A proof of concept for a **verifiable regulatory knowledge layer**: a layer between a
 standards body's guidance and its AI systems that makes answers reliable and verifiable,
-not merely retrievable. Submission for a technical challenge; the author will present it
-for 10 minutes and then be drilled by a senior technical stakeholder.
+not merely retrievable. Submission for a technical challenge: the material is delivered to
+the panel in advance (repository, hosted walkthrough, narrated video, PDF), then the author
+presents it for 10 minutes and is drilled by a senior technical stakeholder.
 
 **Thesis.** Truth lives in a deterministic, versioned, relationship-aware layer. The LLM
 is used only for language — understanding the question and composing the answer — and
@@ -37,6 +38,7 @@ answer changes, because a definition, exception, or ruling elsewhere has changed
 | 01 Architecture + 0→1 | `docs/01-architecture.md` (+ `docs/diagrams/`) |
 | 02 Concrete demonstration | `src/`, `data/`, `tests/`, `demo/` — runnable via `docker compose up` |
 | 03 Design choices and rationale | `docs/03-decisions.md` (ADR-style; non-obvious decisions first) |
+| What is recorded vs. what runs | `docs/04-demonstration.md` (the honesty sheet: hosted site, replay, live, how it was built) |
 
 ## Stack (locked)
 
@@ -55,7 +57,7 @@ answer changes, because a definition, exception, or ruling elsewhere has changed
 CLAUDE.md
 README.md
 compose.yaml  Dockerfile  .env.example  pyproject.toml
-docs/        00-corpus-spec.md  01-architecture.md  03-decisions.md  diagrams/
+docs/        00-corpus-spec.md  01-architecture.md  03-decisions.md  04-demonstration.md  eval-report.md  diagrams/
 data/
   gold.yaml  the gold set — the specification of correct behaviour, as data
   sources/   prose documents (what the body publishes; what naive RAG chunks)
@@ -118,8 +120,14 @@ docker compose run --rm app python -m vgl.seed         # reseed to Release 1 (or
 - [x] Releases: proposals, impact preview, publish
 - [x] Demo UI
 - [x] docs 01 and 03, diagram
-- [x] Verified on the presenter's Mac with Docker (Nov 4: live G1 call end to end)
+- [x] Verified on the author's Mac with Docker (Nov 4: live G1 call end to end)
 - [x] Drill prep (kept outside the repo)
+- [x] Keyless replay path (`VGL_LLM_MODE=replay`), verified end to end on a fresh database
+- [x] Hosted walkthrough at https://ericediger.com/vgl (recorded output; 9 sections, 47 steps)
+- [x] `docs/04-demonstration.md` — what is recorded, what runs, how it was built
+- [ ] Narrated video over the walkthrough (link goes in README "Start here" when it exists)
+- [ ] PDF walkthrough, `docs/vgl-walkthrough.pdf` (8–10 pages; appendix = 04-demonstration)
+- [ ] Reviewer access: GitHub invites and/or a zip of `main`; cover email
 
 ## Things that bit once
 

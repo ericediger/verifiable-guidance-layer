@@ -207,7 +207,7 @@ questions right; it fails every case where the right answer is not the newest te
 
 **With more time:** `--repeat N` in live mode already turns pass/fail into a rate per case;
 a composer-sensitivity matrix (Opus vs Sonnet composing) is a config switch away and was
-cut for Friday.
+cut for the submission deadline.
 
 ## 11. One door to the models, with record/replay
 

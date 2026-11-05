@@ -31,6 +31,10 @@ Ten minutes to the argument; fifteen more to run it; the documents for the rest.
    decisions, ADR-style), [`docs/eval-report.md`](docs/eval-report.md) (generated results,
    including the honest baseline), and [`docs/00-corpus-spec.md`](docs/00-corpus-spec.md)
    (the fictional corpus everything was built to).
+4. **Know what you are looking at.** [`docs/04-demonstration.md`](docs/04-demonstration.md)
+   says precisely what on the walkthrough site is recorded and what is simulated (only the
+   latency), what runs in this repository with and without keys, how it was built, and what
+   a public live deployment would need.
 
 ## Deliverables
 
@@ -41,6 +45,7 @@ Ten minutes to the argument; fifteen more to run it; the documents for the rest.
 | **03** | Design choices and rationale | [`docs/03-decisions.md`](docs/03-decisions.md), and the commit history |
 
 The specification everything was built to: [`docs/00-corpus-spec.md`](docs/00-corpus-spec.md).
+What is recorded, what runs, and how it was built: [`docs/04-demonstration.md`](docs/04-demonstration.md).
 
 ## Run it
 
@@ -108,9 +113,9 @@ writes [`docs/eval-report.md`](docs/eval-report.md). The gold set is
 4. **Jurisdiction.** The same question, a different place, a different answer, a pending
    adoption flagged, a practitioner note surfaced and labelled.
 
-The drill question the two scenes answer: *did the regulation change, or did your system
-learn something it should already have known?* Scene A, Scene B, and the release history
-to prove which.
+The question a careful reviewer asks, and the one the two scenes answer: *did the regulation
+change, or did your system learn something it should already have known?* Scene A, Scene B,
+and the release history to prove which.
 
 ## How it works, in one screen
 
@@ -142,7 +147,7 @@ questions; it is zero unflagged wrong answers, and knowing when not to answer.
 ## Layout
 
 ```
-docs/        00 spec · 01 architecture · 03 decisions · eval-report · diagrams/
+docs/        00 spec · 01 architecture · 03 decisions · 04 demonstration · eval-report · diagrams/
 data/        sources/ (prose) · graph/ (structured seed) · proposals/ · gold.yaml
 src/vgl/     contracts · db · schema.sql · seed · search · closure · intake · compose
              verify · releases · naive · llm · pipeline · api · config
