@@ -214,6 +214,31 @@
     }
   }
 
+
+  // Flags, with the judge's notes folded into one line. The judge is a second model
+  // raising soft doubts; it is pedantic by design, and its notes should not crowd out
+  // the hard flags (exceptions, pending adoptions, unresolved references).
+  function flagList(flags) {
+    const hard = flags.filter((f) => f.kind !== "judge_disagreement");
+    const notes = flags.filter((f) => f.kind === "judge_disagreement");
+    const items = hard.map((f) =>
+      el("li", { class: `flag ${f.kind}` },
+        el("span", { class: "flag-kind" }, FLAG_LABEL[f.kind] || f.kind),
+        el("span", { class: "flag-msg" }, pretty(f.message))));
+    if (notes.length) {
+      const body = el("ul", { class: "judge-notes", hidden: true }, ...notes.map((f) => el("li", {}, pretty(f.message))));
+      const toggle = el("button", { class: "linklike", type: "button" }, `${notes.length} note${notes.length > 1 ? "s" : ""} · show`);
+      toggle.addEventListener("click", () => {
+        body.hidden = !body.hidden;
+        toggle.textContent = `${notes.length} note${notes.length > 1 ? "s" : ""} · ${body.hidden ? "show" : "hide"}`;
+      });
+      items.push(el("li", { class: "flag judge_disagreement" },
+        el("span", { class: "flag-kind" }, "Independent check"),
+        el("span", { class: "flag-msg" }, el("span", {}, "A second model read each claim against the text it cites. "), toggle, body)));
+    }
+    return el("ul", { class: "flags" }, ...items);
+  }
+
   function verdictPill(outcome) {
     const cls = outcome.toLowerCase();
     if (outcome === "ANSWER_WITH_FLAGS") return el("span", { class: `verdict ${cls}` }, "ANSWER", el("span", {}, "with flags"));
@@ -245,10 +270,7 @@
     }
 
     if (a.flags.length) {
-      wrap.append(el("ul", { class: "flags" }, ...a.flags.map((f) =>
-        el("li", { class: `flag ${f.kind}` },
-          el("span", { class: "flag-kind" }, FLAG_LABEL[f.kind] || f.kind),
-          el("span", { class: "flag-msg" }, pretty(f.message))))));
+      wrap.append(flagList(a.flags));
     }
 
     if (a.claims.length) {
@@ -425,7 +447,7 @@
   function compareView({ answer, naive }) {
     const left = el("div", { class: "col" }, el("h2", {}, "Verifiable layer"), verdictPill(answer.outcome), el("p", { class: "summary" }, answer.summary));
     if (answer.outcome === "CLARIFY") left.append(el("ul", { class: "clarify-list" }, ...answer.clarifications.map((c) => el("li", {}, c))));
-    if (answer.flags.length) left.append(el("ul", { class: "flags" }, ...answer.flags.map((f) => el("li", { class: `flag ${f.kind}` }, el("span", { class: "flag-kind" }, FLAG_LABEL[f.kind] || f.kind), el("span", { class: "flag-msg" }, pretty(f.message))))));
+    if (answer.flags.length) left.append(flagList(answer.flags));
 
     const right = el("div", { class: "col" }, el("h2", {}, "Naive RAG (same documents, same model)"));
     if (!naive || naive.error) {
