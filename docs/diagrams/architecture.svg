@@ -25,6 +25,7 @@
       .legend { font-size: 13px; fill: #6e6e73; }
     </style>
   </defs>
+  <rect width="100%" height="100%" fill="#FBFBFD"/>
 
   <!-- Title -->
   <text x="60" y="48" font-size="26" font-weight="300" fill="#1d1d1f">Verifiable Guidance Layer</text>
