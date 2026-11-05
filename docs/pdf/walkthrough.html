@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Verifiable Guidance Layer — walkthrough</title>
+<style>
+  @page { size: Letter landscape; margin: 0; }
+  :root {
+    --ink: #1D1D1F; --ink-2: #6E6E73; --line: #E3E3E8; --accent: #0F7B6C;
+    --accent-soft: rgba(15,123,108,.10); --band: #F6F6F8; --amber: #A86500; --amber-soft: rgba(168,101,0,.10);
+    --red: #B3261E; --red-soft: rgba(179,38,30,.10);
+    --det-fill: #EAF2FF; --det-stroke: #3A7BD5; --prob-fill: #FFF6E8; --prob-stroke: #E2A046;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; color: var(--ink); font-family: Inter, "Helvetica Neue", Arial, sans-serif; font-size: 11.5pt; line-height: 1.42; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 11in; height: 8.5in; padding: 0.55in 0.65in 0.5in; position: relative; page-break-after: always; overflow: hidden; display: flex; flex-direction: column; }
+  .page:last-child { page-break-after: auto; }
+  .run { position: absolute; left: 0.65in; right: 0.65in; bottom: 0.32in; display: flex; justify-content: space-between; font-size: 8.5pt; color: var(--ink-2); }
+  .kicker { font-size: 9pt; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin: 0 0 6pt; }
+  h1 { font-size: 30pt; font-weight: 600; letter-spacing: -.015em; margin: 0 0 6pt; line-height: 1.15; }
+  h2 { font-size: 21pt; font-weight: 600; letter-spacing: -.01em; margin: 0 0 10pt; line-height: 1.2; }
+  h3 { font-size: 9pt; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin: 0 0 6pt; }
+  p { margin: 0 0 8pt; }
+  .muted { color: var(--ink-2); }
+  .line { font-size: 19pt; line-height: 1.3; font-weight: 500; letter-spacing: -.01em; margin: 18pt 0 12pt; max-width: 8.6in; }
+  .line em { font-style: normal; background: var(--accent-soft); padding: 0 .12em; border-radius: 3pt; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 28pt; }
+  .cols3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18pt; }
+  .card { border: 1px solid var(--line); border-radius: 10pt; padding: 11pt 13pt; background: #fff; }
+  .band { background: var(--band); border-radius: 10pt; padding: 11pt 13pt; }
+  table { border-collapse: collapse; width: 100%; font-size: 10pt; }
+  th, td { text-align: left; vertical-align: top; padding: 5pt 8pt 5pt 0; border-bottom: 1px solid var(--line); }
+  th { font-weight: 600; color: var(--ink-2); font-size: 8.5pt; letter-spacing: .06em; text-transform: uppercase; }
+  code, .mono { font-family: "DejaVu Sans Mono", Menlo, monospace; font-size: 9.5pt; }
+  pre { background: var(--band); border-radius: 8pt; padding: 9pt 11pt; font-family: "DejaVu Sans Mono", Menlo, monospace; font-size: 9.5pt; margin: 6pt 0 8pt; }
+  .pill { display: inline-block; font-size: 8.5pt; font-weight: 600; letter-spacing: .04em; padding: 2pt 8pt; border-radius: 999pt; border: 1px solid transparent; vertical-align: middle; }
+  .pill.answer { background: var(--accent-soft); color: var(--accent); }
+  .pill.flags { background: var(--accent-soft); color: var(--accent); }
+  .pill.review { background: var(--amber-soft); color: var(--amber); }
+  .pill.clarify { background: var(--band); color: var(--ink-2); border-color: var(--line); }
+  .pill.naive { background: var(--red-soft); color: var(--red); }
+  .flag { font-size: 9.5pt; margin: 3pt 0 0; padding-left: 10pt; border-left: 2px solid var(--accent); color: var(--ink); }
+  .flag b { color: var(--accent); font-weight: 600; }
+  .flag.amber { border-color: var(--amber); } .flag.amber b { color: var(--amber); }
+  .flag.grey { border-color: var(--line); } .flag.grey b { color: var(--ink-2); }
+  .q { font-weight: 600; margin: 0 0 4pt; }
+  .ctl { font-size: 9pt; color: var(--ink-2); margin: 0 0 6pt; }
+  .ans { margin: 4pt 0 4pt; font-size: 10.5pt; }
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14pt; margin: 4pt 0 14pt; }
+  .tile { border: 1px solid var(--line); border-radius: 10pt; padding: 12pt 14pt; }
+  .tile .big { font-size: 30pt; font-weight: 600; letter-spacing: -.02em; line-height: 1; margin: 0 0 6pt; font-variant-numeric: tabular-nums; }
+  .tile .lab { font-size: 9.5pt; color: var(--ink-2); }
+  .legend { display: inline-flex; gap: 16pt; font-size: 9.5pt; color: var(--ink-2); align-items: center; }
+  .sw { display: inline-block; width: 11pt; height: 11pt; border-radius: 3pt; border: 1.5px solid; margin-right: 5pt; vertical-align: -2pt; }
+  ol.tight, ul.tight { margin: 0 0 8pt; padding-left: 16pt; } ol.tight li, ul.tight li { margin: 0 0 4pt; }
+  .num { font-size: 24pt; font-weight: 600; color: var(--accent); line-height: 1; margin: 0 0 6pt; }
+  .arrow { color: var(--ink-2); }
+  .grow { flex: 1; }
+  .small { font-size: 9.5pt; }
+  .links a { color: var(--accent); text-decoration: none; }
+  a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- 1 · Title -->
+<section class="page">
+  <p class="kicker">Technical case · for review</p>
+  <h1>Verifiable Guidance Layer</h1>
+  <p class="muted" style="font-size:13pt;margin:0">A verifiable knowledge layer between a standards body's guidance and the AI systems that answer questions about it. A proof of concept.</p>
+  <p class="line">A clause can remain word-for-word identical while the correct answer changes, because a definition, exception, or ruling elsewhere has changed — so <em>truth has to live in a versioned graph, not in a prompt</em>, and every answer has to be checked against it before a person sees it.</p>
+  <div class="grow"></div>
+  <div class="cols3 links">
+    <div class="card"><h3>Everything, one place</h3><p style="margin:0"><a href="https://ericediger.com/vgl/review">ericediger.com/vgl/review</a><br><span class="muted small">The video, this document, the walkthrough and the repository.</span></p></div>
+    <div class="card"><h3>Step through it · 10 min</h3><p style="margin:0"><a href="https://ericediger.com/vgl">ericediger.com/vgl</a><br><span class="muted small">Nine sections, forty-seven steps of recorded output.</span></p></div>
+    <div class="card"><h3>Run it · one command</h3><p style="margin:0"><a href="https://github.com/ericediger/verifiable-guidance-layer">github.com/ericediger/verifiable-guidance-layer</a><br><span class="muted small">Docker only; no API keys needed for the recorded path.</span></p></div>
+  </div>
+  <p class="muted small" style="margin:16pt 0 0">Eric Ediger · November 2026 · The corpus is entirely fictional — a <em>Global Standards Board</em> shaped like a real standards body, with nothing copied from, or claimed about, any real standard. Every number in this document is a statement about that corpus.</p>
+  <div class="run"><span>Verifiable Guidance Layer</span><span>1 / 10</span></div>
+</section>
+
+<!-- 2 · Problem + thesis -->
+<section class="page">
+  <h2>The problem, reframed — and three commitments</h2>
+  <div class="cols">
+    <div>
+      <p>The brief describes an assistant that gives confident answers that are wrong in ways that matter: a clause that has since been amended, a second standard that changes the conclusion, a ruling that carves out an exception.</p>
+      <p><strong>None of these is a reasoning failure.</strong> They are knowledge-structure failures: the model is answering from a flat, unversioned, relationship-blind pile of text, and nothing checks the answer against anything. Better retrieval over the clause's own text cannot see a definition that moved, an adoption that has not happened yet, or a ruling the system never held.</p>
+      <p>So the design starts from three commitments:</p>
+      <ol class="tight">
+        <li><strong>Truth lives in a deterministic, versioned, relationship-aware layer.</strong></li>
+        <li><strong>Language models handle language</strong> — understanding the question, composing the answer — and nothing else.</li>
+        <li><strong>Nothing reaches a person unverified.</strong> Every probabilistic step sits upstream of a deterministic one that bounds it: a model may narrow a search or add a flag; it can never add knowledge or clear a check.</li>
+      </ol>
+      <p>And "the guidance doesn't cover this" is a first-class answer, not a failure.</p>
+    </div>
+    <div>
+      <h3>Four outcomes, one contract</h3>
+      <table>
+        <tr><td style="width:34%"><span class="pill answer">ANSWER</span></td><td>Grounded, verified, nothing outstanding.</td></tr>
+        <tr><td><span class="pill flags">ANSWER <span style="font-weight:400">with flags</span></span></td><td>Grounded and verified; a modifier is attached — a carve-out, a pending adoption, an upcoming amendment, a practitioner note.</td></tr>
+        <tr><td><span class="pill clarify">CLARIFY</span></td><td>A control (jurisdiction, as-of date) or a required case fact is missing. Ask the user.</td></tr>
+        <tr><td><span class="pill review">REVIEW</span></td><td>No coverage, an unresolved reference in the evidence, or a failed check. Route to a person; name the gap.</td></tr>
+      </table>
+      <p class="small" style="margin-top:10pt">The response carries the claims, each bound to the version IDs it rests on, the flags, the full evidence packet, the verification record and the release — the same JSON for a person's screen and for an agent's tool call. There is no path to an answer that skips verification.</p>
+      <div class="band small" style="margin-top:8pt"><strong>Two failures the brief implies, also covered.</strong> Jurisdiction: per-jurisdiction adoption dates select different versions for the same date, with a pending-adoption flag. Time: releases, pinned answers, and computed staleness with a date and a reason.</div>
+    </div>
+  </div>
+  <div class="run"><span>Verifiable Guidance Layer</span><span>2 / 10</span></div>
+</section>
+
+<!-- 3 · Architecture -->
+<section class="page">
+  <h2 style="margin-bottom:4pt">The architecture</h2>
+  <p class="muted small" style="margin:0 0 6pt">Nine stages to answer a question; one path to change what the layer knows. <span class="legend"><span><span class="sw" style="background:var(--prob-fill);border-color:var(--prob-stroke)"></span>language model</span><span><span class="sw" style="background:var(--det-fill);border-color:var(--det-stroke)"></span>deterministic code</span></span></p>
+  <img src="../diagrams/architecture.svg" style="width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:8pt">
+  <p class="small" style="margin:8pt 0 0"><strong>Resolve</strong> is two SQL statements — a bounded recursive walk and a per-concept in-force selection — and imports nothing from the model client. <strong>Verify</strong> is six rules in plain code: V1 every claim cites · V2 every citation is in the packet · V3 none is superseded · V4 every carve-out is surfaced · V5 an unresolved reference withholds finality · V6 practitioner material never grounds a claim. A bad supporting claim is removed and flagged; a bad conclusion fails the answer. The judge is a second, different model that can add a soft note and cannot clear a check.</p>
+  <div class="run"><span>Verifiable Guidance Layer</span><span>3 / 10</span></div>
+</section>
+
+<!-- 4 · Knowledge layer -->
+<section class="page">
+  <h2>The knowledge layer: four ideas, one Postgres</h2>
+  <div class="cols" style="gap:22pt">
+    <div>
+      <div class="card" style="margin-bottom:10pt"><h3>A concept keeps its identity</h3><p style="margin:0" class="small">Editions amend <em>and renumber</em>. <code>prov:composite-inclusion-timing</code> is <strong>3.A.4</strong> in Edition 2021 and <strong>3.A.6</strong> in Edition 2025; the number a person sees is a per-version display reference, never an identity. Edges connect concepts, so an edge never needs re-asserting when an edition changes.</p></div>
+      <div class="card" style="margin-bottom:10pt"><h3>"In force" is computed, never stored</h3><p style="margin:0" class="small">A version carries only its effective date; a jurisdiction carries its own adoption date for each document. The version in force on a date is selected at query time: the latest jurisdiction-adjusted start on or before the as-of date. Historical and future as-of questions come for free, and no row is ever mutated when a successor arrives.</p></div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:10pt"><h3>A release is a watermark, not a copy</h3><p style="margin:0" class="small">Every row records the release that created it and, if retired, the one that retired it. Adding a version in release N+1 closes the previous one <em>in N+1 only</em>; release N reproduces byte for byte, forever. Answers pin to a release. Hard deletes are forbidden.</p></div>
+      <div class="card" style="margin-bottom:10pt"><h3>Provenance on every edge</h3><p style="margin:0" class="small">An edge is an assertion that two things relate, so each one records who asserted it, on what basis, from which passage, and who reviewed it. Nothing links two concepts without someone — or something — accountable for it.</p></div>
+    </div>
+  </div>
+  <table style="margin-top:4pt">
+    <tr><th style="width:16%">Table</th><th style="width:44%">What it is</th><th>What it enables</th></tr>
+    <tr><td><code>concepts</code></td><td>A stable identity. A concept with no published version is a <em>known gap</em></td><td>Renumbering; cross-edition citation; gaps that are detectable</td></tr>
+    <tr><td><code>nodes</code></td><td>A dated version: display reference, tier, obligation, text, machine-checkable parameters, effective date</td><td>As-of resolution; stale-citation detection (V3); upcoming-change flags</td></tr>
+    <tr><td><code>edges</code></td><td>Typed, concept-to-concept: <code>DEPENDS_ON_DEFINITION</code>, <code>REFERENCES</code>, <code>INTERPRETED_BY</code>, <code>CARVED_OUT_BY</code>, <code>ANNOTATED_BY</code> — with provenance</td><td>A changed definition reaches every provision that depends on it; carve-outs surface (V4); the reverse walk for impact previews</td></tr>
+    <tr><td><code>releases</code>, <code>adoptions</code></td><td>The watermark; a jurisdiction's effective date per document</td><td>Immutable history; the same question answered differently in two places</td></tr>
+    <tr><td><code>issued_answers</code>, <code>proposals</code></td><td>What was told to a client, pinned to the versions it relied on; bundles waiting for an editor</td><td>Staleness computed with a date and a reason; governance</td></tr>
+  </table>
+  <div class="run"><span>Verifiable Guidance Layer</span><span>4 / 10</span></div>
+</section>
+
+<!-- 5 · Scenes: place, and the system learns -->
+<section class="page">
+  <h2>Recorded output: a different place, and a gap the system knows about</h2>
+  <div class="cols" style="gap:22pt">
+    <div>
+      <h3>Same question, two jurisdictions · Release 1</h3>
+      <p class="q">By when must a new portfolio be added to a composite?</p>
+      <p class="ctl">Jurisdiction North · as of 1 June 2025</p>
+      <p class="ans"><span class="pill answer">ANSWER</span>&nbsp; Under 3.A.6, a new portfolio must be included in a composite on a timely and consistent basis, no later than the beginning of the <strong>first</strong> full calendar month after it comes under management.</p>
+      <p class="ctl" style="margin-top:8pt">Jurisdiction South · as of 1 June 2025 — South adopts Edition 2025 on 1 January 2026</p>
+      <p class="ans"><span class="pill flags">ANSWER <span style="font-weight:400">with flags</span></span>&nbsp; Under 3.A.4, a new portfolio must be included … no later than the beginning of the <strong>second</strong> full calendar month after it comes under management, unless the firm's composite-specific policy sets an earlier date.</p>
+      <p class="flag"><b>Pending adoption here</b> — Edition 2025 is already in effect elsewhere but applies in JS only from 2026-01-01; it changes 3.A.4.</p>
+      <p class="flag grey"><b>Practitioner note (JS)</b> — JS examiners expect the composite policy to state the specific inclusion month. Surfaced and labelled; can never ground a claim (V6).</p>
+      <p class="small" style="margin-top:8pt"><span class="pill naive">naive RAG</span>&nbsp; "first full calendar month", in both places. It has no representation of <em>where</em>.</p>
+    </div>
+    <div>
+      <h3>The system learns something · Release 1 → 2</h3>
+      <p class="q">A client withdrew 40% last month and the portfolio is now below our composite minimum. Must we remove it?</p>
+      <p class="ctl">Jurisdiction North · as of 1 June 2025 · Release 1</p>
+      <p class="ans"><span class="pill review">REVIEW</span>&nbsp; Generally yes, from the start of the next measurement period at which the portfolio is below the documented minimum, but it stays in for any period it began above the minimum, and a 40% withdrawal may engage significant-cash-flow treatment in Q&amp;A QA-2025-031, which has not been reviewed.</p>
+      <p class="small" style="margin:2pt 0 0">3.A.7 says portfolios below the minimum must not be included; guidance statement GS-2025-02 interprets it — and refers to a ruling the system does not hold.</p>
+      <p class="flag amber"><b>Referenced material not held</b> — QA-2025-031 is referenced by GS-2025-02 but is not held in this release. A <em>known</em> gap, named.</p>
+      <p class="small" style="margin:8pt 0">A practitioner proposes the ruling: its text, the two edges it adds (“3.A.7 is carved out by QA-2025-031”), who asserted them and on what basis. The impact preview, computed before approval: <strong>2 gold cases change, 0 issued answers affected.</strong> Approve → Release 2.</p>
+      <p class="ctl">Same question, same facts · Release 2</p>
+      <p class="ans"><span class="pill flags">ANSWER <span style="font-weight:400">with flags</span></span>&nbsp; Not necessarily: under QA-2025-031 the portfolio may stay for up to three full measurement periods if the breach results solely from a significant cash flow and the documented policy provides for this; otherwise 3.A.7 requires removal.</p>
+      <p class="flag"><b>Exception applies</b> — QA-2025-031 creates an exception to 3.A.7 that may change the conclusion.</p>
+      <p class="small" style="margin-top:6pt"><strong>Release 1 still says REVIEW.</strong> The old answer reproduces forever — the difference between a system that learned something and one that silently changed its mind.</p>
+    </div>
+  </div>
+  <div class="run"><span>Verifiable Guidance Layer</span><span>5 / 10</span></div>
+</section>
+
+<!-- 6 · Scene A -->
+<section class="page">
+  <h2>Recorded output: the definition changes, the provision does not</h2>
+  <div class="cols" style="gap:22pt">
+    <div>
+      <h3>The amendment · Release 2 → 3</h3>
+      <p class="small">The Board amends the definition of a <em>fee-paying portfolio</em> (1.D.6), effective 1 December 2026: portfolios of related parties with all fees waived in full are no longer fee-paying. <strong>No provision in Section 3 changes a single word.</strong></p>
+      <div class="band small" style="margin:8pt 0">
+        <strong>Impact preview, before approval.</strong> The graph is walked backwards: <code>3.A.1</code> and <code>3.A.2</code> depend on 1.D.6. <strong>Five gold cases change</strong> — four gain a change notice, one flips. <strong>One issued answer is affected:</strong> on 10 March 2025 Harbor Point Advisors (ref. <strong>HPA-77</strong>) was told that fully fee-waived employee accounts are fee-paying and must be in a composite. Status after approval: <em>Expires 1 December 2026 — re-review before then.</em> The reason is recorded as learned after the answer was issued.
+      </div>
+      <p class="small">The provision never changed. The answer did. And the reason is something the system learned after the answer was issued — which is exactly the question a reviewer should ask of any such system: <em>did the regulation change, or did your system learn something it should already have known?</em> Scene B is the second; this is the first; the release history proves which.</p>
+    </div>
+    <div>
+      <h3>The same question either side of the date · Release 3</h3>
+      <p class="q">Employee accounts with fully waived fees — must they be in a composite?</p>
+      <p class="ctl">Jurisdiction North · as of 15 November 2026</p>
+      <p class="ans"><span class="pill flags">ANSWER <span style="font-weight:400">with flags</span></span>&nbsp; Fully waived employee accounts still count as fee-paying under 1.D.6 if they are subject to the firm's fee schedule, and must then be in a composite if discretionary under 3.A.1.</p>
+      <p class="flag"><b>Changes soon</b> — 1.D.6 changes on 2026-12-01 (Amendment 2025-A1). This answer applies before that date.</p>
+      <p class="ctl" style="margin-top:8pt">Jurisdiction North · as of 15 December 2026</p>
+      <p class="ans"><span class="pill flags">ANSWER <span style="font-weight:400">with flags</span></span>&nbsp; Not required if the employees count as related parties: fully waived accounts of related parties are not fee-paying under 1.D.6 as amended, so 3.A.1's mandatory inclusion does not apply — though they may be included, with disclosure.</p>
+      <p class="small" style="margin-top:8pt">Cited: <code>def:fee-paying-portfolio@E2025</code> before the date, <code>…@E2025-A1</code> after. Same provision text both times; the resolver selected a different definition version, and the verifier would have removed a citation to the wrong one.</p>
+      <p class="small"><span class="pill naive">naive RAG</span>&nbsp; Answers "no" in November too — it applies the amendment sixteen days before it is in force, and cannot say so.</p>
+    </div>
+  </div>
+  <div class="run"><span>Verifiable Guidance Layer</span><span>6 / 10</span></div>
+</section>
+
+<!-- 7 · Evidence -->
+<section class="page">
+  <h2>The evidence, generated by the test suite</h2>
+  <div class="tiles">
+    <div class="tile"><div class="big">13 / 13</div><div class="lab">gold cases pass — outcome, citations, flags and gaps, never prose equality</div></div>
+    <div class="tile"><div class="big">100%</div><div class="lab">composed claims grounded after verification; closure recall; modifiers surfaced</div></div>
+    <div class="tile"><div class="big">0 / 70</div><div class="lab">composed citations stale — the packet never offers a superseded version; V3 is defence in depth</div></div>
+    <div class="tile"><div class="big">59</div><div class="lab">tests in about two seconds; 28 are unit tests of the deterministic core with no model anywhere</div></div>
+  </div>
+  <div class="cols" style="gap:22pt">
+    <div>
+      <h3>The baseline, honestly</h3>
+      <p class="small">Ordinary document RAG over the <em>same</em> prose with the <em>same</em> composer model: chunk, embed, top-k, answer. The tests record what it did; they do not assert that it fails.</p>
+      <p class="small">It gets <strong>10 of 13</strong> right — most ordinary questions, and even two of the traps. It fails exactly the three cases where the right answer is not simply the newest text applied everywhere, now:</p>
+      <table class="small">
+        <tr><th>Case</th><th>Why it is wrong</th></tr>
+        <tr><td><strong>G2</strong> a different place</td><td>"first full month" in Jurisdiction South, where Edition 2025 is not yet in force</td></tr>
+        <tr><td><strong>G7</strong> a past date</td><td>"first full month" as of June 2024, before Edition 2025 was even published</td></tr>
+        <tr><td><strong>G11a</strong> an amendment not yet in force</td><td>applies the December amendment to a November question</td></tr>
+      </table>
+      <p class="small" style="margin-top:8pt">And it has no way of telling the user which of its answers those are. The layer's advantage is not more right answers on easy questions; it is <strong>zero unflagged wrong answers, and knowing when not to answer.</strong></p>
+    </div>
+    <div>
+      <h3>What each number is</h3>
+      <table class="small">
+        <tr><th>Metric</th><th>Value</th></tr>
+        <tr><td>Gold pass rate (layer)</td><td>100% (13/13)</td></tr>
+        <tr><td>Grounded-claim rate</td><td>100%</td></tr>
+        <tr><td>Stale citations reaching a user</td><td>0 (0 of 70 composed)</td></tr>
+        <tr><td>Closure recall</td><td>100%</td></tr>
+        <tr><td>Modifier surfaced rate</td><td>100%</td></tr>
+        <tr><td>Abstention precision / recall</td><td>100% / 100%</td></tr>
+        <tr><td>Intake (no invented date, place or fact)</td><td>5 / 5</td></tr>
+        <tr><td>Judge disagreements (soft notes)</td><td>3 — never change a verdict</td></tr>
+        <tr><td>Baseline failure rate</td><td>23% (3 of 13)</td></tr>
+      </table>
+      <p class="small" style="margin-top:8pt">On thirteen hand-authored cases over a corpus written for them, 100% is what it should be. The honest reading is "every trap that was set was caught"; it says nothing about traps that were not thought of. In production the gold set is authored by the publisher's own experts and grows with every REVIEW and every correction.</p>
+    </div>
+  </div>
+  <div class="run"><span>Verifiable Guidance Layer</span><span>7 / 10</span></div>
+</section>
+
+<!-- 8 · Decisions -->
+<section class="page">
+  <h2>Three decisions that were not obvious — and what comes next</h2>
+  <div class="cols3">
+    <div class="card"><div class="num">1</div><h3>No graph database</h3><p class="small" style="margin:0">The two graph operations the product needs — follow the required relationships for this case; what depends on this changed clause — are shallow (≤ 4 hops) and bounded. A recursive CTE over an indexed edge table does them in milliseconds, and one Postgres holds text, vectors, edges, releases and audit. The schema already <em>is</em> a property graph; the export is mechanical when whole-graph pattern queries or graph algorithms are needed.</p></div>
+    <div class="card"><div class="num">2</div><h3>"In force" computed, never stored</h3><p class="small" style="margin:0">Stored end dates are the classic source of silent inconsistency, and updating them when a successor arrives mutates rows that earlier releases depend on. Computing in-force at query time is what makes a release a watermark instead of a copy, and what makes "open the release this answer was given under and it reproduces" true rather than aspirational. The cost: effective dates must be right at ingestion.</p></div>
+    <div class="card"><div class="num">3</div><h3>Verification as a separate deterministic pass</h3><p class="small" style="margin:0">The brief's failure is confident wrong answers; a gate that is itself probabilistic cannot be the answer to that. Six rules in plain code, testable without the thing they gate, with a graded contract: a bad supporting claim is removed and flagged, a bad conclusion fails the answer. The judge exists, as a second model whose only power is to add a soft note.</p></div>
+  </div>
+  <div class="cols" style="margin-top:14pt;gap:22pt">
+    <div>
+      <h3>An honest limitation</h3>
+      <p class="small">The layer makes errors <strong>visible and attributable</strong>, not impossible. A wrong edge or a wrong effective date produces a well-cited wrong answer. The verifier checks the answer against the graph; it cannot check the graph against the world. The defences are provenance, editorial review, the impact preview, and the gold set.</p>
+    </div>
+    <div>
+      <h3>With more time, in order</h3>
+      <ol class="tight small">
+        <li><strong>Extraction</strong> through the same proposal path — then one real public-domain document through it.</li>
+        <li><strong>Judge meta-evaluation</strong>: human labels on claim/citation pairs, so the judge's own precision and recall are known.</li>
+        <li><strong>Composer-sensitivity matrix</strong> across models: correctness from the layer, fluency from the model.</li>
+        <li>Jurisdictional overrides, edge validity windows, true bitemporal "known since"; editorial roles and an audit view; the answer contract as an agent tool.</li>
+      </ol>
+    </div>
+  </div>
+  <div class="run"><span>Verifiable Guidance Layer</span><span>8 / 10</span></div>
+</section>
+
+<!-- 9 · How to review -->
+<section class="page">
+  <h2>How to review this</h2>
+  <div class="cols" style="gap:22pt">
+    <div>
+      <h3>Ten minutes, nothing to install</h3>
+      <p class="small"><a href="https://ericediger.com/vgl">ericediger.com/vgl</a> — the walkthrough, in nine sections. Press → or click to advance; <strong>f</strong> opens the full recorded answer behind any frame; <strong>?</strong> shows the keys. Everything on it is recorded output of the system; the only thing simulated is the latency.</p>
+      <h3 style="margin-top:12pt">Fifteen minutes, Docker only</h3>
+      <pre>git clone https://github.com/ericediger/verifiable-guidance-layer.git
+cd verifiable-guidance-layer
+VGL_LLM_MODE=replay docker compose up --build</pre>
+      <p class="small">Open <code>http://localhost:8000</code>. The header shows <em>Release 1 · 40 versions</em> and a <em>recorded responses</em> tag. Click any question chip — the thirteen gold cases — and run both scenes from the Releases tab: impact preview → approve → ask again on the new release; <em>Issued answers</em> shows the client answer that expires. <strong>Reset to Release 1</strong> is at the bottom of the Releases tab.</p>
+      <p class="small">With your own keys in <code>.env</code> and <code>docker compose up --build</code>, ask it anything. The model steps run the same code path either way.</p>
+      <pre>docker compose run --rm app pytest     # 59 tests, ~2 s, no network</pre>
+    </div>
+    <div>
+      <h3>Read, in this order</h3>
+      <table class="small">
+        <tr><td style="width:36%"><strong>01 · Architecture</strong></td><td>The design, the mechanisms for the brief's three failures, the 0 → 1 path.</td></tr>
+        <tr><td><strong>03 · Decisions</strong></td><td>Fourteen non-obvious decisions, ADR-style; what the first live run changed.</td></tr>
+        <tr><td><strong>Eval report</strong></td><td>Generated by <code>pytest</code>: metrics, every case, the baseline verbatim.</td></tr>
+        <tr><td><strong>04 · Demonstration</strong></td><td>What is recorded, what runs, how it was built (appendix overleaf).</td></tr>
+        <tr><td><strong>00 · Corpus spec</strong></td><td>The fictional corpus and the gold set; committed before any code.</td></tr>
+      </table>
+      <h3 style="margin-top:12pt">Where to look first in the code</h3>
+      <table class="small">
+        <tr><td style="width:36%"><code>src/vgl/closure.py</code></td><td>The resolver: a bounded recursive walk, then in-force selection. No model import.</td></tr>
+        <tr><td><code>src/vgl/verify.py</code></td><td>Rules V1–V6 and the graded failure contract; twelve unit tests.</td></tr>
+        <tr><td><code>src/vgl/releases.py</code></td><td>The impact preview: load the bundle in a savepoint, re-resolve, roll back.</td></tr>
+        <tr><td><code>src/vgl/schema.sql</code></td><td>The data model, with the two ideas written at the top.</td></tr>
+        <tr><td><code>data/gold.yaml</code></td><td>Correct behaviour, as data.</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="run"><span>Verifiable Guidance Layer</span><span>9 / 10</span></div>
+</section>
+
+<!-- 10 · Appendix -->
+<section class="page">
+  <h2>Appendix: how the demonstration was built</h2>
+  <div class="cols" style="gap:22pt">
+    <div>
+      <h3>What the hosted walkthrough is</h3>
+      <p class="small">A static, keyboard-driven presentation of <strong>recorded output of the real system</strong>. On 4 November 2026 the full pipeline was run live — Opus composing, Sonnet judging and parsing intake, OpenAI embeddings — against Releases 1, 2 and 3, and the results saved as JSON. The site renders those files; nothing on it calls a model or a database. <strong>Simulated: only the latency</strong> (the Ask progress bar is a 2.5-second animation; live, a question takes 10–25 seconds) and the moment the release badge bumps. Every verdict, claim, citation, flag, judge note and number is the system's actual output.</p>
+      <h3 style="margin-top:10pt">What runs in the repository</h3>
+      <table class="small">
+        <tr><th></th><th>replay (no keys)</th><th>live (keys)</th></tr>
+        <tr><td>Resolve, verify, releases, impact preview, staleness</td><td>Real</td><td>Real</td></tr>
+        <tr><td>Intake, choose, compose, judge, embeddings</td><td>Recorded responses, one code path</td><td>Real API calls</td></tr>
+        <tr><td>The thirteen gold questions; both scenes; reset</td><td>Work</td><td>Work</td></tr>
+        <tr><td>Any other question</td><td>Plain 409 message</td><td>Works</td></tr>
+        <tr><td><code>pytest</code></td><td>Default</td><td><code>--live</code>, <code>--repeat N</code></td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>How it was built</h3>
+      <ol class="tight small">
+        <li><strong>Spec first.</strong> The corpus, the traps, the outcome contract and the gold set were written and committed before any code.</li>
+        <li><strong>The gold set is the behavioural spec</strong>, as data; evals assert structure, never prose.</li>
+        <li><strong>The deterministic core with unit tests before any model call</strong>; <code>closure.py</code> and <code>verify.py</code> import nothing from the model client.</li>
+        <li><strong>Record/replay from day one</strong>; the suite runs with no network.</li>
+        <li><strong>The baseline recorded, never asserted.</strong></li>
+        <li><strong>The UI last</strong>, over the same JSON an agent receives.</li>
+      </ol>
+      <p class="small">The structured graph was authored by hand to match the prose, with provenance recorded on every edge as if produced by an extractor and reviewed by an editor; extraction at scale was deliberately kept out of a proof of concept. The code was written by an AI coding agent (Claude Code) under the author's direction and a written working agreement — nothing ships that cannot be explained in two sentences; no real regulation; provenance on every edge; commit messages that state a decision. The architecture, the corpus, the decisions and the scope cuts are the author's.</p>
+      <h3 style="margin-top:8pt">A public live demo would need</h3>
+      <p class="small" style="margin:0">A hosted Postgres 16 with pgvector; the FastAPI container behind HTTPS with the two keys as platform secrets; a spend cap in both vendor consoles (each live question is three to four model calls, roughly 20–40 s and a few cents); rate limits and a passcode in front of <code>/api/ask</code>; a nightly reset to Release 1. About one working day; the code needs no change beyond configuration.</p>
+    </div>
+  </div>
+  <div class="run"><span>Verifiable Guidance Layer</span><span>10 / 10</span></div>
+</section>
+
+</body>
+</html>
