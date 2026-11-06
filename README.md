@@ -138,13 +138,17 @@ Knowledge changes only through a proposal → impact preview → editor → immu
 
 ## Honest results
 
-From the generated report, on this corpus: 13/13 gold cases pass; 100% of composed claims
-grounded; 0 stale citations reach a user; 100% closure recall; abstention precision and
-recall 100%. The baseline — ordinary RAG over the same prose with the same model — gets most
-ordinary questions right and fails **every** question where the right answer is not simply the
-newest text applied everywhere, now — a different place, a past date, an amendment not yet in
-force — without any way to say which. The layer's advantage is not more right answers on easy
-questions; it is zero unflagged wrong answers, and knowing when not to answer.
+From the generated report, on this corpus: 13/13 gold cases pass; every composed claim passed
+the structural checks (none had to be removed); 0 of 70 composed citations were to a
+superseded version; every expected piece of evidence was in the packet; abstention precision
+and recall 100%. The baseline — ordinary RAG over the same prose with the same model, given
+the question only — gets most ordinary questions right and fails the three where the right
+answer is not simply the newest text applied everywhere, now: a different place, a past date,
+an amendment not yet in force — without any way to say which. A baseline given the date and
+place in its prompt is the next experiment. On these thirteen cases the layer's advantage is
+not more right answers on easy questions; it is zero unflagged wrong answers, and knowing when
+not to answer. What is verified, what is not, and what is proposed:
+[`docs/01-architecture.md`](docs/01-architecture.md), the last two sections.
 
 ## Layout
 

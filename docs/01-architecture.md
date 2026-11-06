@@ -16,13 +16,27 @@ No amount of better retrieval over the clause's own text can see that.
 
 ## The thesis
 
-Truth lives in a **deterministic, versioned, relationship-aware layer**. Language models are
-used only for language — understanding the question and composing the answer — and nothing
-reaches a person without a deterministic check against the layer. "The guidance doesn't
-cover this" is a first-class answer, not a failure.
+Four commitments:
+
+1. Truth lives in a **deterministic, versioned, relationship-aware layer**.
+2. Language models are used only for language — understanding the question and composing
+   the answer.
+3. Nothing reaches a person without a deterministic check against the layer.
+4. "The guidance doesn't cover this" is a first-class answer, not a failure — the outcome
+   that lets the third commitment hold without forcing a guess.
 
 Every probabilistic step is placed *upstream* of a deterministic one that bounds it: a model
 may narrow a search or add a flag; it can never add knowledge or clear a check.
+
+**What that assures, precisely.** The layer resolves versioned evidence for a stated
+jurisdiction, date and knowledge release; it enforces citation, applicability, authority and
+known-gap checks on every claim; and it records the evidence behind each response. It does
+not establish that an answer is semantically correct: that still depends on the quality of
+the knowledge in the graph, on the right entry concepts being chosen, and on faithful
+composition. The checks make the first kind of failure (a citation to text not in force, or
+not in the evidence) impossible, and the other kinds visible and attributable. The table at
+the end of this document says which parts are implemented, which are implemented with
+limits, and which are proposed.
 
 ## The components
 
@@ -49,13 +63,20 @@ chunked, for the baseline).
 | Shortlist | Full-text + vector, RRF | Recall: up to eight candidate concepts | A coverage floor; over-inclusion is allowed |
 | Choose entries | Model, from titles only | Precision: one to three entry concepts | Validated in code against the shortlist — it can narrow, never add. Empty → REVIEW |
 | **Resolve** | **Deterministic** | Entry concepts → the versions in force for this jurisdiction on this date, their definitions, interpretations, carve-outs, practitioner notes, and every reference that resolves to nothing (gaps). Two SQL statements: a bounded recursive walk, and a per-concept in-force selection | Imports nothing from the model client. Same inputs and release → identical packet |
-| Compose | Model, packet only | Summary + atomic claims, each bound to version IDs | Sees only the packet; practitioner notes marked uncitable; unresolved references marked "not held" |
+| Compose | Model, packet only | Atomic claims, each bound to version IDs, plus a one-paragraph summary | Sees only the packet; practitioner notes marked uncitable; unresolved references marked "not held". The claims are what is verified; the summary is the composer's reading of them (see limitations) |
 | **Verify** | **Deterministic** | V1 every claim cites · V2 every citation is in the packet · V3 none is superseded · V4 every carve-out is surfaced · V5 an unresolved reference withholds finality · V6 practitioner material never grounds a claim | A bad supporting claim is removed and flagged; a bad conclusion fails to REVIEW. Flags are derived from the packet, not from what the composer chose to mention |
 | Judge | Second model, narrow question | Does each claim follow from the texts it cites? | Can add a soft flag; cannot clear a check |
 
-Outcome contract: **ANSWER · ANSWER_WITH_FLAGS · CLARIFY · REVIEW**. The response carries the
-claims, citations, flags, the full evidence packet, the verification record, and the release
-— the same JSON for a person's screen and for an agent's tool call.
+Outcome contract: **ANSWER · ANSWER_WITH_FLAGS · CLARIFY · REVIEW**, meaning, operationally:
+ANSWER — every claim passed the declared checks and nothing is outstanding; this is not a
+proof that the interpretation is correct. ANSWER_WITH_FLAGS — the same, with a condition or
+notice attached (a carve-out, a pending adoption, an upcoming amendment, a practitioner note,
+a judge's note). CLARIFY — a control or a required case fact is missing. REVIEW — a failed
+check, an unresolved reference, no coverage, or a conclusion that could not be grounded. The
+response carries the claims, citations, flags, the full evidence packet, the verification
+record, and the release — the same JSON for a person's screen and for an agent's tool call.
+An agent gets structured evidence and a review state; what it may *do* with an ANSWER is an
+action policy the deploying organisation sets, not something the layer decides.
 
 ### Changing what the layer knows
 
@@ -63,8 +84,17 @@ Knowledge enters only through a **proposal** — a bundle of documents, versions
 a named proposer and basis. Before an editor decides, the **impact preview** loads the bundle
 inside a savepoint, re-resolves every gold case against the simulated release, walks the
 graph backwards to name dependents, computes which issued client answers would expire and
-when, and rolls back. It is the test suite, run against a change that does not exist yet, with
-no model involved. Approval creates release N+1. Rejection is recorded with a reason.
+when, and rolls back. It is change detection with no model involved: what evidence and which
+dependencies change, and what follows for the gold scenarios and the issued answers. It is not
+a proof that the proposed knowledge is correct — that is the editor's question — and it does
+not re-run the composed answers. Approval creates release N+1. Rejection is recorded with a
+reason.
+
+Staleness of an issued answer is detected when a version it cites gains a successor: the
+demonstrated amendment is caught because the answer cites the changed definition. A new
+carve-out or relationship that touches a cited provision without replacing a version would
+need the same dependency walk the preview already performs for concepts; that is the next
+step, not the current behaviour.
 
 Practitioner knowledge has an explicit home and an explicit ceiling: a separate authority
 tier, surfaced with its label on every relevant answer, never able to ground a claim.
@@ -93,7 +123,7 @@ And the rest of what the brief names about the knowledge itself:
 | Jurisdictional variations branch the answer | Each jurisdiction's own adoption date selects the version in force; a pending adoption is a flag on the answer |
 | Updates to one standard cascade into others that reference it | The reverse walk and the impact preview name every dependent before publication; issued client answers expire with a date and a reason |
 | Practitioner knowledge has no authoritative home | A third authority tier: attached to clauses by edge, scoped to a jurisdiction, surfaced with its label on every relevant answer, never able to ground a claim (V6) |
-| The ground moves continuously | Releases as watermarks; every answer pinned to one; an earlier release reproduces byte for byte |
+| The ground moves continuously | Releases as watermarks; every answer pinned to one; an earlier release's evidence reproduces exactly, and the answer issued under it is kept |
 | Trustworthy for professionals, usable by agents with confidence | Deterministic verification before anything is shown; four outcomes; the same JSON for a person's screen and an agent's tool call, with no path that skips the check |
 
 ## 0 → 1
@@ -113,21 +143,29 @@ From `docs/eval-report.md`, generated by the suite:
 | Criterion | Target | Result |
 |---|---|---|
 | Gold pass rate (layer) | 100% | **100%** (13/13) |
-| Grounded-claim rate | 100% after verification | **100%** |
-| Stale citations reaching the user | 0 | **0** (the packet never offers one; V3 is defence in depth) |
-| Closure recall | 100% of expected versions in the packet | **100%** |
+| Composed-claim structural validation rate (claims passing V1–V6 ÷ claims composed) | 100% after verification | **100%** — no claim had to be removed |
+| Stale citations | 0 composed, 0 reaching the user | **0 of 70** composed citations were to a superseded version (the packet never offers one); after verification the rate is 0 by construction, since V3 removes any |
+| Required gold-evidence coverage (expected versions present in the packet ÷ expected) | 100% | **100%** |
 | Modifier surfaced | every carve-out, pending adoption, upcoming amendment flagged | **100%** |
 | Abstention precision / recall | REVIEW and CLARIFY when warranted, only then | **100% / 100%** |
 | Intake | no invented date, jurisdiction or fact | **5/5** |
-| Baseline | documented on the same questions | fails **every** case where the right answer is not the newest text applied everywhere, now (3/3: a different place, a past date, an amendment not yet in force), and cannot say which |
+| Baseline, given the question only | documented on the same questions | fails **3 of 13** — exactly the cases where the right answer is not the newest text applied everywhere, now (a different place, a past date, an amendment not yet in force) — and cannot say which |
 
 The baseline result is the honest one and the useful one: with a frontier model and a small
-corpus, naive RAG gets most ordinary questions right. It fails every question where the right
-answer is not simply the newest text applied everywhere, now — a different place, a past date,
-an amendment not yet in force — because similarity has no representation of place or time, and
-it has no way of telling the user which of its answers those are. The layer's advantage is
-not "more right answers on easy questions"; it is **zero unflagged wrong answers, and
-knowing when not to answer**.
+corpus, naive RAG gets most ordinary questions right. It fails the three questions where the
+right answer is not simply the newest text applied everywhere, now — a different place, a past
+date, an amendment not yet in force — because similarity has no representation of place or
+time, and it has no way of telling the user which of its answers those are. Three things about
+how that was measured. The baseline receives the **question only** — no jurisdiction, no as-of
+date — which is how document RAG is usually deployed and is also the point being made; a
+baseline given the date and the place in its prompt is the obvious next comparison, and the
+first one a reviewer should ask for. Its answers are classified by a simple rubric (cited a
+superseded version, stated the wrong month, or reached a conclusion in a forbidden set),
+recorded and never asserted. And on the one question where the layer says REVIEW (G4a), the
+baseline did better than a generic hedge: it named the missing ruling and advised checking it
+— the work the layer does for the reader. On these thirteen cases, the layer's advantage is
+not "more right answers on easy questions"; it is **zero unflagged wrong answers, and knowing
+when not to answer**.
 
 ### What was deliberately left out of version one
 
@@ -187,8 +225,42 @@ and clarifications are a signal to the publisher about where its guidance is har
   wrong effective date produces a well-cited wrong answer. The defences are provenance,
   editorial review, impact preview, and the gold set — not the verifier, which checks the
   answer against the graph and cannot check the graph against the world.
+- **The summary is not verified.** The rules and the judge check claims; the one-paragraph
+  summary is the composer's reading of the kept claims and is shown as such. Deriving it
+  from the kept claims is a small change that has not been made.
 - Entry selection is probabilistic. It is bounded (it can only choose from what search found)
-  and its failure mode is a REVIEW or a visibly off-topic packet, not a confident wrong
-  answer — but a question that lands on the wrong provision will produce an answer about the
-  wrong provision, with correct citations to it.
+  and its failure mode is usually a REVIEW or a visibly off-topic packet — but a question that
+  lands on the wrong provision will produce an answer about the wrong provision, with correct
+  citations to it. Selecting from a shortlist constrains the choice; it does not prove
+  relevance.
+- Known missing references are detectable (a `REFERENCES` edge to a concept with no version);
+  unknown omissions — a ruling nobody has linked — are not.
+- The traversal is bounded at four hops as a policy for this corpus, not as a property of
+  regulation. A required relationship beyond the bound would be silently absent today;
+  reporting incomplete resolution at the boundary is a planned safeguard.
+- Edges are timeless and versions carry the dates. Edge validity over time and jurisdictional
+  overrides of individual edges are outside the demonstrated scope.
+- Reproducibility means three different things, and only the first two are implemented: the
+  evidence packet reproduces exactly for fixed inputs and release; the issued answer is stored
+  with its packet and verification record and can be retrieved; a *regenerated* composition
+  may differ in wording.
+- The judge's own precision and recall have not been measured, and a verdict it fails to
+  return is treated as "no note" rather than reported as not assessed.
 - The corpus is small and fictional. Every number above is a statement about this corpus.
+
+## Implemented, implemented with limits, proposed
+
+| Capability | Status |
+|---|---|
+| Versioned resolution by jurisdiction, date and release; known gaps as a first-class outcome | Implemented and demonstrated |
+| Structural verification V1–V6 with the graded failure contract | Implemented and demonstrated |
+| Releases as watermarks; impact preview as change detection | Implemented and demonstrated |
+| Practitioner tier with a ceiling (V6) | Implemented and demonstrated |
+| Semantic assessment (the judge) | Implemented with limits: soft notes only; not itself evaluated; missing verdicts not reported |
+| The summary field | Implemented with limits: composed by the model, not derived from the kept claims |
+| Issued-answer staleness | Implemented with limits: successor versions of cited concepts; new relationships need the dependency walk |
+| Historical retrieval of issued answers | Implemented: stored with packet and verification; evidence reproduces exactly; regeneration may differ in wording |
+| Agent use | Implemented as a contract (the same JSON); an action policy for consequential use is proposed |
+| Extraction from prose into the graph, through the proposal path | Proposed; the graph was hand-authored to match the prose |
+| Temporal edge validity; jurisdictional edge overrides; incomplete-resolution reporting | Proposed |
+| A baseline given equivalent context (date and place in the prompt) | Proposed; the next experiment |

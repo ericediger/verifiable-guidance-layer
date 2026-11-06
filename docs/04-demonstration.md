@@ -117,7 +117,7 @@ The code needs no change beyond configuration. The work is deployment and guardr
 - **The FastAPI container** on Fly.io, Render, Railway or Cloud Run, behind HTTPS, with the
   two API keys as platform secrets.
 - **Spend control.** A monthly cap in both vendor consoles. Each live question is three to
-  four model calls, roughly 20–40 seconds and a few cents (estimate, at current list prices).
+  four model calls, 10–25 seconds on the 4 November run and a few cents (estimate, at current list prices).
 - **Access control.** Per-IP rate limits and a shared passcode or SSO in front of `/api/ask`.
 - **Reset discipline.** A guard on `/api/reset` and a scheduled nightly reset to Release 1,
   so the proposal scenes are always available to the next visitor.
@@ -212,9 +212,10 @@ own database (`<name>_test`) and never touch the demo's.
 | Claim | Basis |
 |---|---|
 | The system gives the right answer on every gold case | `pytest` → 13/13; `docs/eval-report.md` |
-| No stale citation reaches a user | The packet never offers a superseded version; V3 is defence in depth; 0 of 70 composed citations were stale |
+| No stale citation reaches a user | The packet never offers a superseded version, so 0 of 70 composed citations were to one; V3 would remove any, so the rate after verification is 0 by construction |
 | Resolve and verify involve no model | `closure.py` and `verify.py` import nothing from `llm.py`; 28 unit tests run with no model |
+| Every claim shown passed the structural checks; the summary did not | The rules and the judge check claims; the one-paragraph summary is the composer's reading of the kept claims. `verify.py` passes it through — a known limit, listed in `01-architecture.md` |
 | Release 1 still says REVIEW after Release 2 exists | Releases are watermarks; `tests/unit/test_releases.py` |
-| The baseline fails every case that depends on when or where | G2, G7, G11a in the eval report, recorded not asserted — and it gets the rest right |
+| The baseline fails the three cases that depend on when or where | G2, G7, G11a in the eval report, recorded not asserted — and it gets the rest right. It received the question only (no date, no place), as document RAG is usually deployed; a baseline given both in its prompt is the next experiment and has not been run |
 | The site shows what the system actually said | Recorded JSON from a live run of this code on 4 November 2026; the same numbers as the committed eval report |
 | Every number here is a statement about this corpus | The corpus is fictional and small; nothing here is a claim about any real standard |

@@ -43,9 +43,10 @@ copies per release; event sourcing.
 
 **Why:** Stored end dates are the classic source of silent inconsistency, and updating them
 when a successor arrives *mutates rows that earlier releases depend on*. Computing in-force
-means adding a version in release N+1 closes the previous one in N+1 only; release N is
-byte-identical forever, which is what makes "open the release this answer was given under
-and it reproduces" true rather than aspirational. Watermarks give that for free; copies
+means adding a version in release N+1 closes the previous one in N+1 only; the evidence
+release N resolves is byte-identical forever, which is what makes "open the release this
+answer was given under and the evidence reproduces" true rather than aspirational (the
+composed wording of a *regenerated* answer may differ; the issued answer itself is stored). Watermarks give that for free; copies
 would multiply storage and invite drift.
 
 **Costs:** Effective dates must be right at ingestion; a wrong date is a wrong answer. Hard
@@ -164,8 +165,11 @@ expire and when, then roll back.
 **Considered:** Computing affected concepts from the bundle's edges alone.
 
 **Why:** Simulation is exact and uses the same resolver the product uses. It is also the
-sentence that lands best with people who care about testing: the impact preview *is the
-test suite, run against a change that does not exist yet*. Static analysis would miss
+sentence that lands best with people who care about testing: the impact preview *re-resolves
+every gold case against a release that does not exist yet*. It is change detection — what
+evidence and dependencies change — not a regression run of composed answers and not a check
+that the proposed knowledge is correct; those remain the suite's and the editor's jobs.
+Static analysis would miss
 version-selection effects (an amendment that changes which version a case resolves to
 without touching any edge).
 

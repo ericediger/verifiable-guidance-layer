@@ -1,6 +1,6 @@
 # Eval report
 
-Generated 2026-11-04T14:29 · mode **replay** · 13 layer runs over 13 gold cases · 13 baseline runs
+Generated 2026-11-06T13:14 · mode **replay** · 13 layer runs over 13 gold cases · 13 baseline runs
 
 This file is written by `pytest tests/eval`. It is the evidence for the thesis, produced by the
 test suite rather than by hand. See `data/gold.yaml` for what each case requires.
@@ -10,14 +10,14 @@ test suite rather than by hand. See `data/gold.yaml` for what each case requires
 | Metric | Value | Meaning |
 |---|---|---|
 | Gold pass rate (layer) | 100% | Every expectation met: outcome, citations, flags |
-| Grounded-claim rate | 100% | Composed claims that survived verification |
-| Stale citations caught | 0 of 70 composed | Removed before reaching the user; rate after verification is 0 by construction |
-| Closure recall | 100% | Expected versions present in the evidence packet |
+| Composed-claim structural validation rate | 100% | Claims passing V1–V6 ÷ claims composed (structural: cites, in packet, in force, tier — not semantic correctness) |
+| Stale citations composed | 0 of 70 | Citations to a superseded version, before verification; the packet never offers one. After verification the rate is 0 by construction (V3 removes any) |
+| Required gold-evidence coverage | 100% | Expected evidence versions present in the packet ÷ expected (the gold set's list, not all relevant evidence) |
 | Modifier surfaced rate | 100% | Carve-outs, pending adoptions, upcoming amendments flagged when present |
 | Abstention precision / recall | 100% / 100% | REVIEW/CLARIFY issued when warranted, and only then |
 | Judge disagreements | 3 | Soft flags from the independent model; never change a verdict |
 | Intake pass rate | 100% | No invented dates or jurisdictions; missing facts named |
-| **Baseline failure rate** | **23%** | Naive RAG wrong or unsafe on the same questions, same model |
+| **Baseline failure rate** | **23%** | Naive RAG, given the question only (no date, no place), classified wrong or unsafe by the rubric in `expectations.py`: cited a superseded version, stated a forbidden phrase, or reached a forbidden conclusion |
 
 ## Per case
 
