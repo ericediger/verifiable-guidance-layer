@@ -100,7 +100,7 @@
         <tr><td>Jurisdictions branch the answer</td><td>Each jurisdiction's own adoption date selects the version; a pending adoption is flagged</td><td>§5 · G2</td></tr>
         <tr><td>Updates cascade into what references them</td><td>The graph is walked backwards before publication; issued client answers expire with a date and a reason</td><td>§7 · HPA-77</td></tr>
         <tr><td>Practitioner knowledge has no authoritative home</td><td>A third authority tier: attached to clauses, surfaced with its label, never able to ground a claim (V6)</td><td>§5 · PN-001</td></tr>
-        <tr><td>The ground moves continuously</td><td>Releases as watermarks: every answer is pinned, and an earlier release reproduces byte for byte</td><td>§6 · Release 1 still REVIEW</td></tr>
+        <tr><td>The ground moves continuously</td><td>Releases as watermarks: every answer is pinned, and an earlier release's evidence reproduces exactly</td><td>§6 · Release 1 still REVIEW</td></tr>
         <tr><td>Trusted by professionals; usable by agents</td><td>Deterministic verification before anything is shown; four outcomes; the same JSON for a screen and a tool call</td><td>§3 · <code>/api/ask</code></td></tr>
       </table>
     </div>
@@ -110,28 +110,29 @@
 
 <!-- 2 · Problem + thesis -->
 <section class="page">
-  <h2>The problem, reframed — and three commitments</h2>
+  <h2>The problem, reframed — and four commitments</h2>
   <div class="cols">
     <div>
       <p>The brief describes an assistant that gives confident answers that are wrong in ways that matter: a clause that has since been amended, a second standard that changes the conclusion, a ruling that carves out an exception.</p>
-      <p><strong>None of these is a reasoning failure.</strong> They are knowledge-structure failures: the model is answering from a flat, unversioned, relationship-blind pile of text, and nothing checks the answer against anything. Better retrieval over the clause's own text cannot see a definition that moved, an adoption that has not happened yet, or a ruling the system never held.</p>
-      <p>So the design starts from three commitments:</p>
+      <p><strong>None of these is a reasoning failure.</strong> They are knowledge-structure failures: the model answers from a flat, unversioned, relationship-blind pile of text, and nothing checks the answer. Better retrieval over the clause's own text cannot see a definition that moved, an adoption not yet made, or a ruling never held.</p>
+      <p>So the design starts from four commitments:</p>
       <ol class="tight">
         <li><strong>Truth lives in a deterministic, versioned, relationship-aware layer.</strong></li>
         <li><strong>Language models handle language</strong> — understanding the question, composing the answer — and nothing else.</li>
-        <li><strong>Nothing reaches a person unverified.</strong> Every probabilistic step sits upstream of a deterministic one that bounds it: a model may narrow a search or add a flag; it can never add knowledge or clear a check.</li>
+        <li><strong>Nothing reaches a person unchecked.</strong> Every probabilistic step sits upstream of a deterministic one: a model may narrow a search or add a flag, never add knowledge or clear a check.</li>
+        <li><strong>"The guidance doesn't cover this" is a first-class answer</strong>, not a failure — the outcome that lets the third commitment hold without forcing a guess.</li>
       </ol>
-      <p>And "the guidance doesn't cover this" is a first-class answer, not a failure.</p>
+      <p class="small" style="margin:0"><strong>What that assures, precisely.</strong> The layer resolves versioned evidence for a stated jurisdiction, date and release, enforces citation, applicability, authority and known-gap checks on every claim, and records the evidence behind each response. It does not establish that an interpretation is correct — that still depends on the graph, the entry concepts chosen and faithful composition. The checks make the first kind of failure impossible and the others visible.</p>
     </div>
     <div>
       <h3>Four outcomes, one contract</h3>
       <table>
-        <tr><td style="width:34%"><span class="pill answer">ANSWER</span></td><td>Grounded, verified, nothing outstanding.</td></tr>
-        <tr><td><span class="pill flags">ANSWER <span style="font-weight:400">with flags</span></span></td><td>Grounded and verified; a modifier is attached — a carve-out, a pending adoption, an upcoming amendment, a practitioner note.</td></tr>
+        <tr><td style="width:34%"><span class="pill answer">ANSWER</span></td><td>Every claim passed the declared checks; nothing outstanding. Not a proof that the interpretation is correct.</td></tr>
+        <tr><td><span class="pill flags">ANSWER <span style="font-weight:400">with flags</span></span></td><td>The same, with a condition or notice attached — a carve-out, a pending adoption, an upcoming amendment, a practitioner note, a judge's note.</td></tr>
         <tr><td><span class="pill clarify">CLARIFY</span></td><td>A control (jurisdiction, as-of date) or a required case fact is missing. Ask the user.</td></tr>
-        <tr><td><span class="pill review">REVIEW</span></td><td>No coverage, an unresolved reference in the evidence, or a failed check. Route to a person; name the gap.</td></tr>
+        <tr><td><span class="pill review">REVIEW</span></td><td>A failed check, an unresolved reference, no coverage, or a conclusion that could not be grounded. Route to a person; name the gap.</td></tr>
       </table>
-      <p class="small" style="margin-top:10pt">The response carries the claims, each bound to the version IDs it rests on, the flags, the full evidence packet, the verification record and the release — the same JSON for a person's screen and for an agent's tool call. There is no path to an answer that skips verification.</p>
+      <p class="small" style="margin-top:10pt">The response carries the claims, each bound to the version IDs it rests on, the flags, the full evidence packet, the verification record and the release — the same JSON for a person's screen and for an agent's tool call. No path to an answer skips the checks; the one-paragraph summary is the composer's reading of the checked claims and is labelled as such.</p>
       <div class="band small" style="margin-top:8pt"><strong>Two failures the brief implies, also covered.</strong> Jurisdiction: per-jurisdiction adoption dates select different versions for the same date, with a pending-adoption flag. Time: releases, pinned answers, and computed staleness with a date and a reason.</div>
     </div>
   </div>
@@ -156,7 +157,7 @@
       <div class="card" style="margin-bottom:10pt"><h3>"In force" is computed, never stored</h3><p style="margin:0" class="small">A version carries only its effective date; a jurisdiction carries its own adoption date for each document. The version in force on a date is selected at query time: the latest jurisdiction-adjusted start on or before the as-of date. Historical and future as-of questions come for free, and no row is ever mutated when a successor arrives.</p></div>
     </div>
     <div>
-      <div class="card" style="margin-bottom:10pt"><h3>A release is a watermark, not a copy</h3><p style="margin:0" class="small">Every row records the release that created it and, if retired, the one that retired it. Adding a version in release N+1 closes the previous one <em>in N+1 only</em>; release N reproduces byte for byte, forever. Answers pin to a release. Hard deletes are forbidden.</p></div>
+      <div class="card" style="margin-bottom:10pt"><h3>A release is a watermark, not a copy</h3><p style="margin:0" class="small">Every row records the release that created it and, if retired, the one that retired it. Adding a version in release N+1 closes the previous one <em>in N+1 only</em>; the evidence release N resolves reproduces byte for byte, forever, and the answer issued under it is stored. Answers pin to a release. Hard deletes are forbidden.</p></div>
       <div class="card" style="margin-bottom:10pt"><h3>Provenance on every edge</h3><p style="margin:0" class="small">An edge is an assertion that two things relate, so each one records who asserted it, on what basis, from which passage, and who reviewed it. Nothing links two concepts without someone — or something — accountable for it.</p></div>
     </div>
   </div>
@@ -190,14 +191,15 @@
       <h3>The system learns something · Release 1 → 2</h3>
       <p class="q">A client withdrew 40% last month and the portfolio is now below our composite minimum. Must we remove it?</p>
       <p class="ctl">Jurisdiction North · as of 1 June 2025 · Release 1</p>
-      <p class="ans"><span class="pill review">REVIEW</span>&nbsp; Generally yes, from the start of the next measurement period at which the portfolio is below the documented minimum, but it stays in for any period it began above the minimum, and a 40% withdrawal may engage significant-cash-flow treatment in Q&amp;A QA-2025-031, which has not been reviewed.</p>
-      <p class="small" style="margin:2pt 0 0">3.A.7 says portfolios below the minimum must not be included; guidance statement GS-2025-02 interprets it — and refers to a ruling the system does not hold.</p>
+      <p class="ans"><span class="pill review">REVIEW</span>&nbsp; Generally yes, from the next measurement period it begins below the minimum — but a 40% withdrawal may engage significant-cash-flow treatment in Q&amp;A QA-2025-031, which has not been reviewed.</p>
+      <p class="small" style="margin:2pt 0 0">3.A.7 says portfolios below the minimum must not be included; GS-2025-02 interprets it and refers to a ruling the system does not hold.</p>
       <p class="flag amber"><b>Referenced material not held</b> — QA-2025-031 is referenced by GS-2025-02 but is not held in this release. A <em>known</em> gap, named.</p>
-      <p class="small" style="margin:8pt 0">A practitioner proposes the ruling: its text, the two edges it adds (“3.A.7 is carved out by QA-2025-031”), who asserted them and on what basis. The impact preview, computed before approval: <strong>2 gold cases change, 0 issued answers affected.</strong> Approve → Release 2.</p>
+      <p class="small" style="margin:4pt 0 0"><span class="pill naive">naive RAG</span>&nbsp; Better than a hedge: it names the ruling and tells the reader to check it — the work the layer does, then routes.</p>
+      <p class="small" style="margin:8pt 0">A practitioner proposes the ruling: its text, three edges (“3.A.7 is carved out by QA-2025-031” and the two definitions it depends on), who asserted them and on what basis. Impact preview, before approval: <strong>2 gold cases change, 0 issued answers affected.</strong> Approve → Release 2.</p>
       <p class="ctl">Same question, same facts · Release 2</p>
       <p class="ans"><span class="pill flags">ANSWER <span style="font-weight:400">with flags</span></span>&nbsp; Not necessarily: under QA-2025-031 the portfolio may stay for up to three full measurement periods if the breach results solely from a significant cash flow and the documented policy provides for this; otherwise 3.A.7 requires removal.</p>
       <p class="flag"><b>Exception applies</b> — QA-2025-031 creates an exception to 3.A.7 that may change the conclusion.</p>
-      <p class="small" style="margin-top:6pt"><strong>Release 1 still says REVIEW.</strong> The old answer reproduces forever — the difference between a system that learned something and one that silently changed its mind.</p>
+      <p class="small" style="margin-top:6pt"><strong>Release 1 still says REVIEW.</strong> Its evidence reproduces exactly and its answer is kept — a system that learned something, not one that changed its mind.</p>
     </div>
   </div>
   <div class="run"><span>Verifiable Guidance Layer</span><span class="pn"></span></div>
@@ -211,7 +213,7 @@
       <h3>The amendment · Release 2 → 3</h3>
       <p class="small">The Board amends the definition of a <em>fee-paying portfolio</em> (1.D.6), effective 1 December 2026: portfolios of related parties with all fees waived in full are no longer fee-paying. <strong>No provision in Section 3 changes a single word.</strong></p>
       <div class="band small" style="margin:8pt 0">
-        <strong>Impact preview, before approval.</strong> The graph is walked backwards: <code>3.A.1</code> and <code>3.A.2</code> depend on 1.D.6. <strong>Five gold cases change</strong> — four gain a change notice, one flips. <strong>One issued answer is affected:</strong> on 10 March 2025 Harbor Point Advisors (ref. <strong>HPA-77</strong>) was told that fully fee-waived employee accounts are fee-paying and must be in a composite. Status after approval: <em>Expires 1 December 2026 — re-review before then.</em> The reason is recorded as learned after the answer was issued.
+        <strong>Impact preview, before approval.</strong> The graph is walked backwards: <code>3.A.1</code> and <code>3.A.2</code> depend on 1.D.6. <strong>Five gold cases change</strong> — four gain a change notice, one flips. <strong>One issued answer is affected:</strong> on 10 March 2025 Harbor Point Advisors (ref. <strong>HPA-77</strong>) was told that fully fee-waived employee accounts are fee-paying and must be in a composite. Status after approval: <em>Expires 1 December 2026 — re-review before then.</em> The reason is recorded as learned after the answer was issued. It is detected because the answer <em>cites</em> the definition that changed; a new carve-out touching a cited provision without replacing a version would need the dependency walk the preview already does for concepts — the next step, not the current behaviour.
       </div>
       <p class="small">The provision never changed. The answer did. And the reason is something the system learned after the answer was issued — which is exactly the question a reviewer should ask of any such system: <em>did the regulation change, or did your system learn something it should already have known?</em> Scene B is the second; this is the first; the release history proves which.</p>
     </div>
@@ -235,38 +237,39 @@
   <h2>The evidence, generated by the test suite</h2>
   <div class="tiles">
     <div class="tile"><div class="big">13 / 13</div><div class="lab">gold cases pass — outcome, citations, flags and gaps, never prose equality</div></div>
-    <div class="tile"><div class="big">100%</div><div class="lab">composed claims grounded after verification; closure recall; modifiers surfaced</div></div>
-    <div class="tile"><div class="big">0 / 70</div><div class="lab">composed citations stale — the packet never offers a superseded version; V3 is defence in depth</div></div>
+    <div class="tile"><div class="big">100%</div><div class="lab">composed claims passed the structural checks; expected evidence present; modifiers surfaced</div></div>
+    <div class="tile"><div class="big">0 / 70</div><div class="lab">composed citations to a superseded version — the packet never offers one; after V3 the rate is 0 by construction</div></div>
     <div class="tile"><div class="big">59</div><div class="lab">tests in about two seconds; 28 are unit tests of the deterministic core with no model anywhere</div></div>
   </div>
   <div class="cols" style="gap:22pt">
     <div>
       <h3>The baseline, honestly</h3>
-      <p class="small">Ordinary document RAG over the <em>same</em> prose with the <em>same</em> composer model: chunk, embed, top-k, answer. The tests record what it did; they do not assert that it fails.</p>
-      <p class="small">It gets <strong>10 of 13</strong> right — most ordinary questions, and even two of the traps. It fails exactly the three cases where the right answer is not simply the newest text applied everywhere, now:</p>
+      <p class="small">Ordinary document RAG over the <em>same</em> prose with the <em>same</em> composer model — given the <strong>question only</strong>, no date and no place, as usually deployed. The tests record what it did and classify it by a simple rubric (superseded citation, wrong month, forbidden conclusion); they do not assert that it fails.</p>
+      <p class="small">It gets <strong>10 of 13</strong> right, two traps included. It fails the three where the right answer is not the newest text applied everywhere, now:</p>
       <table class="small">
         <tr><th>Case</th><th>Why it is wrong</th></tr>
         <tr><td><strong>G2</strong> a different place</td><td>"first full month" in Jurisdiction South, where Edition 2025 is not yet in force</td></tr>
         <tr><td><strong>G7</strong> a past date</td><td>"first full month" as of June 2024, before Edition 2025 was even published</td></tr>
         <tr><td><strong>G11a</strong> an amendment not yet in force</td><td>applies the December amendment to a November question</td></tr>
       </table>
-      <p class="small" style="margin-top:8pt">And it has no way of telling the user which of its answers those are. The layer's advantage is not more right answers on easy questions; it is <strong>zero unflagged wrong answers, and knowing when not to answer.</strong></p>
+      <p class="small" style="margin-top:8pt">And it cannot tell the user which of its answers those are. They are failures of context-blind retrieval, not of the model: a baseline given the date and place in its prompt is the obvious next comparison, not yet run. On these thirteen cases the layer's advantage is <strong>zero unflagged wrong answers, and knowing when not to answer.</strong></p>
     </div>
     <div>
       <h3>What each number is</h3>
-      <table class="small">
+      <table class="small" style="font-size:9pt">
         <tr><th>Metric</th><th>Value</th></tr>
         <tr><td>Gold pass rate (layer)</td><td>100% (13/13)</td></tr>
-        <tr><td>Grounded-claim rate</td><td>100%</td></tr>
-        <tr><td>Stale citations reaching a user</td><td>0 (0 of 70 composed)</td></tr>
-        <tr><td>Closure recall</td><td>100%</td></tr>
+        <tr><td>Structural validation rate (claims passing V1–V6 ÷ composed)</td><td>100%</td></tr>
+        <tr><td>Citations to a superseded version</td><td>0 of 70 composed; 0 after V3, by construction</td></tr>
+        <tr><td>Gold-evidence coverage (expected versions in packet ÷ expected)</td><td>100%</td></tr>
         <tr><td>Modifier surfaced rate</td><td>100%</td></tr>
         <tr><td>Abstention precision / recall</td><td>100% / 100%</td></tr>
         <tr><td>Intake (no invented date, place or fact)</td><td>5 / 5</td></tr>
         <tr><td>Judge disagreements (soft notes)</td><td>3 — never change a verdict</td></tr>
-        <tr><td>Baseline failure rate</td><td>23% (3 of 13)</td></tr>
+        <tr><td>Baseline failure rate (question only; rubric)</td><td>23% (3 of 13)</td></tr>
+        <tr><td>Semantic correctness, independently assessed</td><td>not measured</td></tr>
       </table>
-      <p class="small" style="margin-top:8pt">On thirteen hand-authored cases over a corpus written for them, 100% is what it should be. The honest reading is "every trap that was set was caught"; it says nothing about traps that were not thought of. In production the gold set is authored by the publisher's own experts and grows with every REVIEW and every correction.</p>
+      <p class="small" style="margin-top:6pt">On thirteen hand-authored cases, 100% is what it should be: every trap set was caught, nothing more.</p>
     </div>
   </div>
   <div class="run"><span>Verifiable Guidance Layer</span><span class="pn"></span></div>
@@ -364,7 +367,7 @@ VGL_LLM_MODE=replay docker compose up --build</pre>
       </ol>
       <p class="small">The structured graph was authored by hand to match the prose, with provenance recorded on every edge as if produced by an extractor and reviewed by an editor; extraction at scale was deliberately kept out of a proof of concept. The code was written by an AI coding agent (Claude Code) under the author's direction and a written working agreement — nothing ships that cannot be explained in two sentences; no real regulation; provenance on every edge; commit messages that state a decision. The architecture, the corpus, the decisions and the scope cuts are the author's.</p>
       <h3 style="margin-top:8pt">A public live demo would need</h3>
-      <p class="small" style="margin:0">A hosted Postgres 16 with pgvector; the FastAPI container behind HTTPS with the two keys as platform secrets; a spend cap in both vendor consoles (each live question is three to four model calls, roughly 20–40 s and a few cents); rate limits and a passcode in front of <code>/api/ask</code>; a nightly reset to Release 1. About one working day; the code needs no change beyond configuration.</p>
+      <p class="small" style="margin:0">A hosted Postgres 16 with pgvector; the FastAPI container behind HTTPS with the two keys as platform secrets; a spend cap in both vendor consoles (each live question is three to four model calls, 10–25 s on the 4 November run, and a few cents); rate limits and a passcode in front of <code>/api/ask</code>; a nightly reset to Release 1. About one working day; the code needs no change beyond configuration.</p>
     </div>
   </div>
   <div class="run"><span>Verifiable Guidance Layer</span><span class="pn"></span></div>
